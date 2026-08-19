@@ -61,6 +61,13 @@ export default function Header({ locale }: { locale: Locale }) {
         </nav>
 
         <div className="flex items-center gap-2">
+          {/* Persistent primary CTA (a sodium site) — Toronto-style */}
+          <Link
+            href={href(locale, "programa")}
+            className="type-label-sm mr-1 hidden rounded-[2px] bg-sodium px-3.5 py-2.5 font-bold text-ink transition-transform hover:-translate-y-0.5 sm:inline-block"
+          >
+            {t.nav.programa}
+          </Link>
           <Link
             href={switchLocalePath(pathname, locale, other)}
             hrefLang={other}
