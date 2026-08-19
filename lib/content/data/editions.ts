@@ -16,16 +16,6 @@ export const editions: Edition[] = [
     partners: ["opstina-veles", "teatar-dzinot-partner"],
     isCurrent: false,
     programmeIncomplete: true,
-    alsoProgrammed: [
-      "sasko-kostov",
-      "taksi-konzilium",
-      "dina-jasari-i-drugari",
-      "letecki-pekinezi",
-      "edit-points",
-      "bopheads",
-      "shamba",
-      "teatar-senki-i-oblaci",
-    ],
   },
   {
     year: 2023,

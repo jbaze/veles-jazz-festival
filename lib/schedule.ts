@@ -69,7 +69,7 @@ export function buildMatrix(
 
   if (undated.length) {
     days.push({
-      label: t.schedule.timeTba,
+      label: t.schedule.dateTbc,
       events: undated.sort((a, b) => (a.order ?? 0) - (b.order ?? 0)).map(toMatrixEvent),
     });
   }

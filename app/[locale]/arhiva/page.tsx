@@ -54,7 +54,7 @@ export default async function ArchivePage({ params }: { params: Promise<{ locale
                 className="absolute -left-[7px] top-2 h-3 w-3 border-2 border-exposure bg-ink"
               />
               <Link href={href(locale, "arhiva", edition.slug)} className="group block">
-                <p className="type-display text-4xl text-exposure group-hover:text-paper md:text-6xl">
+                <p className="type-display type-outline-bright text-6xl transition-all group-hover:text-exposure-bright group-hover:[-webkit-text-stroke-width:0] md:text-8xl">
                   {edition.year}
                 </p>
                 <p className="type-label mt-2 text-paper">

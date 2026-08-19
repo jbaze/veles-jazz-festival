@@ -275,10 +275,8 @@ function EventCell({
   showVenue?: boolean;
 }) {
   return (
-    <Link
-      href={event.href}
-      className="card block h-full p-4 transition-colors hover:border-exposure focus-visible:border-exposure"
-    >
+    <Link href={event.href} className="card card-hover block h-full bg-ink p-4">
+
       <p className="type-label text-exposure">
         {event.time ?? event.timeNote ?? labels.timeTba}
         {showVenue && (

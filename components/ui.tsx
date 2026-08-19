@@ -75,7 +75,7 @@ export function PendingNote({ children }: { children: ReactNode }) {
 
 export function AllLink({ href: to, children }: { href: string; children: ReactNode }) {
   return (
-    <Link href={to} className="type-label text-exposure underline-offset-4 hover:underline">
+    <Link href={to} className="type-label link-sweep text-exposure">
       {children} →
     </Link>
   );

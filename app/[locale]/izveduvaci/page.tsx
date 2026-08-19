@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Kicker, PhotoPending, SectionHeading } from "@/components/ui";
+import ArtTile from "@/components/ArtTile";
+import { Kicker, SectionHeading } from "@/components/ui";
 import { getArtistEditionYears, getArtists } from "@/lib/content";
 import { href, type Locale } from "@/lib/i18n/config";
 import { getDict } from "@/lib/i18n/dictionaries";
@@ -41,20 +42,26 @@ export default async function ArtistsPage({ params }: { params: Promise<{ locale
             <li key={artist.slug}>
               <Link
                 href={href(locale, "izveduvaci", artist.slug)}
-                className="card group block h-full p-4 transition-colors hover:border-exposure"
+                className="card card-hover group block h-full overflow-hidden"
               >
-                <PhotoPending locale={locale} className="aspect-square" />
-                <p className="mt-3 font-semibold leading-snug text-paper group-hover:text-exposure">
-                  {artist.name}
-                </p>
-                <p className="type-label mt-1 flex flex-wrap gap-x-2 text-concrete">
-                  {artist.countries.length > 0 && (
-                    <span>
-                      {artist.countries.map((c) => countryName(c, locale)).join(" / ")}
-                    </span>
-                  )}
-                  <span className="text-exposure">{years.join(" · ")}</span>
-                </p>
+                <ArtTile
+                  seed={artist.slug}
+                  label={artist.name.charAt(0)}
+                  className="aspect-square border-0 border-b-2"
+                />
+                <div className="p-4">
+                  <p className="font-bold leading-snug text-paper transition-colors group-hover:text-exposure-bright">
+                    {artist.name}
+                  </p>
+                  <p className="type-label-sm mt-2 flex flex-wrap gap-x-2 text-concrete">
+                    {artist.countries.length > 0 && (
+                      <span>
+                        {artist.countries.map((c) => countryName(c, locale)).join(" / ")}
+                      </span>
+                    )}
+                    <span className="text-exposure">{years.join(" · ")}</span>
+                  </p>
+                </div>
               </Link>
             </li>
           );

@@ -13,7 +13,6 @@ function switchLocalePath(pathname: string, from: Locale, to: Locale): string {
   const parts = pathname.split("/").filter(Boolean); // [locale, section?, slug?...]
   if (parts.length < 2) return `/${to}`;
   const section = parts[1];
-  // Find the internal section key whichever public slug we're on.
   const key = (Object.keys(sections) as SectionKey[]).find(
     (k) => k === section || sections[k].en === section,
   );
@@ -34,26 +33,26 @@ export default function Header({ locale }: { locale: Locale }) {
   };
 
   return (
-    <header className="border-b-2 border-prussian bg-ink/95 sticky top-0 z-50 backdrop-blur-sm">
+    <header className="sticky top-0 z-50 border-b border-prussian/60 bg-ink/85 backdrop-blur-md">
       <a href="#main" className="skip-link">
         {t.a11y.skipToContent}
       </a>
-      <div className="mx-auto flex max-w-[1440px] items-center justify-between gap-4 px-4 py-3 sm:px-6">
+      <div className="mx-auto flex max-w-[1440px] items-center justify-between gap-4 px-4 py-4 sm:px-6">
         <Link
           href={href(locale)}
-          className="type-display text-lg leading-none text-paper hover:text-exposure"
+          className="type-display text-xl leading-none tracking-tight text-paper transition-colors hover:text-exposure-bright"
         >
           {t.siteName}
         </Link>
 
-        <nav aria-label={t.a11y.mainNav} className="hidden items-center gap-1 min-[900px]:flex">
+        <nav aria-label={t.a11y.mainNav} className="hidden items-center gap-7 min-[900px]:flex">
           {NAV.map((key) => (
             <Link
               key={key}
               href={href(locale, key)}
               aria-current={isActive(key) ? "page" : undefined}
-              className={`type-label rounded-[2px] px-3 py-2 transition-colors hover:text-exposure ${
-                isActive(key) ? "text-sodium" : "text-paper"
+              className={`type-label link-sweep relative transition-colors ${
+                isActive(key) ? "text-sodium" : "text-paper/80 hover:text-paper"
               }`}
             >
               {t.nav[key]}
@@ -67,7 +66,7 @@ export default function Header({ locale }: { locale: Locale }) {
             hrefLang={other}
             lang={other}
             aria-label={t.a11y.switchLang}
-            className="type-label rounded-[2px] border-2 border-prussian px-2.5 py-1.5 text-paper hover:border-exposure"
+            className="type-label rounded-[2px] border-2 border-prussian px-3 py-2 text-paper transition-colors hover:border-exposure hover:text-exposure-bright"
           >
             {other === "en" ? "EN" : "МК"}
           </Link>
@@ -75,21 +74,21 @@ export default function Header({ locale }: { locale: Locale }) {
           {/* Mobile menu — <details>, works without JavaScript */}
           <details className="relative min-[900px]:hidden">
             <summary
-              className="type-label flex cursor-pointer list-none items-center rounded-[2px] border-2 border-prussian px-2.5 py-1.5 text-paper hover:border-exposure [&::-webkit-details-marker]:hidden"
+              className="type-label flex cursor-pointer list-none items-center rounded-[2px] border-2 border-prussian px-3 py-2 text-paper transition-colors hover:border-exposure [&::-webkit-details-marker]:hidden"
               aria-label={t.a11y.openMenu}
             >
               ☰
             </summary>
             <nav
               aria-label={t.a11y.mainNav}
-              className="absolute right-0 top-full z-50 mt-2 flex w-56 flex-col border-2 border-prussian bg-ink"
+              className="absolute right-0 top-full z-50 mt-3 flex w-60 flex-col border-2 border-prussian bg-ink shadow-[0_24px_60px_-20px_rgba(6,14,28,0.9)]"
             >
               {NAV.map((key) => (
                 <Link
                   key={key}
                   href={href(locale, key)}
                   aria-current={isActive(key) ? "page" : undefined}
-                  className={`type-label border-b border-prussian px-4 py-3 last:border-b-0 hover:bg-prussian ${
+                  className={`type-label border-b border-prussian/60 px-5 py-4 transition-colors last:border-b-0 hover:bg-prussian/40 ${
                     isActive(key) ? "text-sodium" : "text-paper"
                   }`}
                 >
