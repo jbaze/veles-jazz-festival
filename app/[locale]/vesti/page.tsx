@@ -39,10 +39,10 @@ export default async function NewsPage({ params }: { params: Promise<{ locale: L
           <li key={post.slug}>
             <Link
               href={href(locale, "vesti", post.slug)}
-              className="card group block p-6 transition-colors hover:border-exposure"
+              className="card card-hover group block p-7"
             >
               <p className="type-label text-concrete">{formatDate(post.publishedAt, locale)}</p>
-              <h2 className="mt-2 text-xl font-bold leading-snug text-paper group-hover:text-exposure">
+              <h2 className="mt-3 text-xl font-bold leading-snug text-paper transition-colors group-hover:text-exposure-bright">
                 {post.title[locale]}
               </h2>
               <p className="mt-2 text-sm text-concrete">{post.excerpt[locale]}</p>
