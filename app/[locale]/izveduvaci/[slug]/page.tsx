@@ -3,10 +3,11 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import EventCard from "@/components/EventCard";
 import ArtTile from "@/components/ArtTile";
-import { JsonLd, Kicker, SectionHeading } from "@/components/ui";
+import { JsonLd, SectionHeading } from "@/components/ui";
 import {
   getArtist,
   getArtistAppearances,
+  getArtistEditionYears,
   getArtists,
   getEdition,
 } from "@/lib/content";
@@ -47,81 +48,135 @@ export default async function ArtistPage({
   if (!artist) notFound();
   const t = getDict(locale);
   const appearances = getArtistAppearances(slug);
+  const years = getArtistEditionYears(slug);
+  const appearanceYears = [...new Set(appearances.map((a) => a.editionYear))];
   const links = artist.links ? Object.entries(artist.links).filter(([, v]) => v) : [];
+  const recurring = years.length > 1;
 
   return (
-    <div className="mx-auto max-w-[1440px] px-4 py-12 sm:px-6 md:py-16">
+    <>
       <JsonLd data={artistJsonLd(artist, locale)} />
 
-      <div className="grid gap-10 md:grid-cols-[1fr_2fr]">
-        <ArtTile
-          seed={artist.slug}
-          label={artist.name.charAt(0)}
-          className="aspect-square max-w-sm"
-        />
-        <div>
-          {artist.countries.length > 0 && (
-            <Kicker>
-              {artist.countries.map((c) => countryName(c, locale)).join(" / ")}
-            </Kicker>
-          )}
-          <SectionHeading as="h1">{artist.name}</SectionHeading>
-          {artist.nameLocal && (
-            <p className="type-label mt-2 text-concrete">{artist.nameLocal}</p>
-          )}
-          <p className="mt-6 max-w-2xl text-paper/90">
-            {artist.bio?.[locale] ?? t.artists.bioPending}
-          </p>
+      {/* Profile header */}
+      <section className="grain glow-exposure border-b-2 border-prussian">
+        <div className="mx-auto grid max-w-[1440px] gap-10 px-4 py-14 sm:px-6 md:grid-cols-[minmax(0,380px)_1fr] md:items-end md:py-20">
+          <ArtTile
+            seed={artist.slug}
+            label={artist.name.charAt(0)}
+            className="aspect-square w-full max-w-sm"
+          />
+          <div className="min-w-0">
+            <p className="type-label mb-4">
+              <Link href={href(locale, "izveduvaci")} className="text-concrete hover:text-exposure">
+                ← {t.artists.title}
+              </Link>
+            </p>
+            {artist.countries.length > 0 && (
+              <p className="type-label text-exposure-bright">
+                {artist.countries.map((c) => countryName(c, locale)).join(" / ")}
+              </p>
+            )}
+            <SectionHeading as="h1">{artist.name}</SectionHeading>
+            {artist.nameLocal && (
+              <p className="type-label mt-3 text-concrete">{artist.nameLocal}</p>
+            )}
+            {recurring && (
+              <p className="type-label-sm mt-5 inline-block border border-exposure/70 px-2.5 py-1 text-exposure-bright">
+                {t.artists.recurring}
+              </p>
+            )}
+          </div>
+        </div>
+      </section>
 
-          {links.length > 0 && (
-            <div className="mt-6">
-              <h2 className="type-label mb-2 text-concrete">{t.artists.links}</h2>
-              <ul className="flex flex-wrap gap-3">
-                {links.map(([kind, url]) => (
-                  <li key={kind}>
-                    <a href={url as string} rel="noopener" className="btn">
+      {/* Facts bar */}
+      <section className="border-b border-prussian/60 bg-ink-deep/50">
+        <dl className="mx-auto grid max-w-[1440px] grid-cols-2 gap-y-4 px-4 py-6 sm:px-6 md:grid-cols-4">
+          <div>
+            <dt className="type-label-sm text-concrete">{t.artists.appearances}</dt>
+            <dd className="type-display mt-1 text-2xl text-exposure-bright">
+              {appearances.length > 0 ? appearances.length : "—"}
+            </dd>
+          </div>
+          <div>
+            <dt className="type-label-sm text-concrete">{t.artists.editionsLabel}</dt>
+            <dd className="type-label mt-2 text-paper">
+              {years.length > 0 ? years.join(" · ") : "—"}
+            </dd>
+          </div>
+          <div>
+            <dt className="type-label-sm text-concrete">{t.artists.countries}</dt>
+            <dd className="type-label mt-2 text-paper">
+              {artist.countries.length > 0
+                ? artist.countries.map((c) => countryName(c, locale)).join(" · ")
+                : "—"}
+            </dd>
+          </div>
+          <div>
+            <dt className="type-label-sm text-concrete">{t.artists.links}</dt>
+            <dd className="mt-2">
+              {links.length > 0 ? (
+                <span className="flex flex-wrap gap-3">
+                  {links.map(([kind, url]) => (
+                    <a
+                      key={kind}
+                      href={url as string}
+                      rel="noopener"
+                      className="type-label link-sweep text-exposure"
+                    >
                       {kind}
                     </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
-        </div>
-      </div>
+                  ))}
+                </span>
+              ) : (
+                <span className="type-label text-concrete">—</span>
+              )}
+            </dd>
+          </div>
+        </dl>
+      </section>
 
-      {/* Appearances across all editions — where the archive pays off (§9) */}
-      <section className="mt-16">
-        <h2 className="type-label mb-6 text-concrete">{t.artists.appearances}</h2>
-        {appearances.length > 0 ? (
-          <div className="flex flex-col gap-10">
-            {[...new Set(appearances.map((a) => a.editionYear))].map((year) => {
-              const edition = getEdition(year);
-              return (
-                <div key={year}>
-                  <p className="type-label mb-4">
+      <div className="mx-auto max-w-[1440px] px-4 py-14 sm:px-6">
+        <p className="max-w-2xl text-lg leading-relaxed text-paper/90">
+          {artist.bio?.[locale] ?? t.artists.bioPending}
+        </p>
+
+        {/* Appearances across editions — where the archive pays off (§9) */}
+        {appearances.length > 0 && (
+          <section className="mt-16">
+            <h2 className="type-label mb-8 text-concrete">{t.artists.appearances}</h2>
+            <div className="flex flex-col gap-12 border-l-2 border-prussian pl-6 md:pl-10">
+              {appearanceYears.map((year) => {
+                const edition = getEdition(year);
+                return (
+                  <div key={year} className="relative">
+                    <span
+                      aria-hidden="true"
+                      className="absolute -left-[31px] top-3 h-3 w-3 border-2 border-exposure bg-ink md:-left-[47px]"
+                    />
                     <Link
                       href={href(locale, "arhiva", String(year))}
-                      className="text-exposure hover:underline"
+                      className="type-display type-outline-bright text-4xl transition-all hover:text-exposure-bright hover:[-webkit-text-stroke-width:0] md:text-5xl"
                     >
-                      {edition?.title[locale]} · {year}
+                      {year}
                     </Link>
-                  </p>
-                  <div className="grid gap-4 md:grid-cols-3">
-                    {appearances
-                      .filter((a) => a.editionYear === year)
-                      .map((a) => (
-                        <EventCard key={a.event.slug} event={a.event} locale={locale} />
-                      ))}
+                    {edition && (
+                      <span className="type-label ml-4 text-concrete">{edition.title[locale]}</span>
+                    )}
+                    <div className="mt-5 grid gap-5 md:grid-cols-3">
+                      {appearances
+                        .filter((a) => a.editionYear === year)
+                        .map((a) => (
+                          <EventCard key={a.event.slug} event={a.event} locale={locale} />
+                        ))}
+                    </div>
                   </div>
-                </div>
-              );
-            })}
-          </div>
-        ) : (
-          <p className="text-concrete">—</p>
+                );
+              })}
+            </div>
+          </section>
         )}
-      </section>
-    </div>
+      </div>
+    </>
   );
 }
