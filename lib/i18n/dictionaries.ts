@@ -71,7 +71,8 @@ const mk = {
     },
     noResults: "Нема настани за избраните филтри.",
     timeTba: "време наскоро",
-    venueTba: "локација наскоро",
+    dateTbc: "датум — се потврдува",
+    venueTba: "локација — се потврдува",
     day: "Ден",
   },
 
@@ -348,7 +349,8 @@ const en: Dict = {
     },
     noResults: "No events match the selected filters.",
     timeTba: "time TBA",
-    venueTba: "venue TBA",
+    dateTbc: "date to be confirmed",
+    venueTba: "venue to be confirmed",
     day: "Day",
   },
 
