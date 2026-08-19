@@ -30,7 +30,13 @@ export const events: FestivalEvent[] = [
     type: "performance",
     date: "2022-09-04",
     venue: "spomen-kosturnica",
-    artists: ["sasko-kostov"],
+    artists: [
+      "faik-mefailoski",
+      "sasko-kostov",
+      "slavco-kocev",
+      "andrea-mircheska",
+      "petar-hristov",
+    ],
     description: {
       mk: "Театарско-музички перформанс: Фаик Мефаилоски, Сашко Костов, Славчо Коцев, Андреа Мирческа, Петар Христов.",
       en: "Theatre-music performance: Faik Mefailoski, Sashko Kostov, Slavcho Kocev, Andrea Mircheska, Petar Hristov.",
@@ -48,6 +54,115 @@ export const events: FestivalEvent[] = [
     artists: ["perija"],
     admission: "free",
     order: 3,
+  },
+
+  // The rest of the 2022 week (4–10 September) is documented as a list of
+  // acts without confirmed days — recorded as undated events; the exact
+  // day renders as "to be confirmed" until the organiser completes the
+  // day-by-day schedule ([VERIFY] brief §4).
+  {
+    slug: "2022-sasko-kostov",
+    editionYear: 2022,
+    title: { mk: "Сашко Костов", en: "Sashko Kostov" },
+    type: "concert",
+    artists: ["sasko-kostov"],
+    description: {
+      mk: "Дел од неделната програма на првото издание (4–10 септември 2022); точниот ден се потврдува.",
+      en: "Part of the first edition's week-long programme (4–10 September 2022); the exact day is being confirmed.",
+    },
+    admission: "tbc",
+    order: 10,
+  },
+  {
+    slug: "2022-taksi-konzilium",
+    editionYear: 2022,
+    title: { mk: "Такси Конзилиум", en: "Taksi Konzilium" },
+    type: "concert",
+    artists: ["taksi-konzilium"],
+    description: {
+      mk: "Дел од неделната програма на првото издание (4–10 септември 2022); точниот ден се потврдува.",
+      en: "Part of the first edition's week-long programme (4–10 September 2022); the exact day is being confirmed.",
+    },
+    admission: "tbc",
+    order: 11,
+  },
+  {
+    slug: "2022-dina-jasari-i-drugari",
+    editionYear: 2022,
+    title: { mk: "Дина Јашари и другари", en: "Dina Jashari & Friends" },
+    type: "concert",
+    artists: ["dina-jasari-i-drugari"],
+    description: {
+      mk: "Дел од неделната програма на првото издание (4–10 септември 2022); точниот ден се потврдува.",
+      en: "Part of the first edition's week-long programme (4–10 September 2022); the exact day is being confirmed.",
+    },
+    admission: "tbc",
+    order: 12,
+  },
+  {
+    slug: "2022-letecki-pekinezi",
+    editionYear: 2022,
+    title: { mk: "Летечки Пекинези", en: "Letechki Pekinezi" },
+    type: "concert",
+    artists: ["letecki-pekinezi"],
+    description: {
+      mk: "Дел од неделната програма на првото издание (4–10 септември 2022); точниот ден се потврдува.",
+      en: "Part of the first edition's week-long programme (4–10 September 2022); the exact day is being confirmed.",
+    },
+    admission: "tbc",
+    order: 13,
+  },
+  {
+    slug: "2022-edit-points",
+    editionYear: 2022,
+    title: { mk: "Edit Points", en: "Edit Points" },
+    type: "dj-set",
+    artists: ["edit-points"],
+    description: {
+      mk: "Дел од неделната програма на првото издание (4–10 септември 2022); точниот ден се потврдува.",
+      en: "Part of the first edition's week-long programme (4–10 September 2022); the exact day is being confirmed.",
+    },
+    admission: "tbc",
+    order: 14,
+  },
+  {
+    slug: "2022-bopheads",
+    editionYear: 2022,
+    title: { mk: "Bopheads", en: "Bopheads" },
+    type: "concert",
+    artists: ["bopheads"],
+    description: {
+      mk: "Дел од неделната програма на првото издание (4–10 септември 2022); точниот ден се потврдува.",
+      en: "Part of the first edition's week-long programme (4–10 September 2022); the exact day is being confirmed.",
+    },
+    admission: "tbc",
+    order: 15,
+  },
+  {
+    slug: "2022-shamba",
+    editionYear: 2022,
+    title: { mk: "Шамба", en: "Shamba" },
+    type: "concert",
+    artists: ["shamba"],
+    description: {
+      mk: "Дел од неделната програма на првото издание (4–10 септември 2022); точниот ден се потврдува.",
+      en: "Part of the first edition's week-long programme (4–10 September 2022); the exact day is being confirmed.",
+    },
+    admission: "tbc",
+    order: 16,
+  },
+  {
+    slug: "2022-teatar-senki-i-oblaci",
+    editionYear: 2022,
+    title: { mk: "Театар „Сенки и облаци“", en: "Shadows and Clouds Theatre" },
+    type: "performance",
+    artists: ["teatar-senki-i-oblaci"],
+    description: {
+      mk: "Дел од неделната програма на првото издание (4–10 септември 2022); точниот ден се потврдува.",
+      en: "Part of the first edition's week-long programme (4–10 September 2022); the exact day is being confirmed.",
+    },
+    admission: "tbc",
+    order: 17,
   },
 
   // ——— 2nd edition, 2023 ———

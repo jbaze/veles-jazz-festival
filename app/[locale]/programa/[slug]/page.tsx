@@ -30,7 +30,7 @@ export async function generateMetadata({
   const event = getEvent(slug);
   if (!event) return {};
   const t = getDict(locale);
-  const dateStr = event.date ? formatDate(event.date, locale) : t.home.datesTba;
+  const dateStr = event.date ? formatDate(event.date, locale) : t.schedule.dateTbc;
   return pageMeta(locale, {
     title: event.title[locale],
     description:
@@ -70,7 +70,7 @@ export default async function EventPage({
       <div className="grid gap-12 lg:grid-cols-[2fr_1fr]">
         <div>
           <Kicker>
-            {event.date ? formatDate(event.date, locale) : t.home.datesTba}
+            {event.date ? formatDate(event.date, locale) : t.schedule.dateTbc}
             {event.endDate && ` — ${formatDate(event.endDate, locale)}`}
             {event.time && ` · ${event.time}`}
             {event.timeNote && ` · ${event.timeNote[locale]}`}

@@ -22,7 +22,7 @@ export default function EventCard({ event, locale }: { event: FestivalEvent; loc
       className="card group block p-5 transition-colors hover:border-exposure"
     >
       <p className="type-label text-exposure">
-        {event.date ? formatDate(event.date, locale) : t.schedule.timeTba}
+        {event.date ? formatDate(event.date, locale) : t.schedule.dateTbc}
         {event.time && <span> · {event.time}</span>}
         {event.timeNote && <span> · {event.timeNote[locale]}</span>}
       </p>

@@ -37,6 +37,46 @@ export const artists: Artist[] = [
     },
   },
   {
+    slug: "faik-mefailoski",
+    name: "Фаик Мефаилоски",
+    nameLocal: "Faik Mefailoski",
+    countries: ["MK"],
+    bio: {
+      mk: "Коосновач на фестивалот и изведувач — дел од театарско-музичкиот перформанс „Чекална 4“ на првото издание (2022).",
+      en: "Festival co-founder and performer — part of the theatre-music performance “Chekalna 4” at the first edition (2022).",
+    },
+  },
+  {
+    slug: "slavco-kocev",
+    name: "Славчо Коцев",
+    nameLocal: "Slavcho Kocev",
+    countries: ["MK"],
+    bio: {
+      mk: "Коосновач на фестивалот — настапи во „Чекална 4“ на првото издание (2022).",
+      en: "Festival co-founder — performed in “Chekalna 4” at the first edition (2022).",
+    },
+  },
+  {
+    slug: "andrea-mircheska",
+    name: "Андреа Мирческа",
+    nameLocal: "Andrea Mircheska",
+    countries: ["MK"],
+    bio: {
+      mk: "Настапи во театарско-музичкиот перформанс „Чекална 4“ на првото издание (2022).",
+      en: "Performed in the theatre-music performance “Chekalna 4” at the first edition (2022).",
+    },
+  },
+  {
+    slug: "petar-hristov",
+    name: "Петар Христов",
+    nameLocal: "Petar Hristov",
+    countries: ["MK"],
+    bio: {
+      mk: "Настапи во театарско-музичкиот перформанс „Чекална 4“ на првото издание (2022).",
+      en: "Performed in the theatre-music performance “Chekalna 4” at the first edition (2022).",
+    },
+  },
+  {
     slug: "taksi-konzilium",
     name: "Такси Конзилиум",
     nameLocal: "Taksi Konzilium",
