@@ -1,0 +1,230 @@
+@import "tailwindcss";
+
+/* ————————————————————————————————————————————————————————————————
+   Design tokens — the cyanotype system (brief §8.2).
+   Dark by default; --sodium is the ONLY warm value and appears in
+   exactly four places: primary CTA, live/today state, current-day
+   marker, active nav.
+   ———————————————————————————————————————————————————————————————— */
+@theme {
+  --color-ink: #0a1628;
+  --color-prussian: #16396b;
+  --color-exposure: #4a7fc1;
+  --color-paper: #ede9df;
+  --color-concrete: #9a9689;
+  --color-sodium: #e5a02c;
+
+  --font-display: "Unbounded", "Onest", system-ui, sans-serif;
+  --font-sans: "Manrope", "Segoe UI", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", monospace;
+
+  --breakpoint-schedule: 900px;
+
+  /* 8px base rhythm */
+  --spacing: 0.5rem;
+}
+
+:root {
+  color-scheme: dark;
+}
+
+html {
+  background-color: var(--color-ink);
+  scroll-behavior: smooth;
+}
+
+/* Macedonian localised glyph forms — italic г д п т differ from Russian.
+   Both faces must render Macedonian Cyrillic correctly (brief §8.3). */
+html[lang="mk"] {
+  font-feature-settings: "locl" 1;
+}
+
+body {
+  background-color: var(--color-ink);
+  color: var(--color-paper);
+  font-family: var(--font-sans);
+  font-size: 17px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background-color: var(--color-exposure);
+  color: var(--color-ink);
+}
+
+/* WCAG 2.2 AA — visible focus everywhere, on --exposure */
+:focus-visible {
+  outline: 2px solid var(--color-exposure);
+  outline-offset: 2px;
+}
+
+/* ———————————————————————— Type utilities ———————————————————————— */
+
+.type-display {
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 0.95;
+}
+
+.type-display-1 {
+  font-size: clamp(3rem, 9vw, 7rem);
+}
+
+.type-display-2 {
+  font-size: clamp(1.75rem, 4.5vw, 3.25rem);
+}
+
+.type-label {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+/* ———————————————————— The exposure reveal (§8.4) ————————————————————
+   A light wash sweeps across the silhouette over ~1.2s, the blue
+   deepening from pale to ink as it passes — as a cyanotype develops.
+   Runs once per session (guarded by an inline script that adds
+   .is-developing before paint). Default state = fully developed, so
+   no-JS visitors and reduced-motion users see the final print.        */
+
+/* .exposure-print gets its positioning from the call site (relative or
+   absolute) — declaring position here would override Tailwind's layered
+   utilities and collapse absolutely-positioned prints. */
+.exposure-print .exposure-veil {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  background:
+    linear-gradient(
+      105deg,
+      var(--color-paper) 0%,
+      #cdd8e6 32%,
+      rgba(74, 127, 193, 0.85) 55%,
+      rgba(22, 57, 107, 0.45) 75%,
+      rgba(10, 22, 40, 0) 100%
+    );
+  background-size: 250% 100%;
+  background-position: 100% 0;
+  background-repeat: no-repeat;
+}
+
+.exposure-print.is-developing .exposure-veil {
+  animation: exposure-develop 1.2s cubic-bezier(0.65, 0, 0.35, 1) forwards;
+}
+
+@keyframes exposure-develop {
+  0% {
+    opacity: 1;
+    background-position: 100% 0;
+  }
+  85% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    background-position: -60% 0;
+  }
+}
+
+/* The quieter sibling: scroll-reveal for cards — an exposure sweep,
+   not a fade-up. Elements start fully visible (no-JS safe); JS adds
+   .reveal-armed before they enter the viewport, .is-exposed after.  */
+.reveal-armed {
+  clip-path: inset(0 100% 0 0);
+  transition: clip-path 0.9s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+.reveal-armed.is-exposed {
+  clip-path: inset(0 0 0 0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .exposure-print.is-developing .exposure-veil {
+    animation: none;
+    opacity: 0;
+  }
+  .reveal-armed {
+    clip-path: none;
+    transition: none;
+  }
+}
+
+/* ———————————————————————— Structure ———————————————————————— */
+
+/* Borders over shadows; radius 0 structural, 2px interactive (§8.5) */
+.card {
+  border: 2px solid var(--color-prussian);
+  border-radius: 0;
+}
+
+.btn {
+  display: inline-block;
+  border: 2px solid var(--color-exposure);
+  border-radius: 2px;
+  padding: 0.625rem 1.25rem;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-paper);
+  transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+
+.btn:hover {
+  background-color: var(--color-prussian);
+}
+
+/* Primary CTA — one of the four sodium sites */
+.btn-sodium {
+  border-color: var(--color-sodium);
+  background-color: var(--color-sodium);
+  color: var(--color-ink);
+  font-weight: 700;
+}
+
+.btn-sodium:hover {
+  background-color: transparent;
+  color: var(--color-sodium);
+}
+
+/* Paper (inverted) sections — the print flipping positive */
+.section-paper {
+  background-color: var(--color-paper);
+  color: var(--color-ink);
+  color-scheme: light;
+}
+
+.section-paper ::selection {
+  background-color: var(--color-prussian);
+  color: var(--color-paper);
+}
+
+.section-paper .card {
+  border-color: var(--color-prussian);
+}
+
+/* Skip link */
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 100;
+  background: var(--color-sodium);
+  color: var(--color-ink);
+  padding: 0.75rem 1.25rem;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.skip-link:focus {
+  left: 0;
+}
