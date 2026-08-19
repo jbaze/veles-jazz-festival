@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Countdown from "@/components/Countdown";
 import ExposurePrint from "@/components/ExposurePrint";
 import MonumentSilhouette from "@/components/MonumentSilhouette";
 import Reveal from "@/components/Reveal";
@@ -7,7 +8,7 @@ import SignupForm from "@/components/SignupForm";
 import EventCard from "@/components/EventCard";
 import PartnerWall from "@/components/PartnerWall";
 import Marquee from "@/components/Marquee";
-import ArtTile from "@/components/ArtTile";
+import ArtTile, { venueMotif } from "@/components/ArtTile";
 import { AllLink, JsonLd, Kicker, SectionHeading } from "@/components/ui";
 import {
   getArtist,
@@ -118,6 +119,18 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
               </>
             )}
           </p>
+          {edition.dates && (
+            <div className="mt-8">
+              <Countdown
+                targetIso={edition.dates.start}
+                labels={
+                  locale === "mk"
+                    ? { days: "дена", hours: "часа", minutes: "минути" }
+                    : { days: "days", hours: "hours", minutes: "minutes" }
+                }
+              />
+            </div>
+          )}
           <div className="mt-10 flex flex-wrap gap-4">
             {edition.dates ? (
               <Link href={href(locale, "programa")} className="btn btn-sodium">
@@ -271,7 +284,11 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
                       <MonumentSilhouette className="absolute inset-0 h-full w-full" />
                     </div>
                   ) : (
-                    <ArtTile seed={venue.slug} className="aspect-[2/1] border-0 border-b-2" />
+                    <ArtTile
+                      seed={venue.slug}
+                      motif={venueMotif(venue.slug)}
+                      className="aspect-[2/1] border-0 border-b-2"
+                    />
                   )}
                   <span className="type-label-sm absolute left-4 top-4 border border-exposure/60 bg-ink/70 px-2 py-1 text-exposure-bright backdrop-blur-sm">
                     0{i + 1}
