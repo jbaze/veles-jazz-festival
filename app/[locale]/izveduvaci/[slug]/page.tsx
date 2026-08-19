@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import EventCard from "@/components/EventCard";
-import { JsonLd, Kicker, PhotoPending, SectionHeading } from "@/components/ui";
+import ArtTile from "@/components/ArtTile";
+import { JsonLd, Kicker, SectionHeading } from "@/components/ui";
 import {
   getArtist,
   getArtistAppearances,
@@ -53,7 +54,11 @@ export default async function ArtistPage({
       <JsonLd data={artistJsonLd(artist, locale)} />
 
       <div className="grid gap-10 md:grid-cols-[1fr_2fr]">
-        <PhotoPending locale={locale} className="aspect-square max-w-sm" />
+        <ArtTile
+          seed={artist.slug}
+          label={artist.name.charAt(0)}
+          className="aspect-square max-w-sm"
+        />
         <div>
           {artist.countries.length > 0 && (
             <Kicker>
