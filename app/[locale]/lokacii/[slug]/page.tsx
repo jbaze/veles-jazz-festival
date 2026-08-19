@@ -1,11 +1,18 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import EventCard from "@/components/EventCard";
 import MonumentSilhouette from "@/components/MonumentSilhouette";
-import ArtTile from "@/components/ArtTile";
-import { JsonLd, Kicker, PendingNote, SectionHeading } from "@/components/ui";
-import { getCurrentEdition, getEventsByVenue, getVenue, getVenues } from "@/lib/content";
-import { locales, type Locale } from "@/lib/i18n/config";
+import ArtTile, { venueMotif } from "@/components/ArtTile";
+import { JsonLd, PendingNote, SectionHeading } from "@/components/ui";
+import {
+  getCurrentEdition,
+  getEdition,
+  getEventsByVenue,
+  getVenue,
+  getVenues,
+} from "@/lib/content";
+import { href, locales, type Locale } from "@/lib/i18n/config";
 import { getDict } from "@/lib/i18n/dictionaries";
 import { placeJsonLd } from "@/lib/seo/jsonld";
 import { pageMeta } from "@/lib/seo/meta";
@@ -42,77 +49,156 @@ export default async function VenuePage({
   const currentYear = getCurrentEdition().year;
   const allEvents = getEventsByVenue(slug);
   const currentEvents = allEvents.filter((e) => e.editionYear === currentYear);
-  const pastEvents = allEvents.filter((e) => e.editionYear !== currentYear);
+  const pastYears = [
+    ...new Set(allEvents.filter((e) => e.editionYear !== currentYear).map((e) => e.editionYear)),
+  ].sort((a, b) => b - a);
+  const activeYears = [...new Set(allEvents.map((e) => e.editionYear))].sort();
 
   return (
-    <div className="mx-auto max-w-[1440px] px-4 py-12 sm:px-6 md:py-16">
+    <>
       <JsonLd data={placeJsonLd(venue, locale)} />
 
-      {venue.slug === "spomen-kosturnica" ? (
-        <div className="grain relative mb-10 aspect-[5/2] overflow-hidden border-2 border-prussian bg-ink">
-          <MonumentSilhouette className="absolute inset-0 h-full w-full" />
-        </div>
-      ) : (
-        <ArtTile seed={venue.slug} className="mb-10 aspect-[5/2]" />
-      )}
-
-      <Kicker>{venue.role[locale]}</Kicker>
-      <SectionHeading as="h1">{venue.name[locale]}</SectionHeading>
-      <p className="mt-6 max-w-2xl text-paper/90">{venue.description[locale]}</p>
-
-      <div className="mt-10 grid gap-6 md:grid-cols-3">
-        <div className="card p-5">
-          <h2 className="type-label text-concrete">{t.venues.address}</h2>
-          {venue.address ? (
-            <p className="mt-2 text-paper">{venue.address}</p>
-          ) : (
-            <p className="mt-2 text-sm text-concrete">{t.venues.addressPending}</p>
-          )}
-          {!venue.coordinates && (
-            <p className="mt-3 text-sm text-concrete">{t.venues.mapPending}</p>
-          )}
-        </div>
-        {venue.gettingThere && (
-          <div className="card p-5">
-            <h2 className="type-label text-concrete">{t.venues.gettingThere}</h2>
-            <p className="mt-2 text-sm text-paper/90">{venue.gettingThere[locale]}</p>
+      {/* Full-bleed hero with overlaid identity */}
+      <section className="relative overflow-hidden border-b-2 border-prussian">
+        {venue.slug === "spomen-kosturnica" ? (
+          <div className="grain glow-deep relative aspect-[16/9] max-h-[62vh] min-h-80 w-full bg-ink md:aspect-[21/9]">
+            <MonumentSilhouette className="absolute inset-0 h-full w-full" />
           </div>
+        ) : (
+          <ArtTile
+            seed={venue.slug}
+            motif={venueMotif(venue.slug)}
+            className="aspect-[16/9] max-h-[62vh] min-h-80 w-full border-0 md:aspect-[21/9]"
+          />
         )}
-        {venue.accessibilityNotes && (
-          <div className="card p-5">
-            <h2 className="type-label text-concrete">{t.venues.accessibility}</h2>
-            <p className="mt-2 text-sm text-paper/90">{venue.accessibilityNotes[locale]}</p>
+        <div
+          aria-hidden="true"
+          className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-ink via-ink/60 to-transparent"
+        />
+        <div className="absolute inset-x-0 bottom-0">
+          <div className="mx-auto max-w-[1440px] px-4 pb-10 sm:px-6 md:pb-14">
+            <p className="type-label mb-4">
+              <Link href={href(locale, "lokacii")} className="text-concrete hover:text-exposure">
+                ← {t.venues.title}
+              </Link>
+            </p>
+            <p className="type-label text-exposure-bright">{venue.role[locale]}</p>
+            <SectionHeading as="h1">{venue.name[locale]}</SectionHeading>
+          </div>
+        </div>
+      </section>
+
+      {/* Facts bar */}
+      <section className="border-b border-prussian/60 bg-ink-deep/50">
+        <dl className="mx-auto grid max-w-[1440px] grid-cols-2 gap-y-4 px-4 py-6 sm:px-6 md:grid-cols-4">
+          <div>
+            <dt className="type-label-sm text-concrete">
+              {locale === "mk" ? "Настани досега" : "Events to date"}
+            </dt>
+            <dd className="type-display mt-1 text-2xl text-exposure-bright">
+              {allEvents.length > 0 ? allEvents.length : "—"}
+            </dd>
+          </div>
+          <div>
+            <dt className="type-label-sm text-concrete">
+              {locale === "mk" ? "Изданија" : "Editions"}
+            </dt>
+            <dd className="type-label mt-2 text-paper">
+              {activeYears.length > 0 ? activeYears.join(" · ") : "—"}
+            </dd>
+          </div>
+          <div>
+            <dt className="type-label-sm text-concrete">{t.venues.address}</dt>
+            <dd className="mt-2 text-sm text-paper">
+              {venue.address ?? <span className="text-concrete">{t.venues.addressPending}</span>}
+            </dd>
+          </div>
+          <div>
+            <dt className="type-label-sm text-concrete">{t.city}</dt>
+            <dd className="type-label mt-2 text-paper">{t.country}</dd>
+          </div>
+        </dl>
+      </section>
+
+      <div className="mx-auto max-w-[1440px] px-4 py-14 sm:px-6">
+        <div className="grid gap-10 lg:grid-cols-[2fr_1fr]">
+          <div>
+            <p className="max-w-2xl text-lg leading-relaxed text-paper/90">
+              {venue.description[locale]}
+            </p>
+            {!venue.coordinates && (
+              <p className="mt-6 max-w-2xl text-sm text-concrete">{t.venues.mapPending}</p>
+            )}
+          </div>
+          <aside className="flex flex-col gap-5">
+            {venue.gettingThere && (
+              <div className="card p-5">
+                <h2 className="type-label text-concrete">{t.venues.gettingThere}</h2>
+                <p className="mt-2 text-sm text-paper/90">{venue.gettingThere[locale]}</p>
+              </div>
+            )}
+            {venue.accessibilityNotes && (
+              <div className="card p-5">
+                <h2 className="type-label text-concrete">{t.venues.accessibility}</h2>
+                <p className="mt-2 text-sm text-paper/90">{venue.accessibilityNotes[locale]}</p>
+              </div>
+            )}
+          </aside>
+        </div>
+
+        {currentEvents.length > 0 && (
+          <section className="mt-16">
+            <h2 className="type-label mb-6 text-sodium">{t.venues.eventsHere}</h2>
+            <div className="grid gap-5 md:grid-cols-3">
+              {currentEvents.map((e) => (
+                <EventCard key={e.slug} event={e} locale={locale} />
+              ))}
+            </div>
+          </section>
+        )}
+
+        {/* Past events as a per-edition timeline — the archive paying off */}
+        {pastYears.length > 0 && (
+          <section className="mt-16">
+            <h2 className="type-label mb-8 text-concrete">{t.venues.pastEventsHere}</h2>
+            <div className="flex flex-col gap-12 border-l-2 border-prussian pl-6 md:pl-10">
+              {pastYears.map((year) => {
+                const edition = getEdition(year);
+                return (
+                  <div key={year} className="relative">
+                    <span
+                      aria-hidden="true"
+                      className="absolute -left-[31px] top-3 h-3 w-3 border-2 border-exposure bg-ink md:-left-[47px]"
+                    />
+                    <Link
+                      href={href(locale, "arhiva", String(year))}
+                      className="type-display type-outline-bright text-4xl transition-all hover:text-exposure-bright hover:[-webkit-text-stroke-width:0] md:text-5xl"
+                    >
+                      {year}
+                    </Link>
+                    {edition && (
+                      <span className="type-label ml-4 text-concrete">{edition.title[locale]}</span>
+                    )}
+                    <div className="mt-5 grid gap-5 md:grid-cols-3">
+                      {allEvents
+                        .filter((e) => e.editionYear === year)
+                        .map((e) => (
+                          <EventCard key={e.slug} event={e} locale={locale} />
+                        ))}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </section>
+        )}
+
+        {allEvents.length === 0 && (
+          <div className="mt-16">
+            <PendingNote>{t.schedule.empty.title}</PendingNote>
           </div>
         )}
       </div>
-
-      {currentEvents.length > 0 && (
-        <section className="mt-16">
-          <h2 className="type-label mb-6 text-concrete">{t.venues.eventsHere}</h2>
-          <div className="grid gap-4 md:grid-cols-3">
-            {currentEvents.map((e) => (
-              <EventCard key={e.slug} event={e} locale={locale} />
-            ))}
-          </div>
-        </section>
-      )}
-
-      {pastEvents.length > 0 && (
-        <section className="mt-16">
-          <h2 className="type-label mb-6 text-concrete">{t.venues.pastEventsHere}</h2>
-          <div className="grid gap-4 md:grid-cols-3">
-            {pastEvents.map((e) => (
-              <EventCard key={e.slug} event={e} locale={locale} />
-            ))}
-          </div>
-        </section>
-      )}
-
-      {currentEvents.length === 0 && pastEvents.length === 0 && (
-        <div className="mt-16">
-          <PendingNote>{t.schedule.empty.title}</PendingNote>
-        </div>
-      )}
-    </div>
+    </>
   );
 }
