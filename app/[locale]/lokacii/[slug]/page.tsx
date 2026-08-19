@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import EventCard from "@/components/EventCard";
 import MonumentSilhouette from "@/components/MonumentSilhouette";
-import { JsonLd, Kicker, PendingNote, PhotoPending, SectionHeading } from "@/components/ui";
+import ArtTile from "@/components/ArtTile";
+import { JsonLd, Kicker, PendingNote, SectionHeading } from "@/components/ui";
 import { getCurrentEdition, getEventsByVenue, getVenue, getVenues } from "@/lib/content";
 import { locales, type Locale } from "@/lib/i18n/config";
 import { getDict } from "@/lib/i18n/dictionaries";
@@ -48,11 +49,11 @@ export default async function VenuePage({
       <JsonLd data={placeJsonLd(venue, locale)} />
 
       {venue.slug === "spomen-kosturnica" ? (
-        <div className="relative mb-10 aspect-[5/2] overflow-hidden border-2 border-prussian bg-ink">
+        <div className="grain relative mb-10 aspect-[5/2] overflow-hidden border-2 border-prussian bg-ink">
           <MonumentSilhouette className="absolute inset-0 h-full w-full" />
         </div>
       ) : (
-        <PhotoPending locale={locale} className="mb-10 aspect-[5/2]" />
+        <ArtTile seed={venue.slug} className="mb-10 aspect-[5/2]" />
       )}
 
       <Kicker>{venue.role[locale]}</Kicker>

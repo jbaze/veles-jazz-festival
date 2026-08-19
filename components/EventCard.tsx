@@ -19,14 +19,14 @@ export default function EventCard({ event, locale }: { event: FestivalEvent; loc
   return (
     <Link
       href={href(locale, "programa", event.slug)}
-      className="card group block p-5 transition-colors hover:border-exposure"
+      className="card card-hover group block p-6"
     >
       <p className="type-label text-exposure">
         {event.date ? formatDate(event.date, locale) : t.schedule.dateTbc}
         {event.time && <span> · {event.time}</span>}
         {event.timeNote && <span> · {event.timeNote[locale]}</span>}
       </p>
-      <h3 className="mt-2 text-lg font-bold leading-snug text-paper group-hover:text-exposure">
+      <h3 className="mt-2.5 text-lg font-bold leading-snug text-paper transition-colors group-hover:text-exposure-bright">
         {event.title[locale]}
       </h3>
       {artistNames.length > 0 && (

@@ -2,14 +2,15 @@
 
 /* ————————————————————————————————————————————————————————————————
    Design tokens — the cyanotype system (brief §8.2).
-   Dark by default; --sodium is the ONLY warm value and appears in
-   exactly four places: primary CTA, live/today state, current-day
-   marker, active nav.
+   Dark by default; --sodium is the ONLY warm value: primary CTA,
+   live/today state, current-day marker, active nav.
    ———————————————————————————————————————————————————————————————— */
 @theme {
   --color-ink: #0a1628;
+  --color-ink-deep: #060e1c;
   --color-prussian: #16396b;
   --color-exposure: #4a7fc1;
+  --color-exposure-bright: #7fa6d6;
   --color-paper: #ede9df;
   --color-concrete: #9a9689;
   --color-sodium: #e5a02c;
@@ -22,6 +23,8 @@
 
   /* 8px base rhythm */
   --spacing: 0.5rem;
+
+  --animate-marquee: marquee 28s linear infinite;
 }
 
 :root {
@@ -46,6 +49,7 @@ body {
   font-size: 17px;
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
+  overflow-x: clip;
 }
 
 ::selection {
@@ -68,12 +72,29 @@ body {
   line-height: 0.95;
 }
 
+.type-display-mega {
+  font-size: clamp(3.25rem, 11vw, 9.5rem);
+  line-height: 0.9;
+}
+
 .type-display-1 {
   font-size: clamp(3rem, 9vw, 7rem);
+  line-height: 0.92;
 }
 
 .type-display-2 {
-  font-size: clamp(1.75rem, 4.5vw, 3.25rem);
+  font-size: clamp(2rem, 5vw, 3.75rem);
+}
+
+/* Hollow display type — the unexposed print */
+.type-outline {
+  color: transparent;
+  -webkit-text-stroke: 1.5px var(--color-prussian);
+}
+
+.type-outline-bright {
+  color: transparent;
+  -webkit-text-stroke: 1.5px var(--color-exposure);
 }
 
 .type-label {
@@ -83,16 +104,58 @@ body {
   letter-spacing: 0.08em;
 }
 
+.type-label-sm {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+/* ————————————————— Surface: grain + glow ——————————————————
+   Cyanotype paper is physical — flat hex fields read as wireframe.
+   A whisper of photographic grain and deep radial light gives every
+   dark section material depth at ~zero cost (inline SVG turbulence). */
+
+.grain {
+  position: relative;
+}
+
+/* The overlay sits above the section's content (z-index 1, pointer-events
+   none) — at 5% opacity that is the point: light grain over everything,
+   like the print itself. Never add positioning rules for .grain children
+   here; that would override Tailwind's layered position utilities. */
+.grain::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.05;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 160px 160px;
+}
+
+.glow-exposure {
+  background-image:
+    radial-gradient(ellipse 80% 60% at 70% 20%, rgba(74, 127, 193, 0.16), transparent 60%),
+    radial-gradient(ellipse 60% 50% at 15% 85%, rgba(22, 57, 107, 0.35), transparent 65%);
+}
+
+.glow-deep {
+  background-image:
+    linear-gradient(180deg, var(--color-ink-deep), var(--color-ink) 30%),
+    radial-gradient(ellipse 90% 55% at 50% 100%, rgba(22, 57, 107, 0.5), transparent 70%);
+}
+
 /* ———————————————————— The exposure reveal (§8.4) ————————————————————
    A light wash sweeps across the silhouette over ~1.2s, the blue
    deepening from pale to ink as it passes — as a cyanotype develops.
-   Runs once per session (guarded by an inline script that adds
-   .is-developing before paint). Default state = fully developed, so
-   no-JS visitors and reduced-motion users see the final print.        */
+   Runs once per session (an inline script adds .is-developing before
+   paint). Default state = fully developed: no-JS visitors and
+   reduced-motion users see the finished print.
+   .exposure-print gets its position from the call site — declaring it
+   here would override Tailwind's layered utilities.                   */
 
-/* .exposure-print gets its positioning from the call site (relative or
-   absolute) — declaring position here would override Tailwind's layered
-   utilities and collapse absolutely-positioned prints. */
 .exposure-print .exposure-veil {
   position: absolute;
   inset: 0;
@@ -130,9 +193,9 @@ body {
   }
 }
 
-/* The quieter sibling: scroll-reveal for cards — an exposure sweep,
-   not a fade-up. Elements start fully visible (no-JS safe); JS adds
-   .reveal-armed before they enter the viewport, .is-exposed after.  */
+/* The quieter sibling: scroll-reveal — an exposure sweep, not a
+   fade-up. Fully visible by default (no-JS safe); JS arms the clip
+   before the element enters the viewport.                            */
 .reveal-armed {
   clip-path: inset(0 100% 0 0);
   transition: clip-path 0.9s cubic-bezier(0.65, 0, 0.35, 1);
@@ -140,6 +203,32 @@ body {
 
 .reveal-armed.is-exposed {
   clip-path: inset(0 0 0 0);
+}
+
+/* ———————————————————————— Marquee ———————————————————————— */
+
+.marquee {
+  display: flex;
+  overflow: hidden;
+  user-select: none;
+  gap: 0;
+}
+
+.marquee-track {
+  display: flex;
+  flex-shrink: 0;
+  min-width: 100%;
+  justify-content: space-around;
+  animation: var(--animate-marquee);
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-100%);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -154,34 +243,62 @@ body {
     clip-path: none;
     transition: none;
   }
+  .marquee-track {
+    animation: none;
+  }
+  .marquee {
+    overflow-x: auto;
+  }
 }
 
 /* ———————————————————————— Structure ———————————————————————— */
 
-/* Borders over shadows; radius 0 structural, 2px interactive (§8.5) */
+/* Borders over shadows; radius 0 structural, 2px interactive (§8.5).
+   Hover = the print catching light: border lifts to exposure, a faint
+   blue glow (light, not a drop shadow), a 2px rise.                  */
 .card {
   border: 2px solid var(--color-prussian);
   border-radius: 0;
+  transition:
+    border-color 0.2s ease,
+    transform 0.25s cubic-bezier(0.2, 0.6, 0.2, 1),
+    box-shadow 0.25s ease;
+}
+
+.card-hover:hover,
+.card-hover:focus-visible {
+  border-color: var(--color-exposure);
+  transform: translateY(-3px);
+  box-shadow: 0 0 0 1px rgba(74, 127, 193, 0.25), 0 12px 40px -18px rgba(74, 127, 193, 0.45);
 }
 
 .btn {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6em;
   border: 2px solid var(--color-exposure);
   border-radius: 2px;
-  padding: 0.625rem 1.25rem;
+  padding: 0.85rem 1.6rem;
   font-family: var(--font-mono);
   font-size: 13px;
+  font-weight: 500;
   text-transform: uppercase;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.1em;
   color: var(--color-paper);
-  transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease;
 }
 
 .btn:hover {
-  background-color: var(--color-prussian);
+  background-color: var(--color-exposure);
+  color: var(--color-ink);
+  transform: translateY(-2px);
 }
 
-/* Primary CTA — one of the four sodium sites */
+/* Primary CTA — a sodium site */
 .btn-sodium {
   border-color: var(--color-sodium);
   background-color: var(--color-sodium);
@@ -191,7 +308,23 @@ body {
 
 .btn-sodium:hover {
   background-color: transparent;
+  border-color: var(--color-sodium);
   color: var(--color-sodium);
+}
+
+/* Animated nav / inline link underline */
+.link-sweep {
+  background-image: linear-gradient(currentColor, currentColor);
+  background-repeat: no-repeat;
+  background-size: 0% 2px;
+  background-position: 0 100%;
+  transition: background-size 0.3s cubic-bezier(0.65, 0, 0.35, 1);
+  padding-bottom: 3px;
+}
+
+.link-sweep:hover,
+.link-sweep:focus-visible {
+  background-size: 100% 2px;
 }
 
 /* Paper (inverted) sections — the print flipping positive */
@@ -206,8 +339,8 @@ body {
   color: var(--color-paper);
 }
 
-.section-paper .card {
-  border-color: var(--color-prussian);
+.section-paper .type-outline {
+  -webkit-text-stroke-color: rgba(22, 57, 107, 0.4);
 }
 
 /* Skip link */
