@@ -109,6 +109,11 @@ const mk = {
     links: "Линкови",
     bioPending: "Биографијата се дополнува.",
     countries: "Земји",
+    recurring: "Повеќекратен гостин",
+    appearancesLabel: "настапи",
+    editionsLabel: "изданија",
+    noMatches: "Нема изведувачи за избраните филтри.",
+    countTemplate: "изведувачи од 2022 досега",
   },
 
   venues: {
@@ -387,6 +392,11 @@ const en: Dict = {
     links: "Links",
     bioPending: "Biography to follow.",
     countries: "Countries",
+    recurring: "Returning guest",
+    appearancesLabel: "appearances",
+    editionsLabel: "editions",
+    noMatches: "No artists match the selected filters.",
+    countTemplate: "artists since 2022",
   },
 
   venues: {
