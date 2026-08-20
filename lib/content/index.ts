@@ -162,6 +162,61 @@ export function getEventsByVenue(slug: string): FestivalEvent[] {
     .sort((a, b) => (b.date ?? "").localeCompare(a.date ?? "") || (a.order ?? 0) - (b.order ?? 0));
 }
 
+// ——— Programme strands ———
+
+export type StrandId =
+  | "glavna-scena"
+  | "otvoranje-performansi"
+  | "docna-programa"
+  | "rabotilnici-izlozbi";
+
+export type Strand = {
+  id: StrandId;
+  /** The venue that carries this strand, when it maps 1:1 to a place. */
+  venueSlug?: string;
+  count: number;
+  years: number[];
+};
+
+/**
+ * The festival's named tracks (Bansko pattern), derived from the data the
+ * archive already proves: three venues with distinct roles, plus the
+ * daytime workshop/exhibition programme. Nothing here is authored — a
+ * strand only exists while events match it.
+ */
+export function getStrands(): Strand[] {
+  const isDaytime = (e: FestivalEvent) => e.type === "workshop" || e.type === "exhibition";
+  const defs: { id: StrandId; venueSlug?: string; match: (e: FestivalEvent) => boolean }[] = [
+    {
+      id: "glavna-scena",
+      venueSlug: "teatar-dzinot",
+      match: (e) => !isDaytime(e) && e.venue === "teatar-dzinot",
+    },
+    {
+      id: "otvoranje-performansi",
+      venueSlug: "spomen-kosturnica",
+      match: (e) => !isDaytime(e) && e.venue === "spomen-kosturnica",
+    },
+    {
+      id: "docna-programa",
+      venueSlug: "parking-na-teatarot",
+      match: (e) => !isDaytime(e) && e.venue === "parking-na-teatarot",
+    },
+    { id: "rabotilnici-izlozbi", match: isDaytime },
+  ];
+  return defs
+    .map((d) => {
+      const matched = events.filter(d.match);
+      return {
+        id: d.id,
+        venueSlug: d.venueSlug,
+        count: matched.length,
+        years: [...new Set(matched.map((e) => e.editionYear))].sort((a, b) => a - b),
+      };
+    })
+    .filter((s) => s.count > 0);
+}
+
 // ——— Partners ———
 
 export function getPartners(): Partner[] {
