@@ -1,5 +1,5 @@
 import type { Locale } from "@/lib/i18n/config";
-import { href, siteUrl } from "@/lib/i18n/config";
+import { href, siteUrl, SOCIAL_LINKS } from "@/lib/i18n/config";
 import type { Artist, Edition, FestivalEvent, NewsPost, Venue } from "@/lib/content";
 import { getVenue, getArtist } from "@/lib/content";
 
@@ -41,6 +41,7 @@ export function festivalJsonLd(edition: Edition, locale: Locale) {
     location: VELES_PLACE,
     organizer: ORGANIZER,
     funder: FUNDER,
+    ...(SOCIAL_LINKS.length ? { sameAs: SOCIAL_LINKS.map((s) => s.url) } : {}),
     ...(edition.dates
       ? { startDate: edition.dates.start, endDate: edition.dates.end }
       : { eventStatus: "https://schema.org/EventScheduled" }),

@@ -250,6 +250,9 @@ Done-work notes:
   ScheduleMatrix.tsx), sodium-marked on the current festival day, URL-
   persisted via the existing `?den=` param; chips appear wherever ≥2
   dated days exist (archive editions now, /programa when 2026 dates land).
+- Socials readiness (question #6): fill `SOCIAL_LINKS` in
+  `lib/i18n/config.ts` — one edit activates the footer follow row AND
+  festival JSON-LD `sameAs`. Footer also has a no-JS back-to-top link.
 - Press: "Изданијата во бројки" — derived per-edition table (dates,
   events, artists, countries) with the incomplete-archive footnote;
   `components/CopyButton.tsx` (clipboard, graceful without permission)
