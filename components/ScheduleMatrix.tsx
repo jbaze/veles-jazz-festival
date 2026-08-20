@@ -26,6 +26,7 @@ export type MatrixEvent = {
   venue?: string;
   venueLabel?: string;
   artistNames: string[];
+  strand?: string;
   admission: "free" | "ticketed" | "sold-out" | "tbc";
   admissionLabel: string;
 };
@@ -43,6 +44,7 @@ export type MatrixLabels = {
   filterDay: string;
   filterVenue: string;
   filterType: string;
+  filterStrand: string;
   filterAll: string;
   filterReset: string;
   noResults: string;
@@ -51,18 +53,20 @@ export type MatrixLabels = {
   matrixCaption: string;
 };
 
-type Filters = { den: string; lokacija: string; tip: string };
-const EMPTY: Filters = { den: "", lokacija: "", tip: "" };
+type Filters = { den: string; lokacija: string; tip: string; nasoka: string };
+const EMPTY: Filters = { den: "", lokacija: "", tip: "", nasoka: "" };
 
 export default function ScheduleMatrix({
   days,
   venues,
   types,
+  strands = [],
   labels,
 }: {
   days: MatrixDay[];
   venues: { slug: string; label: string }[];
   types: { slug: string; label: string }[];
+  strands?: { slug: string; label: string }[];
   labels: MatrixLabels;
 }) {
   const [filters, setFilters] = useState<Filters>(EMPTY);
@@ -75,6 +79,7 @@ export default function ScheduleMatrix({
       den: params.get("den") ?? "",
       lokacija: params.get("lokacija") ?? "",
       tip: params.get("tip") ?? "",
+      nasoka: params.get("nasoka") ?? "",
     });
   }, []);
 
@@ -85,6 +90,7 @@ export default function ScheduleMatrix({
     if (next.den) params.set("den", next.den);
     if (next.lokacija) params.set("lokacija", next.lokacija);
     if (next.tip) params.set("tip", next.tip);
+    if (next.nasoka) params.set("nasoka", next.nasoka);
     const qs = params.toString();
     window.history.replaceState(null, "", qs ? `?${qs}` : window.location.pathname);
   }
@@ -97,7 +103,8 @@ export default function ScheduleMatrix({
         events: d.events.filter(
           (e) =>
             (!filters.lokacija || e.venue === filters.lokacija) &&
-            (!filters.tip || e.type === filters.tip),
+            (!filters.tip || e.type === filters.tip) &&
+            (!filters.nasoka || e.strand === filters.nasoka),
         ),
       }))
       .filter((d) => d.events.length > 0);
@@ -108,7 +115,7 @@ export default function ScheduleMatrix({
     return venues.filter((v) => used.has(v.slug));
   }, [days, venues]);
 
-  const hasFilters = Boolean(filters.den || filters.lokacija || filters.tip);
+  const hasFilters = Boolean(filters.den || filters.lokacija || filters.tip || filters.nasoka);
 
   return (
     <div>
@@ -119,6 +126,13 @@ export default function ScheduleMatrix({
           days={days}
           value={filters.den}
           onChange={(v) => update({ den: v })}
+        />
+        <FilterRow
+          legend={labels.filterStrand}
+          allLabel={labels.filterAll}
+          options={strands.map((s) => ({ value: s.slug, label: s.label }))}
+          value={filters.nasoka}
+          onChange={(v) => update({ nasoka: v })}
         />
         <FilterRow
           legend={labels.filterVenue}
