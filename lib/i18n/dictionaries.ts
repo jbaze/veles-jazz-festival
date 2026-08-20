@@ -128,6 +128,9 @@ const mk = {
     pastEventsHere: "Од минатите изданија",
     mapPending: "Мапата ќе биде додадена по потврда на точната адреса.",
     addressPending: "Адресата се потврдува.",
+    strand: "Насока",
+    artistsHere: "Настапиле овде",
+    filteredProgramme: "Оваа локација во програмата",
   },
 
   archive: {
@@ -464,6 +467,9 @@ const en: Dict = {
     pastEventsHere: "From past editions",
     mapPending: "Map will be added once the exact address is confirmed.",
     addressPending: "Address being confirmed.",
+    strand: "Track",
+    artistsHere: "Performed here",
+    filteredProgramme: "This venue in the programme",
   },
 
   archive: {

@@ -247,6 +247,10 @@ Done-work notes:
   ScheduleMatrix.tsx), sodium-marked on the current festival day, URL-
   persisted via the existing `?den=` param; chips appear wherever ≥2
   dated days exist (archive editions now, /programa when 2026 dates land).
+- Venue pages cross-link the whole system: facts bar shows the venue's
+  named strand (→ /programa), timeline years deep-link to the
+  venue-filtered archive matrix (`?lokacija=`), and a derived
+  "Настапиле овде" artist-chip section links to profiles.
 - Strands: `getStrands()` in the gateway derives the four named tracks
   (main stage / openings & performances / late programme / workshops &
   exhibitions) from event venue+type; `components/ProgrammeStrands.tsx`
