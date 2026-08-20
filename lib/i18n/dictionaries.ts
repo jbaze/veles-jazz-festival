@@ -189,6 +189,14 @@ const mk = {
     orgLogoAlt: "Лого на Здружението „АРТ ГЕНЕРАТОР“ — Велес",
   },
 
+  video: {
+    title: "Видео",
+    pending:
+      "Афтермуви и видео-записи од изданијата се собираат и чекаат објава.",
+    play: "Пушти видео",
+    watchExternal: "Гледај го видеото",
+  },
+
   strands: {
     title: "Насоки на програмата",
     lead: "Секое издание досега е градено од овие насоки — низ салата, споменикот и паркингот.",
@@ -500,6 +508,14 @@ const en: Dict = {
   media: {
     photoCredit: "Photo",
     orgLogoAlt: "Logo of the ART GENERATOR association — Veles",
+  },
+
+  video: {
+    title: "Video",
+    pending:
+      "Aftermovies and video recordings from the editions are being collected and await publication.",
+    play: "Play video",
+    watchExternal: "Watch the video",
   },
 
   strands: {
