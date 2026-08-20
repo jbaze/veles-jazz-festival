@@ -186,6 +186,7 @@ const mk = {
 
   media: {
     photoCredit: "Фото",
+    orgLogoAlt: "Лого на Здружението „АРТ ГЕНЕРАТОР“ — Велес",
   },
 
   news: {
@@ -472,6 +473,7 @@ const en: Dict = {
 
   media: {
     photoCredit: "Photo",
+    orgLogoAlt: "Logo of the ART GENERATOR association — Veles",
   },
 
   news: {
