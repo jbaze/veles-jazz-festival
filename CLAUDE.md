@@ -250,6 +250,10 @@ Done-work notes:
   ScheduleMatrix.tsx), sodium-marked on the current festival day, URL-
   persisted via the existing `?den=` param; chips appear wherever ≥2
   dated days exist (archive editions now, /programa when 2026 dates land).
+- Press: "Изданијата во бројки" — derived per-edition table (dates,
+  events, artists, countries) with the incomplete-archive footnote;
+  `components/CopyButton.tsx` (clipboard, graceful without permission)
+  copies the boilerplate.
 - News articles: NewsPost carries optional `relatedEdition` (year,
   build-validated) → article renders an edition context card (dates +
   event count, linking to archive or /programa for the current

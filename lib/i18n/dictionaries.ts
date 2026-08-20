@@ -268,6 +268,10 @@ const mk = {
     ],
     boilerplateTitle: "Кратко за фестивалот",
     boilerplateNote: "Текст за употреба во објави.",
+    copy: "Копирај",
+    copied: "Копирано ✓",
+    editionsTable: "Изданијата во бројки",
+    tableHeaders: ["Издание", "Датуми", "Настани", "Изведувачи", "Земји"],
     boilerplate:
       "Фестивалот на џез, ворлд и современа музика — Велес е основан во 2022 година од Општина Велес, а организацијата ѝ е доверена на Здружението за култура, уметност и млади „АРТ ГЕНЕРАТОР“ — Велес. Досега се одржани четири изданија, со изведувачи од САД, Грција, Франција, Германија, Финска, Австралија и Северна Македонија, на локации низ градот — од Театарот „Ј.Х.К. Џинот“ до Спомен-костурницата. Петтото издание се очекува во септември 2026.",
     newsTitle: "Последни објави",
@@ -621,6 +625,10 @@ const en: Dict = {
     ],
     boilerplateTitle: "About the festival, in short",
     boilerplateNote: "Copy for use in coverage.",
+    copy: "Copy",
+    copied: "Copied ✓",
+    editionsTable: "The editions in numbers",
+    tableHeaders: ["Edition", "Dates", "Events", "Artists", "Countries"],
     boilerplate:
       "The Festival of Jazz, World and Contemporary Music — Veles was founded in 2022 by the Municipality of Veles, with the organisation entrusted to the Association for Culture, Art and Youth “ART GENERATOR” — Veles. Four editions have been held so far, with artists from the USA, Greece, France, Germany, Finland, Australia and North Macedonia, at venues across the city — from the J.H.K. Dzhinot Theatre to the Memorial Ossuary. The fifth edition is expected in September 2026.",
     newsTitle: "Latest announcements",
