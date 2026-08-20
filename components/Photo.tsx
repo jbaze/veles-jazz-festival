@@ -11,7 +11,7 @@ import { getDict } from "@/lib/i18n/dictionaries";
  */
 
 /** Tiny ink→prussian radial gradient, mirroring the ArtTile ground. */
-const CYANOTYPE_BLUR =
+export const CYANOTYPE_BLUR =
   "data:image/svg+xml;charset=utf-8," +
   encodeURIComponent(
     "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 5'><defs><radialGradient id='g' cx='50%' cy='35%' r='80%'><stop offset='0%' stop-color='#16396B'/><stop offset='100%' stop-color='#0A1628'/></radialGradient></defs><rect width='8' height='5' fill='url(#g)'/></svg>",

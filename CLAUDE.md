@@ -206,6 +206,13 @@ cleared photo, edit DATA ONLY:
 Artist/venue/edition/event schemas all carry the optional `image`. The
 Костурница silhouette and all ArtTiles remain the automatic no-photo state.
 
+The gallery is live too: Edition carries optional `gallery` (array of the
+same image shape). Editions with entries render photo sections on
+`/galerija` with a lightbox (`components/GalleryGrid.tsx`: native
+`<dialog>`, arrow-key nav, credits in the caption bar, thumbnails are
+plain image links without JS); editions without stay in the honest
+pending tiles.
+
 ## Brand assets received
 
 - **Art Generator logo** (the organiser's own mark, sent by the user
@@ -221,9 +228,12 @@ aftermovie slot) is fully shipped, and news/press are now at editorial
 level (featured-post index + dated wire list, article pages with lead
 paragraph + NewsArticle JSON-LD + related teasers via
 `components/NewsTeasers.tsx`, press page with derived stats band +
-copy-ready boilerplate + latest announcements). Next, as agreed: bring
-the about page to the same level; gallery lightbox once photos clear;
-admission states once question #3 is answered.
+copy-ready boilerplate + latest announcements), the about page matches
+(mission-quote hero, stats band, editorial archive rows, Organization
+JSON-LD), and the gallery lightbox is built photo-ready (see
+Photo-readiness above). Remaining: admission states once question #3 is
+answered; everything else waits on client data (photos, videos, 2026
+programme).
 
 Done-work notes:
 - Strands: `getStrands()` in the gateway derives the four named tracks

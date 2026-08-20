@@ -51,6 +51,7 @@ export const EditionSchema = z.object({
   alsoProgrammed: z.array(z.string()).optional(), // artist slugs without confirmed dates
   image: ImageRefSchema.optional(),
   mediaEmbeds: z.array(z.string().url()).optional(), // aftermovie / video links
+  gallery: z.array(ImageRefSchema).optional(), // cleared photos for /galerija
 });
 export type Edition = z.infer<typeof EditionSchema>;
 
