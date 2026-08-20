@@ -7,6 +7,11 @@ import type { Venue } from "../schema";
 export const venues: Venue[] = [
   {
     slug: "teatar-dzinot",
+    // DEMO-SEED image (Pexels, free licence) — replace with cleared photography
+    image: {
+      src: "/images/demo/venue-teatar.jpg",
+      alt: { mk: "Театарска сала — демо-фотографија", en: "Theatre auditorium — demo photo" },
+    },
     name: { mk: "Театар „Ј.Х.К. Џинот“ — Велес", en: "J.H.K. Dzhinot Theatre — Veles" },
     shortName: { mk: "Театар", en: "Theatre" },
     role: { mk: "Главна сцена", en: "Main stage" },
@@ -21,6 +26,11 @@ export const venues: Venue[] = [
   },
   {
     slug: "parking-na-teatarot",
+    // DEMO-SEED image (Pexels, free licence) — replace with cleared photography
+    image: {
+      src: "/images/demo/venue-parking.jpg",
+      alt: { mk: "Доцна програма — демо-фотографија", en: "Late programme — demo photo" },
+    },
     name: { mk: "Паркинг на театарот", en: "Theatre parking lot" },
     shortName: { mk: "Паркинг", en: "Parking" },
     role: { mk: "Афтер-парти", en: "After-parties" },
@@ -35,6 +45,11 @@ export const venues: Venue[] = [
   },
   {
     slug: "spomen-kosturnica",
+    // DEMO-SEED image (Pexels, free licence) — replace with cleared photography
+    image: {
+      src: "/images/demo/venue-kosturnica.jpg",
+      alt: { mk: "Споменик — демо-фотографија", en: "Monument — demo photo" },
+    },
     name: { mk: "Спомен-костурница", en: "Memorial Ossuary" },
     shortName: { mk: "Костурница", en: "Ossuary" },
     role: { mk: "Отворање / перформанси", en: "Opening / performances" },
@@ -53,6 +68,11 @@ export const venues: Venue[] = [
   },
   {
     slug: "europe-house",
+    // DEMO-SEED image (Pexels, free licence) — replace with cleared photography
+    image: {
+      src: "/images/demo/venue-europe-house.jpg",
+      alt: { mk: "Галериски простор — демо-фотографија", en: "Gallery space — demo photo" },
+    },
     name: { mk: "Europe House Велес", en: "Europe House Veles" },
     shortName: { mk: "Europe House", en: "Europe House" },
     role: { mk: "Изложби", en: "Exhibitions" },
@@ -63,6 +83,11 @@ export const venues: Venue[] = [
   },
   {
     slug: "gradska-pivnica-pab",
+    // DEMO-SEED image (Pexels, free licence) — replace with cleared photography
+    image: {
+      src: "/images/demo/venue-pivnica.jpg",
+      alt: { mk: "Вечерна атмосфера — демо-фотографија", en: "Evening atmosphere — demo photo" },
+    },
     name: { mk: "Градска пивница „Паб“", en: "City Beer Hall “Pab”" },
     shortName: { mk: "Паб", en: "Pab" },
     role: { mk: "Локација во 2022", en: "Used in 2022" },

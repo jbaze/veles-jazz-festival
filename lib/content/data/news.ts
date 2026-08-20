@@ -1,6 +1,35 @@
 import type { NewsPost } from "../schema";
 
 export const news: NewsPost[] = [
+  // DEMO-SEED post: the programme announcement for the fictional demo
+  // programme — replace when the real 2026 programme is announced.
+  {
+    slug: "programata-za-2026-e-objavena",
+    relatedEdition: 2026,
+    title: {
+      mk: "Објавена е програмата за петтото издание: 24–27 септември 2026",
+      en: "The fifth edition programme is out: 24–27 September 2026",
+    },
+    publishedAt: "2026-08-20",
+    excerpt: {
+      mk: "Четири дена, четири сцени: од Aria Kovač Quartet и Lena Mars до затворањето со Dine Doneff — билетите се веќе во продажба.",
+      en: "Four days, four stages: from the Aria Kovač Quartet and Lena Mars to the closing with Dine Doneff — tickets are on sale now.",
+    },
+    body: {
+      mk: [
+        "Петтото издание на Фестивалот на џез, ворлд и современа музика ќе се одржи од 24 до 27 септември 2026, на четири локации низ Велес.",
+        "Преку ден — работилници за цијанотипија и за млади музичари и изложба во Europe House. Навечер — отворање кај Спомен-костурницата со видео-мапирање, концерти на главната сцена во Театарот „Ј.Х.К. Џинот“ (Aria Kovač Quartet, Lena Mars, North Light Trio) и затворање со повеќекратниот гостин Dine Doneff.",
+        "Доцната програма секоја вечер продолжува на паркингот на театарот — со Edit Points, Џем Колектив и Midnight Arcade, сè до завршната журка.",
+        "Влезот на отворените настани е слободен; билетите за концертите во театарот се во продажба.",
+      ],
+      en: [
+        "The fifth edition of the Festival of Jazz, World and Contemporary Music runs 24–27 September 2026 at four venues across Veles.",
+        "By day — cyanotype and youth workshops and an exhibition at Europe House. By night — an opening at the Memorial Ossuary with video mapping, main-stage concerts at the J.H.K. Dzhinot Theatre (Aria Kovač Quartet, Lena Mars, North Light Trio) and a closing by returning guest Dine Doneff.",
+        "The late-night strand continues on the theatre parking lot every evening — with Edit Points, Jam Kolektiv and Midnight Arcade, all the way to the closing party.",
+        "Open-air events are free to attend; theatre concert tickets are on sale.",
+      ],
+    },
+  },
   {
     slug: "petto-izdanie-septemvri-2026",
     relatedEdition: 2026,

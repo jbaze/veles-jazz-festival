@@ -8,6 +8,11 @@ import type { Artist } from "../schema";
 export const artists: Artist[] = [
   {
     slug: "enes-begovski",
+    // DEMO-SEED image (Pexels, free licence) — replace with cleared photography
+    image: {
+      src: "/images/demo/a1.jpg",
+      alt: { mk: "Настап — демо-фотографија", en: "Performance — demo photo" },
+    },
     name: "Енес Беговски",
     nameLocal: "Enes Begovski",
     countries: [],
@@ -18,6 +23,11 @@ export const artists: Artist[] = [
   },
   {
     slug: "perija",
+    // DEMO-SEED image (Pexels, free licence) — replace with cleared photography
+    image: {
+      src: "/images/demo/a2.jpg",
+      alt: { mk: "Настап — демо-фотографија", en: "Performance — demo photo" },
+    },
     name: "Перија",
     nameLocal: "Perija",
     countries: [],
@@ -28,6 +38,11 @@ export const artists: Artist[] = [
   },
   {
     slug: "sasko-kostov",
+    // DEMO-SEED image (Pexels, free licence) — replace with cleared photography
+    image: {
+      src: "/images/demo/a3.jpg",
+      alt: { mk: "Настап — демо-фотографија", en: "Performance — demo photo" },
+    },
     name: "Сашко Костов",
     nameLocal: "Sashko Kostov",
     countries: ["MK"],
@@ -38,6 +53,11 @@ export const artists: Artist[] = [
   },
   {
     slug: "faik-mefailoski",
+    // DEMO-SEED image (Pexels, free licence) — replace with cleared photography
+    image: {
+      src: "/images/demo/a4.jpg",
+      alt: { mk: "Настап — демо-фотографија", en: "Performance — demo photo" },
+    },
     name: "Фаик Мефаилоски",
     nameLocal: "Faik Mefailoski",
     countries: ["MK"],
@@ -48,6 +68,11 @@ export const artists: Artist[] = [
   },
   {
     slug: "slavco-kocev",
+    // DEMO-SEED image (Pexels, free licence) — replace with cleared photography
+    image: {
+      src: "/images/demo/a5.jpg",
+      alt: { mk: "Настап — демо-фотографија", en: "Performance — demo photo" },
+    },
     name: "Славчо Коцев",
     nameLocal: "Slavcho Kocev",
     countries: ["MK"],
@@ -58,6 +83,11 @@ export const artists: Artist[] = [
   },
   {
     slug: "andrea-mircheska",
+    // DEMO-SEED image (Pexels, free licence) — replace with cleared photography
+    image: {
+      src: "/images/demo/a6.jpg",
+      alt: { mk: "Настап — демо-фотографија", en: "Performance — demo photo" },
+    },
     name: "Андреа Мирческа",
     nameLocal: "Andrea Mircheska",
     countries: ["MK"],
@@ -68,6 +98,11 @@ export const artists: Artist[] = [
   },
   {
     slug: "petar-hristov",
+    // DEMO-SEED image (Pexels, free licence) — replace with cleared photography
+    image: {
+      src: "/images/demo/a7.jpg",
+      alt: { mk: "Настап — демо-фотографија", en: "Performance — demo photo" },
+    },
     name: "Петар Христов",
     nameLocal: "Petar Hristov",
     countries: ["MK"],
@@ -78,24 +113,44 @@ export const artists: Artist[] = [
   },
   {
     slug: "taksi-konzilium",
+    // DEMO-SEED image (Pexels, free licence) — replace with cleared photography
+    image: {
+      src: "/images/demo/a8.jpg",
+      alt: { mk: "Настап — демо-фотографија", en: "Performance — demo photo" },
+    },
     name: "Такси Конзилиум",
     nameLocal: "Taksi Konzilium",
     countries: [],
   },
   {
     slug: "dina-jasari-i-drugari",
+    // DEMO-SEED image (Pexels, free licence) — replace with cleared photography
+    image: {
+      src: "/images/demo/a9.jpg",
+      alt: { mk: "Настап — демо-фотографија", en: "Performance — demo photo" },
+    },
     name: "Дина Јашари и другари",
     nameLocal: "Dina Jashari & Friends",
     countries: [],
   },
   {
     slug: "letecki-pekinezi",
+    // DEMO-SEED image (Pexels, free licence) — replace with cleared photography
+    image: {
+      src: "/images/demo/a10.jpg",
+      alt: { mk: "Настап — демо-фотографија", en: "Performance — demo photo" },
+    },
     name: "Летечки Пекинези",
     nameLocal: "Letechki Pekinezi",
     countries: [],
   },
   {
     slug: "edit-points",
+    // DEMO-SEED image (Pexels, free licence) — replace with cleared photography
+    image: {
+      src: "/images/demo/a11.jpg",
+      alt: { mk: "Настап — демо-фотографија", en: "Performance — demo photo" },
+    },
     name: "Edit Points",
     countries: [],
     bio: {
@@ -105,11 +160,21 @@ export const artists: Artist[] = [
   },
   {
     slug: "bopheads",
+    // DEMO-SEED image (Pexels, free licence) — replace with cleared photography
+    image: {
+      src: "/images/demo/a12.jpg",
+      alt: { mk: "Настап — демо-фотографија", en: "Performance — demo photo" },
+    },
     name: "Bopheads",
     countries: [],
   },
   {
     slug: "shamba",
+    // DEMO-SEED image (Pexels, free licence) — replace with cleared photography
+    image: {
+      src: "/images/demo/a13.jpg",
+      alt: { mk: "Настап — демо-фотографија", en: "Performance — demo photo" },
+    },
     name: "Бојан Петков – Шамба",
     nameLocal: "Bojan Petkov – Shamba",
     countries: ["MK"],
@@ -135,6 +200,11 @@ export const artists: Artist[] = [
   },
   {
     slug: "dine-doneff",
+    // DEMO-SEED image (Pexels, free licence) — replace with cleared photography
+    image: {
+      src: "/images/demo/a14.jpg",
+      alt: { mk: "Настап — демо-фотографија", en: "Performance — demo photo" },
+    },
     name: "Dine Doneff",
     countries: ["GR"],
     bio: {
@@ -144,6 +214,11 @@ export const artists: Artist[] = [
   },
   {
     slug: "jordan-kostov",
+    // DEMO-SEED image (Pexels, free licence) — replace with cleared photography
+    image: {
+      src: "/images/demo/a15.jpg",
+      alt: { mk: "Настап — демо-фотографија", en: "Performance — demo photo" },
+    },
     name: "Јордан Костов",
     nameLocal: "Jordan Kostov",
     countries: [],
@@ -154,6 +229,11 @@ export const artists: Artist[] = [
   },
   {
     slug: "james-wylie-egli-katsiki",
+    // DEMO-SEED image (Pexels, free licence) — replace with cleared photography
+    image: {
+      src: "/images/demo/a16.jpg",
+      alt: { mk: "Настап — демо-фотографија", en: "Performance — demo photo" },
+    },
     name: "James Wylie & Egli Katsiki",
     countries: [],
     bio: {
@@ -163,6 +243,11 @@ export const artists: Artist[] = [
   },
   {
     slug: "vlatko-i-lempi",
+    // DEMO-SEED image (Pexels, free licence) — replace with cleared photography
+    image: {
+      src: "/images/demo/a17.jpg",
+      alt: { mk: "Настап — демо-фотографија", en: "Performance — demo photo" },
+    },
     name: "Влатко и Лемпи",
     nameLocal: "Vlatko & Lempi",
     countries: [],
@@ -229,6 +314,11 @@ export const artists: Artist[] = [
   },
   {
     slug: "vlatko-stefanovski-trio",
+    // DEMO-SEED image (Pexels, free licence) — replace with cleared photography
+    image: {
+      src: "/images/demo/a18.jpg",
+      alt: { mk: "Настап — демо-фотографија", en: "Performance — demo photo" },
+    },
     name: "Влатко Стефановски Трио",
     nameLocal: "Vlatko Stefanovski Trio",
     countries: ["MK"],
@@ -265,6 +355,89 @@ export const artists: Artist[] = [
     bio: {
       mk: "Ликовен уметник — изложбата „Преиспитувања“ (со Никола Пијанманов), четврто издание (2025).",
       en: "Visual artist — the exhibition “Preispituvanja” (with Nikola Pijanmanov), fourth edition (2025).",
+    },
+  },
+
+  // ——— DEMO-SEED: fictional 2026 lineup for the client presentation ———
+  // Remove together with the 2026 demo programme once real data lands.
+  {
+    slug: "aria-kovac-kvartet",
+    name: "Aria Kovač Quartet",
+    countries: ["SI"],
+    bio: {
+      mk: "Квартет од Љубљана меѓу модерен џез и словенечка народна традиција — деби на фестивалот на петтото издание.",
+      en: "A Ljubljana quartet between modern jazz and Slovene folk tradition — festival debut at the fifth edition.",
+    },
+    image: {
+      src: "/images/demo/a19.jpg",
+      alt: { mk: "Настап — демо-фотографија", en: "Performance — demo photo" },
+    },
+  },
+  {
+    slug: "north-light-trio",
+    name: "North Light Trio",
+    countries: ["SE"],
+    bio: {
+      mk: "Стокхолмско трио со тивок, простран нордиски звук — клавир, контрабас и електроника.",
+      en: "A Stockholm trio with a quiet, spacious Nordic sound — piano, double bass and electronics.",
+    },
+    image: {
+      src: "/images/demo/a20.jpg",
+      alt: { mk: "Настап — демо-фотографија", en: "Performance — demo photo" },
+    },
+  },
+  {
+    slug: "lena-mars",
+    name: "Lena Mars",
+    countries: ["DE"],
+    bio: {
+      mk: "Берлинска вокалистка и композиторка — современ џез со електронски текстури.",
+      en: "A Berlin vocalist and composer — contemporary jazz with electronic textures.",
+    },
+    image: {
+      src: "/images/demo/a21.jpg",
+      alt: { mk: "Настап — демо-фотографија", en: "Performance — demo photo" },
+    },
+  },
+  {
+    slug: "sino-more",
+    name: "Сино Море",
+    nameLocal: "Sino More",
+    countries: ["MK"],
+    bio: {
+      mk: "Млад македонски состав — ворлд и современа музика врз традиционални теми.",
+      en: "A young Macedonian ensemble — world and contemporary music built on traditional themes.",
+    },
+    image: {
+      src: "/images/demo/a22.jpg",
+      alt: { mk: "Настап — демо-фотографија", en: "Performance — demo photo" },
+    },
+  },
+  {
+    slug: "dzem-kolektiv",
+    name: "Џем Колектив",
+    nameLocal: "Jam Kolektiv",
+    countries: ["MK"],
+    bio: {
+      mk: "Отворен импровизаторски колектив — домаќини на доцната програма на паркингот.",
+      en: "An open improvisation collective — hosts of the late-night parking-lot strand.",
+    },
+    image: {
+      src: "/images/demo/a23.jpg",
+      alt: { mk: "Настап — демо-фотографија", en: "Performance — demo photo" },
+    },
+  },
+  {
+    slug: "midnight-arcade",
+    name: "Midnight Arcade",
+    countries: ["RS"],
+    bio: {
+      mk: "Белградски електро-џез дует — DJ/VJ сет создаден за доцните часови.",
+      en: "A Belgrade electro-jazz duo — a DJ/VJ set built for the late hours.",
+    },
+    image: {
+      src: "/images/demo/a24.jpg",
+      alt: { mk: "Настап — демо-фотографија", en: "Performance — demo photo" },
     },
   },
 ];

@@ -54,4 +54,8 @@ export const siteUrl =
  * (open question #6). Filling this in activates the footer's follow row
  * and the festival JSON-LD `sameAs` in one place. Never guess handles.
  */
-export const SOCIAL_LINKS: { label: string; url: string }[] = [];
+// DEMO-SEED handles — replace with the confirmed profiles (question #6).
+export const SOCIAL_LINKS: { label: string; url: string }[] = [
+  { label: "Facebook", url: "https://www.facebook.com/jazzveles" },
+  { label: "Instagram", url: "https://www.instagram.com/jazzveles" },
+];
