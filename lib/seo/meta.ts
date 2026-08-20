@@ -15,6 +15,8 @@ export function pageMeta(
     section?: SectionKey;
     slug?: string;
     ogTitle?: string;
+    /** Set for news posts: switches OG to article + publishedTime. */
+    article?: { publishedTime: string };
   },
 ): Metadata {
   const canonical = href(locale, opts.section, opts.slug);
@@ -34,7 +36,9 @@ export function pageMeta(
           ? "Фестивал на џез, ворлд и современа музика — Велес"
           : "Festival of Jazz, World and Contemporary Music — Veles",
       locale: locale === "mk" ? "mk_MK" : "en_GB",
-      type: "website",
+      ...(opts.article
+        ? { type: "article", publishedTime: opts.article.publishedTime }
+        : { type: "website" }),
     },
   };
 }

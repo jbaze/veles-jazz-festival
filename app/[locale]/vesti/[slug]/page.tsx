@@ -3,10 +3,10 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import NewsTeasers from "@/components/NewsTeasers";
 import { AllLink, JsonLd, Kicker, SectionHeading } from "@/components/ui";
-import { getNews, getNewsPost } from "@/lib/content";
+import { getEdition, getEventsByEdition, getNews, getNewsPost } from "@/lib/content";
 import { href, locales, type Locale } from "@/lib/i18n/config";
 import { getDict } from "@/lib/i18n/dictionaries";
-import { formatDate } from "@/lib/format";
+import { formatDate, formatDateRange } from "@/lib/format";
 import { newsPostJsonLd } from "@/lib/seo/jsonld";
 import { pageMeta } from "@/lib/seo/meta";
 
@@ -27,6 +27,7 @@ export async function generateMetadata({
     description: post.excerpt[locale],
     section: "vesti",
     slug,
+    article: { publishedTime: post.publishedAt },
   });
 }
 
@@ -40,9 +41,13 @@ export default async function NewsPostPage({
   if (!post) notFound();
   const t = getDict(locale);
   const [lead, ...body] = post.body[locale];
-  const more = getNews()
-    .filter((n) => n.slug !== post.slug)
-    .slice(0, 3);
+  const all = getNews();
+  const idx = all.findIndex((n) => n.slug === post.slug);
+  const newer = idx > 0 ? all[idx - 1] : undefined;
+  const older = idx >= 0 && idx < all.length - 1 ? all[idx + 1] : undefined;
+  const more = all.filter((n) => n.slug !== post.slug).slice(0, 3);
+  const edition = post.relatedEdition ? getEdition(post.relatedEdition) : undefined;
+  const editionEvents = edition ? getEventsByEdition(edition.year) : [];
 
   return (
     <div className="mx-auto max-w-[1440px] px-4 py-12 sm:px-6 md:py-16">
@@ -70,7 +75,69 @@ export default async function NewsPostPage({
             ))}
           </div>
         )}
+
+        {/* The edition this post is about — declared in data, derived here */}
+        {edition && (
+          <Link
+            href={
+              edition.isCurrent
+                ? href(locale, "programa")
+                : href(locale, "arhiva", edition.slug)
+            }
+            className="card card-hover group mt-10 flex max-w-2xl flex-wrap items-baseline gap-x-6 gap-y-2 p-6"
+          >
+            <span className="type-label text-exposure">{t.news.relatedEdition}</span>
+            <span className="type-display text-2xl text-paper transition-colors group-hover:text-exposure-bright">
+              {edition.title[locale]} · {edition.year}
+            </span>
+            {edition.dates && (
+              <span className="type-label text-concrete">
+                {edition.dates.approximate && "≈ "}
+                {formatDateRange(edition.dates.start, edition.dates.end, locale)}
+              </span>
+            )}
+            {editionEvents.length > 0 && (
+              <span className="type-label text-concrete">
+                <span className="text-exposure-bright">{editionEvents.length}</span>{" "}
+                {locale === "mk" ? "настани" : "events"}
+              </span>
+            )}
+            <span className="type-label ml-auto text-exposure" aria-hidden="true">
+              →
+            </span>
+          </Link>
+        )}
       </article>
+
+      {/* Chronological neighbours — the wire runs through the articles too */}
+      {(older || newer) && (
+        <nav
+          aria-label={t.news.title}
+          className="mt-16 flex flex-wrap items-baseline justify-between gap-6 border-t-2 border-prussian pt-8"
+        >
+          {older ? (
+            <Link href={href(locale, "vesti", older.slug)} className="group max-w-[45%]">
+              <span className="type-label block text-concrete">← {t.news.olderPost}</span>
+              <span className="mt-1 block text-sm font-semibold leading-snug text-paper group-hover:text-exposure-bright">
+                {older.title[locale]}
+              </span>
+            </Link>
+          ) : (
+            <span />
+          )}
+          {newer && (
+            <Link
+              href={href(locale, "vesti", newer.slug)}
+              className="group max-w-[45%] text-right"
+            >
+              <span className="type-label block text-concrete">{t.news.newerPost} →</span>
+              <span className="mt-1 block text-sm font-semibold leading-snug text-paper group-hover:text-exposure-bright">
+                {newer.title[locale]}
+              </span>
+            </Link>
+          )}
+        </nav>
+      )}
 
       {more.length > 0 && (
         <section className="mt-20 border-t-2 border-prussian pt-12">
