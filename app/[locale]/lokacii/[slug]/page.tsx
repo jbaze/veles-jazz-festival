@@ -7,9 +7,11 @@ import { venueMotif } from "@/components/ArtTile";
 import MediaTile from "@/components/MediaTile";
 import { JsonLd, PendingNote, SectionHeading } from "@/components/ui";
 import {
+  getArtist,
   getCurrentEdition,
   getEdition,
   getEventsByVenue,
+  getStrands,
   getVenue,
   getVenues,
 } from "@/lib/content";
@@ -54,6 +56,11 @@ export default async function VenuePage({
     ...new Set(allEvents.filter((e) => e.editionYear !== currentYear).map((e) => e.editionYear)),
   ].sort((a, b) => b - a);
   const activeYears = [...new Set(allEvents.map((e) => e.editionYear))].sort();
+  const strand = getStrands().find((s) => s.venueSlug === slug);
+  // Everyone who has performed here, in order of first appearance
+  const artistsHere = [...new Set(allEvents.flatMap((e) => e.artists))]
+    .map((s) => getArtist(s))
+    .filter((a): a is NonNullable<typeof a> => Boolean(a));
 
   return (
     <>
@@ -119,10 +126,24 @@ export default async function VenuePage({
               {venue.address ?? <span className="text-concrete">{t.venues.addressPending}</span>}
             </dd>
           </div>
-          <div>
-            <dt className="type-label-sm text-concrete">{t.city}</dt>
-            <dd className="type-label mt-2 text-paper">{t.country}</dd>
-          </div>
+          {strand ? (
+            <div>
+              <dt className="type-label-sm text-concrete">{t.venues.strand}</dt>
+              <dd className="mt-2">
+                <Link
+                  href={href(locale, "programa")}
+                  className="type-label text-exposure-bright hover:text-paper"
+                >
+                  {t.strands.items[strand.id].name} →
+                </Link>
+              </dd>
+            </div>
+          ) : (
+            <div>
+              <dt className="type-label-sm text-concrete">{t.city}</dt>
+              <dd className="type-label mt-2 text-paper">{t.country}</dd>
+            </div>
+          )}
         </dl>
       </section>
 
@@ -176,15 +197,23 @@ export default async function VenuePage({
                       aria-hidden="true"
                       className="absolute -left-[31px] top-3 h-3 w-3 border-2 border-exposure bg-ink md:-left-[47px]"
                     />
-                    <Link
-                      href={href(locale, "arhiva", String(year))}
-                      className="type-display type-outline-bright text-4xl transition-all hover:text-exposure-bright hover:[-webkit-text-stroke-width:0] md:text-5xl"
-                    >
-                      {year}
-                    </Link>
-                    {edition && (
-                      <span className="type-label ml-4 text-concrete">{edition.title[locale]}</span>
-                    )}
+                    <div className="flex flex-wrap items-baseline gap-x-4 gap-y-1">
+                      <Link
+                        href={href(locale, "arhiva", String(year))}
+                        className="type-display type-outline-bright text-4xl transition-all hover:text-exposure-bright hover:[-webkit-text-stroke-width:0] md:text-5xl"
+                      >
+                        {year}
+                      </Link>
+                      {edition && (
+                        <span className="type-label text-concrete">{edition.title[locale]}</span>
+                      )}
+                      <Link
+                        href={`${href(locale, "arhiva", String(year))}?lokacija=${venue.slug}`}
+                        className="type-label link-sweep text-exposure"
+                      >
+                        {t.venues.filteredProgramme} →
+                      </Link>
+                    </div>
                     <div className="mt-5 grid gap-5 md:grid-cols-3">
                       {allEvents
                         .filter((e) => e.editionYear === year)
@@ -196,6 +225,25 @@ export default async function VenuePage({
                 );
               })}
             </div>
+          </section>
+        )}
+
+        {/* Everyone who has stood on this stage — the archive cross-linking */}
+        {artistsHere.length > 0 && (
+          <section className="mt-16">
+            <h2 className="type-label mb-6 text-concrete">{t.venues.artistsHere}</h2>
+            <ul className="flex max-w-4xl flex-wrap gap-3">
+              {artistsHere.map((artist) => (
+                <li key={artist.slug}>
+                  <Link
+                    href={href(locale, "izveduvaci", artist.slug)}
+                    className="card block px-4 py-2 text-sm font-semibold text-paper transition-colors hover:border-exposure hover:text-exposure"
+                  >
+                    {artist.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
           </section>
         )}
 
