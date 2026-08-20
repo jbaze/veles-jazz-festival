@@ -1,11 +1,18 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { Kicker, PendingNote, SectionHeading } from "@/components/ui";
-import { getPastEditions } from "@/lib/content";
+import { JsonLd, Kicker, PendingNote, SectionHeading } from "@/components/ui";
+import {
+  getCurrentEdition,
+  getEvents,
+  getEventsByEdition,
+  getPastEditions,
+  getVenues,
+} from "@/lib/content";
 import { href, type Locale } from "@/lib/i18n/config";
 import { getDict } from "@/lib/i18n/dictionaries";
-import { formatDateRange } from "@/lib/format";
+import { countryName, formatDateRange } from "@/lib/format";
+import { organizationJsonLd } from "@/lib/seo/jsonld";
 import { pageMeta } from "@/lib/seo/meta";
 
 export async function generateMetadata({
@@ -27,21 +34,48 @@ export default async function AboutPage({ params }: { params: Promise<{ locale: 
   const t = getDict(locale);
   const editions = getPastEditions().reverse();
 
+  // The record in numbers — computed from content, same as home and press.
+  const pastEditions = getPastEditions();
+  const currentYear = getCurrentEdition().year;
+  const pastEventCount = getEvents().filter((e) => e.editionYear !== currentYear).length;
+  const countryCount = new Set(pastEditions.flatMap((e) => e.countries)).size;
+  const stats: [string, string][] = [
+    [String(pastEditions.length), locale === "mk" ? "изданија" : "editions"],
+    [String(countryCount), locale === "mk" ? "земји" : "countries"],
+    [String(getVenues().length), locale === "mk" ? "локации" : "venues"],
+    [`${pastEventCount}+`, locale === "mk" ? "настани" : "events"],
+  ];
+
   return (
     <>
-      <div className="mx-auto max-w-[1440px] px-4 py-12 sm:px-6 md:py-16">
+      <JsonLd data={organizationJsonLd(locale)} />
+
+      {/* The mission as the opening statement */}
+      <div className="grain mx-auto max-w-[1440px] px-4 pb-16 pt-12 sm:px-6 md:pb-20 md:pt-16">
         <Kicker>{t.siteNameFull}</Kicker>
         <SectionHeading as="h1">{t.about.title}</SectionHeading>
+        {/* Custom clamp: „деметрополизација“ (17 chars) must fit every
+            viewport — display-1 would overflow in Macedonian */}
+        <blockquote className="type-display mt-10 max-w-5xl text-[clamp(1.375rem,6vw,4.75rem)] leading-[0.95] text-paper">
+          {locale === "mk" ? `„${t.about.missionQuote}“` : `“${t.about.missionQuote}”`}
+        </blockquote>
+        <p className="mt-8 max-w-2xl text-concrete">{t.about.missionBody}</p>
+      </div>
 
-        <section className="mt-12 max-w-3xl">
-          <h2 className="type-label mb-4 text-concrete">{t.about.missionTitle}</h2>
-          <p className="text-paper/90">{t.about.missionBody}</p>
-          <blockquote className="type-display type-display-2 mt-8 text-paper">
-            {locale === "mk" ? `„${t.about.missionQuote}“` : `“${t.about.missionQuote}”`}
-          </blockquote>
-        </section>
+      {/* The record in numbers */}
+      <section className="border-y border-prussian/60 bg-ink-deep/50">
+        <dl className="mx-auto grid max-w-[1440px] grid-cols-2 gap-y-4 px-4 py-6 sm:px-6 md:grid-cols-4">
+          {stats.map(([value, label]) => (
+            <div key={label}>
+              <dt className="type-label-sm text-concrete">{label}</dt>
+              <dd className="type-display mt-1 text-2xl text-exposure-bright">{value}</dd>
+            </div>
+          ))}
+        </dl>
+      </section>
 
-        <section className="mt-14 max-w-3xl">
+      <div className="mx-auto max-w-[1440px] px-4 py-14 sm:px-6">
+        <section className="max-w-3xl">
           <h2 className="type-label mb-4 text-concrete">{t.about.conceptTitle}</h2>
           <p className="text-paper/90">{t.about.conceptBody}</p>
         </section>
@@ -74,36 +108,70 @@ export default async function AboutPage({ params }: { params: Promise<{ locale: 
       </section>
 
       <div className="mx-auto max-w-[1440px] px-4 py-14 sm:px-6">
-        <section className="max-w-3xl">
-          <h2 className="type-label mb-6 text-concrete">{t.about.historyTitle}</h2>
-          <ol className="space-y-4">
-            {editions.map((e) => (
-              <li key={e.year} className="flex flex-wrap items-baseline gap-x-4 gap-y-1">
-                <Link
-                  href={href(locale, "arhiva", e.slug)}
-                  className="type-display text-2xl text-exposure hover:text-paper"
-                >
-                  {e.year}
-                </Link>
-                <span className="text-paper">{e.title[locale]}</span>
-                {e.dates && (
-                  <span className="type-label text-concrete">
-                    {e.dates.approximate && "≈ "}
-                    {formatDateRange(e.dates.start, e.dates.end, locale)}
-                  </span>
-                )}
-              </li>
-            ))}
+        {/* History as editorial rows — every claim derived from the archive */}
+        <section>
+          <h2 className="type-label mb-2 text-concrete">{t.about.historyTitle}</h2>
+          <ol className="border-t-2 border-prussian">
+            {editions.map((e) => {
+              const eventCount = getEventsByEdition(e.year).length;
+              return (
+                <li key={e.year} className="border-b-2 border-prussian">
+                  <Link
+                    href={href(locale, "arhiva", e.slug)}
+                    className="group grid gap-x-12 gap-y-4 py-10 md:grid-cols-[14rem_1fr] md:items-start"
+                  >
+                    <p
+                      aria-hidden="true"
+                      className="type-display type-outline text-6xl leading-none transition-colors group-hover:text-exposure-bright group-hover:[-webkit-text-stroke-width:0] md:text-7xl"
+                    >
+                      {e.year}
+                    </p>
+                    <div className="min-w-0">
+                      <h3 className="type-display text-2xl text-paper transition-colors group-hover:text-exposure-bright">
+                        {e.title[locale]}
+                      </h3>
+                      {e.dates && (
+                        <p className="type-label mt-3 text-exposure">
+                          {e.dates.approximate && "≈ "}
+                          {formatDateRange(e.dates.start, e.dates.end, locale)}
+                        </p>
+                      )}
+                      <p className="mt-4 max-w-2xl text-sm text-concrete">
+                        {e.description[locale]}
+                      </p>
+                      <p className="type-label mt-5 flex flex-wrap gap-x-6 gap-y-2 text-concrete">
+                        {eventCount > 0 && (
+                          <span>
+                            <span className="text-exposure-bright">{eventCount}</span>{" "}
+                            {locale === "mk" ? "настани" : "events"}
+                          </span>
+                        )}
+                        {e.countries.length > 0 && (
+                          <span>
+                            {e.countries.map((c) => countryName(c, locale)).join(" · ")}
+                          </span>
+                        )}
+                        {e.programmeIncomplete && (
+                          <span className="text-concrete/70">
+                            {locale === "mk" ? "архивата се дополнува" : "archive being completed"}
+                          </span>
+                        )}
+                      </p>
+                    </div>
+                  </Link>
+                </li>
+              );
+            })}
           </ol>
         </section>
 
-        <section className="mt-14">
+        <section className="mt-16">
           <h2 className="type-label mb-6 text-concrete">{t.about.teamTitle}</h2>
           <ul className="grid max-w-3xl gap-3 sm:grid-cols-2">
             {t.about.team.map((member) => (
               <li key={member.name} className="card p-4">
                 <p className="font-bold text-paper">{member.name}</p>
-                <p className="mt-1 text-sm text-concrete">{member.role}</p>
+                <p className="type-label-sm mt-1.5 text-concrete">{member.role}</p>
               </li>
             ))}
           </ul>
