@@ -82,6 +82,19 @@ export function artistJsonLd(artist: Artist, locale: Locale) {
   };
 }
 
+/** The organiser as a standalone entity — rendered on the about page. */
+export function organizationJsonLd(locale: Locale) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    name: ORGANIZER.name,
+    alternateName: ORGANIZER.alternateName,
+    url: `${siteUrl}${href(locale, "za-festivalot")}`,
+    logo: `${siteUrl}/images/brand/art-generator.jpg`,
+    address: { "@type": "PostalAddress", addressLocality: "Veles", addressCountry: "MK" },
+  };
+}
+
 export function newsPostJsonLd(post: NewsPost, locale: Locale) {
   return {
     "@context": "https://schema.org",
