@@ -247,6 +247,11 @@ Done-work notes:
   ScheduleMatrix.tsx), sodium-marked on the current festival day, URL-
   persisted via the existing `?den=` param; chips appear wherever ≥2
   dated days exist (archive editions now, /programa when 2026 dates land).
+- News articles: NewsPost carries optional `relatedEdition` (year,
+  build-validated) → article renders an edition context card (dates +
+  event count, linking to archive or /programa for the current
+  edition); prev/next chronological nav; OG type=article with
+  publishedTime via pageMeta's `article` option.
 - Partners: Partner schema carries optional `logo` (ImageRef shape) —
   when question #8 clears, set it in partners.ts and the tile renders
   the mark on a paper chip (multiply) with the name as caption;

@@ -66,6 +66,10 @@ const news = validate(NewsPostSchema, rawNews, "NewsPost");
     for (const a of ed.alsoProgrammed ?? [])
       if (!artistSlugs.has(a)) throw new Error(`Edition ${ed.year}: unknown artist "${a}"`);
   }
+  const editionYears = new Set(editions.map((e) => e.year));
+  for (const n of news)
+    if (n.relatedEdition && !editionYears.has(n.relatedEdition))
+      throw new Error(`News ${n.slug}: unknown edition ${n.relatedEdition}`);
 }
 
 // ——— Editions ———
