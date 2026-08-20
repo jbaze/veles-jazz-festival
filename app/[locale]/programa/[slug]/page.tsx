@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import EventCard from "@/components/EventCard";
 import Photo from "@/components/Photo";
+import VideoEmbed from "@/components/VideoEmbed";
 import { JsonLd, Kicker, PendingNote, SectionHeading, TypeBadge } from "@/components/ui";
 import {
   getArtist,
@@ -103,6 +104,20 @@ export default async function EventPage({
 
           {event.description && (
             <p className="mt-8 max-w-2xl text-paper/90">{event.description[locale]}</p>
+          )}
+
+          {(event.mediaEmbeds ?? []).length > 0 && (
+            <div className="mt-8 flex max-w-2xl flex-col gap-6">
+              {event.mediaEmbeds!.map((url) => (
+                <VideoEmbed
+                  key={url}
+                  url={url}
+                  title={event.title[locale]}
+                  playLabel={t.video.play}
+                  watchLabel={t.video.watchExternal}
+                />
+              ))}
+            </div>
           )}
 
           {artists.length > 0 && (
