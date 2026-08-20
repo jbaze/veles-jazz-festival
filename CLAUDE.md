@@ -247,6 +247,10 @@ Done-work notes:
   ScheduleMatrix.tsx), sodium-marked on the current festival day, URL-
   persisted via the existing `?den=` param; chips appear wherever ≥2
   dated days exist (archive editions now, /programa when 2026 dates land).
+- Contact: sidebar shows the organiser identity (name, mandate, logo on
+  paper chip); the artist-submission card links `?tema=nastap` which the
+  form reads on mount (also `mediumi` / `partnerstvo`); journalists get
+  a press-page card; contact form has its own success copy.
 - Archive: index rows carry photo-ready MediaTiles (gallery seeds) +
   derived stats; edition pages have a derived facts bar, a full lineup
   chip section (events + alsoProgrammed merged), and prev/next edition
