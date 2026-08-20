@@ -20,6 +20,9 @@ const EN_SLUGS: Record<string, string> = {
 };
 
 const nextConfig: NextConfig = {
+  images: {
+    formats: ["image/avif", "image/webp"],
+  },
   async redirects() {
     return [
       { source: "/", destination: "/mk", permanent: false },

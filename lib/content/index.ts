@@ -195,4 +195,4 @@ export function getNewsPost(slug: string): NewsPost | undefined {
 }
 
 export type { Artist, Edition, FestivalEvent, NewsPost, Partner, Venue };
-export type { EventType, LocalizedString } from "./schema";
+export type { EventType, ImageRef, LocalizedString } from "./schema";
