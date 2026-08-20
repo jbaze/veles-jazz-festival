@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import ScheduleMatrix from "@/components/ScheduleMatrix";
 import PartnerWall from "@/components/PartnerWall";
+import VideoEmbed from "@/components/VideoEmbed";
 import { Kicker, PendingNote, SectionHeading } from "@/components/ui";
 import { getArtist, getEdition, getEditions, getEventsByEdition } from "@/lib/content";
 import { buildMatrix } from "@/lib/schedule";
@@ -118,6 +119,29 @@ export default async function EditionPage({
           </ul>
         </section>
       )}
+
+      <section className="mt-14">
+        <h2 className="type-label mb-6 text-concrete">{t.video.title}</h2>
+        {edition.mediaEmbeds?.length ? (
+          <div className="grid gap-6 md:grid-cols-2">
+            {edition.mediaEmbeds.map((url, i) => (
+              <VideoEmbed
+                key={url}
+                url={url}
+                title={
+                  edition.mediaEmbeds!.length > 1
+                    ? `${edition.title[locale]} · ${edition.year} — ${i + 1}`
+                    : `${edition.title[locale]} · ${edition.year}`
+                }
+                playLabel={t.video.play}
+                watchLabel={t.video.watchExternal}
+              />
+            ))}
+          </div>
+        ) : (
+          <PendingNote>{t.video.pending}</PendingNote>
+        )}
+      </section>
 
       <section className="mt-14">
         <h2 className="type-label mb-4 text-concrete">{t.archive.galleryPending}</h2>

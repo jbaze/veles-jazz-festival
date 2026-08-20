@@ -211,15 +211,24 @@ Artist/venue/edition/event schemas all carry the optional `image`. The
 
 ## Queued next work (agreed with the user, not yet built)
 
-1. **Aftermovie/video slot** on home + archive editions — `mediaEmbeds`
-   exists in the schema; render YouTube embeds when links are provided,
-   honest placeholder until then.
+The original queue (photo-readiness, newsletter band, programme strands,
+aftermovie slot) is fully shipped. Next, as agreed: iterate news/press/
+about pages to the same editorial level as venues/artists; gallery
+lightbox once photos clear; admission states once question #3 is answered.
 
-(Programme strands are DONE: `getStrands()` in the content gateway derives
-the four named tracks — main stage / openings & performances / late
-programme / workshops & exhibitions — from event venue+type; a strand only
-exists while events match it. `components/ProgrammeStrands.tsx` renders the
-band on `/programa` below the matrix/empty state.)
+Done-work notes:
+- Strands: `getStrands()` in the gateway derives the four named tracks
+  (main stage / openings & performances / late programme / workshops &
+  exhibitions) from event venue+type; `components/ProgrammeStrands.tsx`
+  renders the band on `/programa`.
+- Video: `mediaEmbeds` (URL array) exists on Edition AND Event. To publish
+  an aftermovie, add the YouTube link to the edition in
+  `lib/content/data/editions.ts` — the newest edition with a link renders
+  in the home archive band, and each archive page renders its own; events
+  render theirs on the event page. `components/VideoEmbed.tsx` is a lite
+  facade (grayscale+prussian thumbnail, youtube-nocookie iframe only after
+  click, plain YouTube link without JS; non-YouTube URLs render as
+  external links). Honest pending notes show until links land.
 
 Then: iterate news/press/about pages to the same editorial level as
 venues/artists; gallery lightbox once photos clear.
