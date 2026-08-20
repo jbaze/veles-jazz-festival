@@ -201,14 +201,20 @@ cleared photo, edit DATA ONLY:
 Artist/venue/edition/event schemas all carry the optional `image`. The
 Костурница silhouette and all ArtTiles remain the automatic no-photo state.
 
+## Brand assets received
+
+- **Art Generator logo** (the organiser's own mark, sent by the user
+  2026-08-20): `public/images/brand/art-generator.jpg` — white-background
+  JPEG, so render it on paper grounds with `mix-blend-multiply` (done in
+  the footer paper chip and the about-page governance section). Festival
+  logo, poster art, brand rules and fonts are still pending (question #4).
+
 ## Queued next work (agreed with the user, not yet built)
 
-1. **Site-wide newsletter band** above the footer (Toronto pattern) —
-   `SignupForm` exists; make a slim band variant in the locale layout.
-2. **Named programme strands** (Bansko pattern): surface the late-night
+1. **Named programme strands** (Bansko pattern): surface the late-night
    parking track and workshops/exhibitions as labelled tracks on
    `/programa` — event `type` already distinguishes them.
-3. **Aftermovie/video slot** on home + archive editions — `mediaEmbeds`
+2. **Aftermovie/video slot** on home + archive editions — `mediaEmbeds`
    exists in the schema; render YouTube embeds when links are provided,
    honest placeholder until then.
 

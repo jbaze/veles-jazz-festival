@@ -21,6 +21,7 @@ import "@/app/globals.css";
 
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import SignupForm from "@/components/SignupForm";
 import { isLocale, locales, siteUrl, type Locale } from "@/lib/i18n/config";
 import { getDict } from "@/lib/i18n/dictionaries";
 
@@ -71,6 +72,9 @@ export default async function LocaleLayout({
         <main id="main" className="flex-1">
           {children}
         </main>
+        {/* Site-wide newsletter band (Toronto pattern) — the band owns the
+            top gap, so the footer's own margin moves here. */}
+        <SignupForm locale={locale} variant="band" />
         <Footer locale={locale} />
       </body>
     </html>
