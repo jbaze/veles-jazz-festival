@@ -285,6 +285,8 @@ const mk = {
 
   partners: {
     title: "Партнери и поддржувачи",
+    intro:
+      "Фестивалот го носат Општина Велес како основач и финансиер, Министерството за култура и туризам како институционална поддршка, и партнерите и спонзорите на секое издание. Логоата ќе бидат објавени по потврда на официјалните правила за употреба.",
     founder: "Основач и финансиер",
     institutional: "Институционална поддршка",
     partner: "Партнери",
@@ -633,6 +635,8 @@ const en: Dict = {
 
   partners: {
     title: "Partners & supporters",
+    intro:
+      "The festival is carried by the Municipality of Veles as founder and financier, the Ministry of Culture and Tourism as institutional support, and each edition's partners and sponsors. Logos will be published once official usage rules are confirmed.",
     founder: "Founder & financier",
     institutional: "Institutional support",
     partner: "Partners",
