@@ -136,8 +136,18 @@ export function eventJsonLd(event: FestivalEvent, locale: Locale) {
     ...(performers.length
       ? { performer: performers.map((p) => ({ "@type": "MusicGroup", name: p.name })) }
       : {}),
-    ...(event.admission === "free"
-      ? { isAccessibleForFree: true }
+    ...(event.admission === "free" ? { isAccessibleForFree: true } : {}),
+    ...(event.admission === "ticketed" || event.admission === "sold-out"
+      ? {
+          offers: {
+            "@type": "Offer",
+            availability:
+              event.admission === "sold-out"
+                ? "https://schema.org/SoldOut"
+                : "https://schema.org/InStock",
+            ...(event.ticketUrl ? { url: event.ticketUrl } : {}),
+          },
+        }
       : {}),
     organizer: ORGANIZER,
   };
