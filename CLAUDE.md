@@ -211,7 +211,10 @@ same image shape). Editions with entries render photo sections on
 `/galerija` with a lightbox (`components/GalleryGrid.tsx`: native
 `<dialog>`, arrow-key nav, credits in the caption bar, thumbnails are
 plain image links without JS); editions without stay in the honest
-pending tiles.
+pending tiles. `/galerija` is the umbrella visual archive: edition
+sections also surface aftermovies (`mediaEmbeds`) — photo grid, video
+grid, or both — pending tiles link to the archive editions, and an
+ImageGallery JSON-LD is emitted once any photos exist.
 
 ## Brand assets received
 
