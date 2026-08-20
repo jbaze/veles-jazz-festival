@@ -34,6 +34,7 @@ const mk = {
 
   home: {
     editionOrdinal: "Петто издание",
+    byDay: "Разгледај по ден",
     datesTba: "Датумите ќе бидат објавени наскоро",
     expectedWindow: "Се очекува септември 2026 — следете ги објавите",
     ctaProgramme: "Кон програмата",
@@ -392,6 +393,7 @@ const en: Dict = {
 
   home: {
     editionOrdinal: "Fifth edition",
+    byDay: "Discover by day",
     datesTba: "Dates to be announced",
     expectedWindow: "Expected September 2026 — watch this space",
     ctaProgramme: "See the programme",
