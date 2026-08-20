@@ -1,10 +1,19 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import CopyButton from "@/components/CopyButton";
 import NewsTeasers from "@/components/NewsTeasers";
 import { AllLink, Kicker, PendingNote, SectionHeading } from "@/components/ui";
-import { getCurrentEdition, getEvents, getNews, getPastEditions, getVenues } from "@/lib/content";
+import {
+  getCurrentEdition,
+  getEvents,
+  getEventsByEdition,
+  getNews,
+  getPastEditions,
+  getVenues,
+} from "@/lib/content";
 import { href, type Locale } from "@/lib/i18n/config";
 import { getDict } from "@/lib/i18n/dictionaries";
+import { formatDateRange } from "@/lib/format";
 import { pageMeta } from "@/lib/seo/meta";
 
 export async function generateMetadata({
@@ -83,6 +92,62 @@ export default async function PressPage({ params }: { params: Promise<{ locale: 
               </div>
             </section>
 
+            {/* Per-edition numbers — derived, copy-ready for coverage */}
+            <section className="mt-12">
+              <h2 className="type-label mb-4 text-concrete">{t.press.editionsTable}</h2>
+              <div className="card overflow-x-auto">
+                <table className="w-full text-sm">
+                  <thead>
+                    <tr className="border-b-2 border-prussian">
+                      {t.press.tableHeaders.map((h) => (
+                        <th
+                          key={h}
+                          scope="col"
+                          className="type-label px-4 py-3 text-left text-concrete"
+                        >
+                          {h}
+                        </th>
+                      ))}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {[...pastEditions].reverse().map((e) => {
+                      const evts = getEventsByEdition(e.year);
+                      const artistCount = new Set(evts.flatMap((ev) => ev.artists)).size;
+                      return (
+                        <tr key={e.year} className="border-b border-prussian last:border-b-0">
+                          <th scope="row" className="px-4 py-3 text-left">
+                            <Link
+                              href={href(locale, "arhiva", e.slug)}
+                              className="font-semibold text-paper hover:text-exposure"
+                            >
+                              {e.year}
+                            </Link>
+                          </th>
+                          <td className="px-4 py-3 text-concrete">
+                            {e.dates ? (
+                              <>
+                                {e.dates.approximate && "≈ "}
+                                {formatDateRange(e.dates.start, e.dates.end, locale)}
+                              </>
+                            ) : (
+                              "—"
+                            )}
+                          </td>
+                          <td className="px-4 py-3 text-paper">{evts.length || "—"}</td>
+                          <td className="px-4 py-3 text-paper">{artistCount || "—"}</td>
+                          <td className="px-4 py-3 text-paper">{e.countries.length || "—"}</td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
+              {pastEditions.some((e) => e.programmeIncomplete) && (
+                <p className="type-label-sm mt-3 text-concrete">{t.archive.incompleteNote}</p>
+              )}
+            </section>
+
             <section className="mt-12">
               <h2 className="type-label mb-4 text-concrete">{t.press.namesTitle}</h2>
               <p className="text-sm text-paper/90">{t.press.namesNote}</p>
@@ -106,6 +171,13 @@ export default async function PressPage({ params }: { params: Promise<{ locale: 
               <blockquote className="card p-6 text-sm leading-relaxed text-paper/90">
                 {t.press.boilerplate}
               </blockquote>
+              <div className="mt-3">
+                <CopyButton
+                  text={t.press.boilerplate}
+                  label={t.press.copy}
+                  copiedLabel={t.press.copied}
+                />
+              </div>
             </section>
 
             <section className="mt-12">
