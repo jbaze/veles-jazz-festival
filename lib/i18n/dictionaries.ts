@@ -151,6 +151,9 @@ const mk = {
     incompleteNote:
       "Програмата за ова издание е реконструирана од прес-извештаи и е нецелосна. Дополнувањата следат по потврда од организаторот.",
     galleryPending: "Фотографиите чекаат потврда на авторските права и кредити.",
+    lineup: "Изведувачи на изданието",
+    prevEdition: "Претходно издание",
+    nextEdition: "Следно издание",
     ordinals: { 1: "Прво", 2: "Второ", 3: "Трето", 4: "Четврто", 5: "Петто" },
   },
 
@@ -493,6 +496,9 @@ const en: Dict = {
     incompleteNote:
       "This edition's programme is reconstructed from press coverage and is incomplete. It will be completed once confirmed by the organiser.",
     galleryPending: "Photographs pending rights clearance and photographer credits.",
+    lineup: "Edition lineup",
+    prevEdition: "Previous edition",
+    nextEdition: "Next edition",
     ordinals: { 1: "First", 2: "Second", 3: "Third", 4: "Fourth", 5: "Fifth" },
   },
 

@@ -52,6 +52,27 @@ export default async function EditionPage({
     .map((slug) => getArtist(slug))
     .filter((a): a is NonNullable<typeof a> => Boolean(a));
 
+  // The record in numbers + the full lineup — derived, never typed by hand
+  const lineup = [...new Set(events.flatMap((e) => e.artists))]
+    .map((s) => getArtist(s))
+    .filter((a): a is NonNullable<typeof a> => Boolean(a));
+  const venueCount = new Set(events.map((e) => e.venue).filter(Boolean)).size;
+  const stats: [string, string][] = [
+    [String(events.length), locale === "mk" ? "настани" : "events"],
+    [
+      String(lineup.length + also.length),
+      locale === "mk" ? "изведувачи" : "artists",
+    ],
+    [String(venueCount), locale === "mk" ? "локации" : "venues"],
+    [String(edition.countries.length), locale === "mk" ? "земји" : "countries"],
+  ];
+
+  // Prev/next among past editions (sorted newest first)
+  const past = getEditions().filter((e) => !e.isCurrent);
+  const idx = past.findIndex((e) => e.year === edition.year);
+  const newer = idx > 0 ? past[idx - 1] : undefined;
+  const older = idx >= 0 && idx < past.length - 1 ? past[idx + 1] : undefined;
+
   return (
     <div className="mx-auto max-w-[1440px] px-4 py-12 sm:px-6 md:py-16">
       <p className="type-label mb-8">
@@ -83,6 +104,18 @@ export default async function EditionPage({
         <p className="mt-4 max-w-2xl text-sm text-concrete">{edition.productionNotes[locale]}</p>
       )}
 
+      {/* The edition in numbers — the facts-bar idiom */}
+      {events.length > 0 && (
+        <dl className="mt-10 grid grid-cols-2 gap-y-4 border-y border-prussian/60 bg-ink-deep/50 px-4 py-6 md:grid-cols-4">
+          {stats.map(([value, label]) => (
+            <div key={label}>
+              <dt className="type-label-sm text-concrete">{label}</dt>
+              <dd className="type-display mt-1 text-2xl text-exposure-bright">{value}</dd>
+            </div>
+          ))}
+        </dl>
+      )}
+
       <section className="mt-14">
         <h2 className="type-label mb-6 text-concrete">{t.archive.programme}</h2>
         {edition.programmeIncomplete && (
@@ -103,11 +136,13 @@ export default async function EditionPage({
         )}
       </section>
 
-      {also.length > 0 && (
+      {/* The full lineup, derived from the programme; alsoProgrammed
+          artists join at the end with the same chips */}
+      {(lineup.length > 0 || also.length > 0) && (
         <section className="mt-14">
-          <h2 className="type-label mb-4 text-concrete">{t.archive.alsoProgrammed}</h2>
-          <ul className="flex flex-wrap gap-3">
-            {also.map((artist) => (
+          <h2 className="type-label mb-4 text-concrete">{t.archive.lineup}</h2>
+          <ul className="flex max-w-4xl flex-wrap gap-3">
+            {[...lineup, ...also].map((artist) => (
               <li key={artist.slug}>
                 <Link
                   href={href(locale, "izveduvaci", artist.slug)}
@@ -153,6 +188,33 @@ export default async function EditionPage({
           <h2 className="type-label mb-6 text-concrete">{t.archive.partners}</h2>
           <PartnerWall locale={locale} editionFilter={edition.year} />
         </section>
+      )}
+
+      {/* Between the years — editorial pagination through the record */}
+      {(older || newer) && (
+        <nav
+          aria-label={t.archive.title}
+          className="mt-16 flex flex-wrap items-baseline justify-between gap-6 border-t-2 border-prussian pt-8"
+        >
+          {older ? (
+            <Link href={href(locale, "arhiva", older.slug)} className="group">
+              <span className="type-label text-concrete">← {t.archive.prevEdition}</span>
+              <span className="type-display ml-3 text-2xl text-exposure group-hover:text-paper">
+                {older.year}
+              </span>
+            </Link>
+          ) : (
+            <span />
+          )}
+          {newer && (
+            <Link href={href(locale, "arhiva", newer.slug)} className="group text-right">
+              <span className="type-display mr-3 text-2xl text-exposure group-hover:text-paper">
+                {newer.year}
+              </span>
+              <span className="type-label text-concrete">{t.archive.nextEdition} →</span>
+            </Link>
+          )}
+        </nav>
       )}
     </div>
   );
