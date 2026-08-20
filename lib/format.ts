@@ -24,6 +24,19 @@ export function formatDayShort(iso: string, locale: Locale): string {
   }).format(new Date(Date.UTC(y, m - 1, d)));
 }
 
+/** Pieces for the programme day chips: short weekday + bare day number. */
+export function formatDayChip(iso: string, locale: Locale): { weekday: string; day: string } {
+  const [y, m, d] = iso.split("-").map(Number);
+  const date = new Date(Date.UTC(y, m - 1, d));
+  return {
+    weekday: new Intl.DateTimeFormat(intlLocale[locale], {
+      weekday: "short",
+      timeZone: "UTC",
+    }).format(date),
+    day: String(d),
+  };
+}
+
 /** "4–10 септември 2022" style range; falls back to two full dates across months. */
 export function formatDateRange(start: string, end: string, locale: Locale): string {
   const [ys, ms, ds] = start.split("-").map(Number);

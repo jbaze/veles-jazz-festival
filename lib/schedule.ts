@@ -3,7 +3,7 @@ import { href } from "@/lib/i18n/config";
 import { getDict } from "@/lib/i18n/dictionaries";
 import type { FestivalEvent } from "@/lib/content";
 import { getArtist, getVenue } from "@/lib/content";
-import { formatDayShort } from "@/lib/format";
+import { formatDayChip, formatDayShort } from "@/lib/format";
 import type { MatrixDay, MatrixEvent, MatrixLabels } from "@/components/ScheduleMatrix";
 
 /** Server-side prep: turn edition events into serialisable matrix data. */
@@ -65,6 +65,7 @@ export function buildMatrix(
     .map(([date, dayEvents]) => ({
       date,
       label: formatDayShort(date, locale),
+      chip: formatDayChip(date, locale),
       isToday: todayIso ? date === todayIso : false,
       events: dayEvents.sort((a, b) => (a.time ?? "99").localeCompare(b.time ?? "99") || (a.order ?? 0) - (b.order ?? 0)).map(toMatrixEvent),
     }));
