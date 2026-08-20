@@ -250,6 +250,9 @@ Done-work notes:
   ScheduleMatrix.tsx), sodium-marked on the current festival day, URL-
   persisted via the existing `?den=` param; chips appear wherever ≥2
   dated days exist (archive editions now, /programa when 2026 dates land).
+- Header: mobile menu lists all ten sections (footer-tier group styled
+  smaller), auto-closes on route change (soft nav keeps <details>
+  mounted — the effect on pathname is the fix) and on Escape.
 - Socials readiness (question #6): fill `SOCIAL_LINKS` in
   `lib/i18n/config.ts` — one edit activates the footer follow row AND
   festival JSON-LD `sameAs`. Footer also has a no-JS back-to-top link.
