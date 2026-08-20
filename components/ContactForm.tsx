@@ -1,27 +1,35 @@
 "use client";
 
-import { useActionState } from "react";
+import { useActionState, useEffect, useState } from "react";
 import { contactAction, type FormState } from "@/lib/actions";
 import type { Locale } from "@/lib/i18n/config";
 import { getDict } from "@/lib/i18n/dictionaries";
 
-export default function ContactForm({
-  locale,
-  defaultSubject,
-}: {
-  locale: Locale;
-  defaultSubject?: string;
-}) {
+export default function ContactForm({ locale }: { locale: Locale }) {
   const t = getDict(locale);
   const [state, action, pending] = useActionState<FormState, FormData>(contactAction, {
     status: "idle",
   });
+  const [subject, setSubject] = useState(t.contact.formSubjectGeneral);
+
+  // Subject prefill from the URL (?tema=), applied after mount like the
+  // schedule filters — SSR always renders the neutral default.
+  useEffect(() => {
+    const tema = new URLSearchParams(window.location.search).get("tema");
+    const map: Record<string, string> = {
+      nastap: t.contact.artistSubject,
+      mediumi: t.contact.formSubjectPress,
+      partnerstvo: t.contact.formSubjectPartnership,
+    };
+    if (tema && map[tema]) setSubject(map[tema]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const inputCls =
     "w-full rounded-[2px] border-2 border-prussian bg-ink px-4 py-2.5 text-paper placeholder:text-concrete focus:border-exposure focus:outline-none";
 
   return (
-    <form action={action} className="flex flex-col gap-4">
+    <form id="kontakt-forma" action={action} className="flex flex-col gap-4">
       <div className="grid gap-4 sm:grid-cols-2">
         <div>
           <label htmlFor="cf-name" className="type-label mb-1.5 block text-concrete">
@@ -40,7 +48,13 @@ export default function ContactForm({
         <label htmlFor="cf-subject" className="type-label mb-1.5 block text-concrete">
           {t.contact.formSubject}
         </label>
-        <select id="cf-subject" name="subject" defaultValue={defaultSubject} className={inputCls}>
+        <select
+          id="cf-subject"
+          name="subject"
+          value={subject}
+          onChange={(e) => setSubject(e.target.value)}
+          className={inputCls}
+        >
           <option>{t.contact.formSubjectGeneral}</option>
           <option>{t.contact.formSubjectPress}</option>
           <option>{t.contact.formSubjectPartnership}</option>
@@ -57,7 +71,7 @@ export default function ContactForm({
         {t.contact.formSend}
       </button>
       <p aria-live="polite" className="min-h-5 text-sm">
-        {state.status === "success" && <span className="text-exposure">{t.signup.success}</span>}
+        {state.status === "success" && <span className="text-exposure">{t.contact.formSuccess}</span>}
         {state.status === "error" && <span className="text-sodium">{t.signup.error}</span>}
         {state.status === "unconfigured" && (
           <span className="text-concrete">{t.signup.notConfigured}</span>
