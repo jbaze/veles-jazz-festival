@@ -33,6 +33,8 @@ export type MatrixEvent = {
 export type MatrixDay = {
   date?: string; // ISO; undefined → date TBA bucket
   label: string;
+  /** Short weekday + bare day number for the day chips (dated days only). */
+  chip?: { weekday: string; day: string };
   isToday?: boolean;
   events: MatrixEvent[];
 };
@@ -111,10 +113,10 @@ export default function ScheduleMatrix({
   return (
     <div>
       <div className="mb-8 flex flex-col gap-4" role="group" aria-label={labels.matrixCaption}>
-        <FilterRow
+        <DayChips
           legend={labels.filterDay}
           allLabel={labels.filterAll}
-          options={days.filter((d) => d.date).map((d) => ({ value: d.date!, label: d.label }))}
+          days={days}
           value={filters.den}
           onChange={(v) => update({ den: v })}
         />
@@ -208,6 +210,79 @@ export default function ScheduleMatrix({
         </div>
       )}
     </div>
+  );
+}
+
+/**
+ * The Toronto pattern: the day is the primary axis, so dated days render
+ * as prominent chips (short weekday over an oversized day number) instead
+ * of a plain filter row. The current festival day keeps its sodium marker.
+ */
+function DayChips({
+  legend,
+  allLabel,
+  days,
+  value,
+  onChange,
+}: {
+  legend: string;
+  allLabel: string;
+  days: MatrixDay[];
+  value: string;
+  onChange: (value: string) => void;
+}) {
+  const dated = days.filter((d) => d.date && d.chip);
+  if (dated.length < 2) return null;
+  return (
+    <fieldset className="flex flex-wrap items-stretch gap-2">
+      <legend className="type-label float-left mb-2 mr-2 w-full text-concrete sm:mb-0 sm:w-auto sm:self-center">
+        {legend}:
+      </legend>
+      <button
+        type="button"
+        aria-pressed={!value}
+        onClick={() => onChange("")}
+        className={`type-label flex items-center rounded-[2px] border-2 px-4 transition-colors ${
+          !value
+            ? "border-exposure bg-prussian text-paper"
+            : "border-prussian text-concrete hover:border-exposure hover:text-paper"
+        }`}
+      >
+        {allLabel}
+      </button>
+      {dated.map((d) => {
+        const active = value === d.date;
+        return (
+          <button
+            key={d.date}
+            type="button"
+            aria-pressed={active}
+            aria-label={d.label}
+            onClick={() => onChange(active ? "" : d.date!)}
+            className={`flex flex-col items-center rounded-[2px] border-2 px-3.5 py-1.5 transition-colors ${
+              active
+                ? "border-exposure bg-prussian"
+                : d.isToday
+                  ? "border-sodium/70 hover:border-sodium"
+                  : "border-prussian hover:border-exposure"
+            }`}
+          >
+            <span
+              className={`type-label-sm ${d.isToday && !active ? "text-sodium" : "text-concrete"}`}
+            >
+              {d.chip!.weekday}
+            </span>
+            <span
+              className={`type-display text-2xl leading-none ${
+                active ? "text-paper" : d.isToday ? "text-sodium" : "text-exposure-bright"
+              }`}
+            >
+              {d.chip!.day}
+            </span>
+          </button>
+        );
+      })}
+    </fieldset>
   );
 }
 

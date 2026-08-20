@@ -242,6 +242,11 @@ decision for the user. Everything else waits on client data (photos,
 videos, 2026 programme).
 
 Done-work notes:
+- Day chips (Toronto pattern): the schedule matrix's day filter renders
+  as prominent weekday-over-numeral chips (`DayChips` in
+  ScheduleMatrix.tsx), sodium-marked on the current festival day, URL-
+  persisted via the existing `?den=` param; chips appear wherever ≥2
+  dated days exist (archive editions now, /programa when 2026 dates land).
 - Strands: `getStrands()` in the gateway derives the four named tracks
   (main stage / openings & performances / late programme / workshops &
   exhibitions) from event venue+type; `components/ProgrammeStrands.tsx`
