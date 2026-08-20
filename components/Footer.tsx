@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import type { Locale, SectionKey } from "@/lib/i18n/config";
 import { href } from "@/lib/i18n/config";
@@ -9,7 +10,7 @@ const MAIN_NAV: SectionKey[] = ["programa", "izveduvaci", "lokacii", "arhiva", "
 export default function Footer({ locale }: { locale: Locale }) {
   const t = getDict(locale);
   return (
-    <footer className="grain glow-deep mt-32 border-t-2 border-prussian bg-ink">
+    <footer className="grain glow-deep border-t-2 border-prussian bg-ink">
       {/* The wordmark as an object — oversized, hollow, cropped */}
       <div className="overflow-hidden border-b border-prussian/50" aria-hidden="true">
         <p className="type-display type-outline -mb-[0.18em] whitespace-nowrap text-center text-[clamp(4rem,13vw,11rem)] leading-none">
@@ -26,6 +27,18 @@ export default function Footer({ locale }: { locale: Locale }) {
             {t.city} · {t.country}
           </p>
           <p className="type-label mt-2 text-exposure">{t.footer.mandate}</p>
+          {/* The organiser's mark on a paper chip — its artwork needs a light
+              ground, and multiply prints it onto the paper */}
+          <div className="mt-8 w-fit border-2 border-prussian bg-paper p-3">
+            <Image
+              src="/images/brand/art-generator.jpg"
+              alt={t.media.orgLogoAlt}
+              width={531}
+              height={376}
+              sizes="112px"
+              className="w-28 mix-blend-multiply"
+            />
+          </div>
         </div>
 
         <nav aria-label={t.a11y.mainNav} className="flex flex-col gap-3">

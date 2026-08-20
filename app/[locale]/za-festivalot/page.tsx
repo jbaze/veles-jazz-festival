@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { Kicker, PendingNote, SectionHeading } from "@/components/ui";
 import { getPastEditions } from "@/lib/content";
@@ -50,13 +51,25 @@ export default async function AboutPage({ params }: { params: Promise<{ locale: 
       <section className="section-paper">
         <div className="mx-auto max-w-[1440px] px-4 py-14 sm:px-6">
           <h2 className="type-label mb-6 text-prussian">{t.about.governanceTitle}</h2>
-          <ul className="max-w-3xl space-y-4">
-            {t.about.governanceItems.map((item, i) => (
-              <li key={i} className="border-l-2 border-prussian pl-4 text-ink/90">
-                {item}
-              </li>
-            ))}
-          </ul>
+          <div className="grid gap-10 md:grid-cols-[minmax(0,3fr)_minmax(0,1fr)] md:items-start">
+            <ul className="max-w-3xl space-y-4">
+              {t.about.governanceItems.map((item, i) => (
+                <li key={i} className="border-l-2 border-prussian pl-4 text-ink/90">
+                  {item}
+                </li>
+              ))}
+            </ul>
+            {/* The organiser's own mark, printed onto the paper ground
+                (multiply drops the JPEG's white background) */}
+            <Image
+              src="/images/brand/art-generator.jpg"
+              alt={t.media.orgLogoAlt}
+              width={531}
+              height={376}
+              sizes="(min-width: 768px) 280px, 60vw"
+              className="w-56 max-w-full justify-self-center mix-blend-multiply md:w-full md:max-w-[280px] md:justify-self-end"
+            />
+          </div>
         </div>
       </section>
 
