@@ -211,12 +211,15 @@ Artist/venue/edition/event schemas all carry the optional `image`. The
 
 ## Queued next work (agreed with the user, not yet built)
 
-1. **Named programme strands** (Bansko pattern): surface the late-night
-   parking track and workshops/exhibitions as labelled tracks on
-   `/programa` — event `type` already distinguishes them.
-2. **Aftermovie/video slot** on home + archive editions — `mediaEmbeds`
+1. **Aftermovie/video slot** on home + archive editions — `mediaEmbeds`
    exists in the schema; render YouTube embeds when links are provided,
    honest placeholder until then.
+
+(Programme strands are DONE: `getStrands()` in the content gateway derives
+the four named tracks — main stage / openings & performances / late
+programme / workshops & exhibitions — from event venue+type; a strand only
+exists while events match it. `components/ProgrammeStrands.tsx` renders the
+band on `/programa` below the matrix/empty state.)
 
 Then: iterate news/press/about pages to the same editorial level as
 venues/artists; gallery lightbox once photos clear.

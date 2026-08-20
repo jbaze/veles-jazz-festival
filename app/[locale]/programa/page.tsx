@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import ProgrammeStrands from "@/components/ProgrammeStrands";
 import ScheduleMatrix from "@/components/ScheduleMatrix";
 import SignupForm from "@/components/SignupForm";
 import { JsonLd, Kicker, SectionHeading } from "@/components/ui";
@@ -64,6 +65,9 @@ export default async function ProgrammePage({ params }: { params: Promise<{ loca
           <SignupForm locale={locale} />
         </div>
       )}
+
+      {/* The named tracks the archive proves — structure while dates pend */}
+      <ProgrammeStrands locale={locale} />
     </div>
   );
 }

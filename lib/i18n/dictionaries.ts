@@ -189,6 +189,32 @@ const mk = {
     orgLogoAlt: "Лого на Здружението „АРТ ГЕНЕРАТОР“ — Велес",
   },
 
+  strands: {
+    title: "Насоки на програмата",
+    lead: "Секое издание досега е градено од овие насоки — низ салата, споменикот и паркингот.",
+    eventsLabel: "настани",
+    toVenue: "Кон локацијата",
+    toArchive: "Кон архивата",
+    items: {
+      "glavna-scena": {
+        name: "Главна сцена",
+        desc: "Седечки концерти во салата на Театарот „Ј.Х.К. Џинот“, придружени со видео-мапирање.",
+      },
+      "otvoranje-performansi": {
+        name: "Отворање и перформанси",
+        desc: "Отворања, концерти и перформанси на отворено кај Спомен-костурницата.",
+      },
+      "docna-programa": {
+        name: "Доцна програма",
+        desc: "DJ/VJ сетови, доцни концерти и завршната журка на паркингот зад театарот.",
+      },
+      "rabotilnici-izlozbi": {
+        name: "Работилници и изложби",
+        desc: "Работилници за цијанотипија, фотографски и ликовни изложби.",
+      },
+    },
+  },
+
   news: {
     title: "Вести",
     readMore: "Прочитај повеќе",
@@ -474,6 +500,32 @@ const en: Dict = {
   media: {
     photoCredit: "Photo",
     orgLogoAlt: "Logo of the ART GENERATOR association — Veles",
+  },
+
+  strands: {
+    title: "Programme tracks",
+    lead: "Every edition so far has been built from these tracks — across the auditorium, the monument and the parking lot.",
+    eventsLabel: "events",
+    toVenue: "To the venue",
+    toArchive: "To the archive",
+    items: {
+      "glavna-scena": {
+        name: "Main stage",
+        desc: "Seated concerts in the J.H.K. Dzhinot Theatre auditorium, accompanied by video mapping.",
+      },
+      "otvoranje-performansi": {
+        name: "Openings & performances",
+        desc: "Open-air openings, concerts and performances at the Memorial Ossuary.",
+      },
+      "docna-programa": {
+        name: "Late programme",
+        desc: "DJ/VJ sets, late concerts and the closing party in the parking lot behind the theatre.",
+      },
+      "rabotilnici-izlozbi": {
+        name: "Workshops & exhibitions",
+        desc: "Cyanotype workshops, photography and fine-art exhibitions.",
+      },
+    },
   },
 
   news: {
