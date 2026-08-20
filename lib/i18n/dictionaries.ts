@@ -344,6 +344,7 @@ const mk = {
     founder: "Основан и финансиран од Општина Велес",
     ministry: "Поддржан од Министерството за култура и туризам",
     mandate: "Мандат 2026–2028",
+    backToTop: "Кон врвот",
   },
 
   notFound: {
@@ -700,6 +701,7 @@ const en: Dict = {
     founder: "Founded and financed by the Municipality of Veles",
     ministry: "Supported by the Ministry of Culture and Tourism",
     mandate: "Mandate 2026–2028",
+    backToTop: "Back to top",
   },
 
   notFound: {
