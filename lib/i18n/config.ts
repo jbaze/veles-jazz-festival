@@ -48,3 +48,10 @@ export function alternates(section?: SectionKey, slug?: string) {
  */
 export const siteUrl =
   process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") ?? "https://jazzveles.mk";
+
+/**
+ * Official social profiles — EMPTY until the client confirms the handles
+ * (open question #6). Filling this in activates the footer's follow row
+ * and the festival JSON-LD `sameAs` in one place. Never guess handles.
+ */
+export const SOCIAL_LINKS: { label: string; url: string }[] = [];
