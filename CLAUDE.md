@@ -250,7 +250,10 @@ Done-work notes:
 - Strands: `getStrands()` in the gateway derives the four named tracks
   (main stage / openings & performances / late programme / workshops &
   exhibitions) from event venue+type; `components/ProgrammeStrands.tsx`
-  renders the band on `/programa`.
+  renders the band on `/programa`. The classifier is exported as
+  `strandOf(event)`, and the schedule matrix carries a strand filter row
+  (`?nasoka=`, canonical order) — live on archive editions, on
+  `/programa` automatically when 2026 events land.
 - Video: `mediaEmbeds` (URL array) exists on Edition AND Event. To publish
   an aftermovie, add the YouTube link to the edition in
   `lib/content/data/editions.ts` — the newest edition with a link renders

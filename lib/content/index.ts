@@ -184,37 +184,43 @@ export type Strand = {
  * daytime workshop/exhibition programme. Nothing here is authored — a
  * strand only exists while events match it.
  */
+const isDaytime = (e: FestivalEvent) => e.type === "workshop" || e.type === "exhibition";
+
+/** Canonical strand definitions — the single classifier for band and matrix. */
+const STRAND_DEFS: { id: StrandId; venueSlug?: string; match: (e: FestivalEvent) => boolean }[] = [
+  {
+    id: "glavna-scena",
+    venueSlug: "teatar-dzinot",
+    match: (e) => !isDaytime(e) && e.venue === "teatar-dzinot",
+  },
+  {
+    id: "otvoranje-performansi",
+    venueSlug: "spomen-kosturnica",
+    match: (e) => !isDaytime(e) && e.venue === "spomen-kosturnica",
+  },
+  {
+    id: "docna-programa",
+    venueSlug: "parking-na-teatarot",
+    match: (e) => !isDaytime(e) && e.venue === "parking-na-teatarot",
+  },
+  { id: "rabotilnici-izlozbi", match: isDaytime },
+];
+
+/** The named track an event belongs to, if any (venue may still be TBA). */
+export function strandOf(event: FestivalEvent): StrandId | undefined {
+  return STRAND_DEFS.find((d) => d.match(event))?.id;
+}
+
 export function getStrands(): Strand[] {
-  const isDaytime = (e: FestivalEvent) => e.type === "workshop" || e.type === "exhibition";
-  const defs: { id: StrandId; venueSlug?: string; match: (e: FestivalEvent) => boolean }[] = [
-    {
-      id: "glavna-scena",
-      venueSlug: "teatar-dzinot",
-      match: (e) => !isDaytime(e) && e.venue === "teatar-dzinot",
-    },
-    {
-      id: "otvoranje-performansi",
-      venueSlug: "spomen-kosturnica",
-      match: (e) => !isDaytime(e) && e.venue === "spomen-kosturnica",
-    },
-    {
-      id: "docna-programa",
-      venueSlug: "parking-na-teatarot",
-      match: (e) => !isDaytime(e) && e.venue === "parking-na-teatarot",
-    },
-    { id: "rabotilnici-izlozbi", match: isDaytime },
-  ];
-  return defs
-    .map((d) => {
-      const matched = events.filter(d.match);
-      return {
-        id: d.id,
-        venueSlug: d.venueSlug,
-        count: matched.length,
-        years: [...new Set(matched.map((e) => e.editionYear))].sort((a, b) => a - b),
-      };
-    })
-    .filter((s) => s.count > 0);
+  return STRAND_DEFS.map((d) => {
+    const matched = events.filter(d.match);
+    return {
+      id: d.id,
+      venueSlug: d.venueSlug,
+      count: matched.length,
+      years: [...new Set(matched.map((e) => e.editionYear))].sort((a, b) => a - b),
+    };
+  }).filter((s) => s.count > 0);
 }
 
 // ——— Partners ———

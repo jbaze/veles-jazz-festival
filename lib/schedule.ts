@@ -1,8 +1,8 @@
 import type { Locale } from "@/lib/i18n/config";
 import { href } from "@/lib/i18n/config";
 import { getDict } from "@/lib/i18n/dictionaries";
-import type { FestivalEvent } from "@/lib/content";
-import { getArtist, getVenue } from "@/lib/content";
+import type { FestivalEvent, StrandId } from "@/lib/content";
+import { getArtist, getStrands, getVenue, strandOf } from "@/lib/content";
 import { formatDayChip, formatDayShort } from "@/lib/format";
 import type { MatrixDay, MatrixEvent, MatrixLabels } from "@/components/ScheduleMatrix";
 
@@ -15,6 +15,7 @@ export function buildMatrix(
   days: MatrixDay[];
   venues: { slug: string; label: string }[];
   types: { slug: string; label: string }[];
+  strands: { slug: string; label: string }[];
   labels: MatrixLabels;
 } {
   const t = getDict(locale);
@@ -36,6 +37,7 @@ export function buildMatrix(
         .filter((n): n is string => Boolean(n))
         // don't repeat a name the event title already carries
         .filter((n) => !e.title[locale].includes(n)),
+      strand: strandOf(e),
       admission: e.admission,
       admissionLabel:
         e.admission === "free"
@@ -86,10 +88,19 @@ export function buildMatrix(
   const typeSlugs = [...new Set(events.map((e) => e.type))];
   const types = typeSlugs.map((slug) => ({ slug, label: t.types[slug] }));
 
+  const present = new Set<StrandId>(
+    events.map(strandOf).filter((s): s is StrandId => Boolean(s)),
+  );
+  // Canonical strand order, filtered to what this programme actually has.
+  const strands = getStrands()
+    .filter((s) => present.has(s.id))
+    .map((s) => ({ slug: s.id, label: t.strands.items[s.id].name }));
+
   const labels: MatrixLabels = {
     filterDay: t.schedule.filterDay,
     filterVenue: t.schedule.filterVenue,
     filterType: t.schedule.filterType,
+    filterStrand: t.schedule.filterStrand,
     filterAll: t.schedule.filterAll,
     filterReset: t.schedule.filterReset,
     noResults: t.schedule.noResults,
@@ -98,5 +109,5 @@ export function buildMatrix(
     matrixCaption: t.schedule.matrixCaption,
   };
 
-  return { days, venues, types, labels };
+  return { days, venues, types, strands, labels };
 }
