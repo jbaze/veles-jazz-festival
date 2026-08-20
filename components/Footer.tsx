@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { Locale, SectionKey } from "@/lib/i18n/config";
-import { href } from "@/lib/i18n/config";
+import { href, SOCIAL_LINKS } from "@/lib/i18n/config";
 import { getDict } from "@/lib/i18n/dictionaries";
 
 const FOOTER_NAV: SectionKey[] = ["galerija", "vesti", "za-mediumi", "partneri", "kontakt"];
@@ -39,6 +39,26 @@ export default function Footer({ locale }: { locale: Locale }) {
               className="w-28 mix-blend-multiply"
             />
           </div>
+          {/* Official profiles — renders once SOCIAL_LINKS is filled (question #6) */}
+          {SOCIAL_LINKS.length > 0 && (
+            <div className="mt-8">
+              <p className="type-label-sm text-concrete">{t.contact.socialTitle}</p>
+              <ul className="mt-2 flex flex-wrap gap-x-5 gap-y-2">
+                {SOCIAL_LINKS.map((s) => (
+                  <li key={s.url}>
+                    <a
+                      href={s.url}
+                      rel="noopener noreferrer"
+                      target="_blank"
+                      className="type-label link-sweep text-paper/80 hover:text-paper"
+                    >
+                      {s.label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
         </div>
 
         <nav aria-label={t.a11y.mainNav} className="flex flex-col gap-3">
@@ -74,6 +94,9 @@ export default function Footer({ locale }: { locale: Locale }) {
           <p className="md:ml-auto">
             © {new Date().getFullYear()} {t.siteName}
           </p>
+          <a href="#main" className="type-label link-sweep text-concrete hover:text-paper">
+            ↑ {t.footer.backToTop}
+          </a>
         </div>
       </div>
     </footer>
