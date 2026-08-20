@@ -49,9 +49,25 @@ export default async function ArtistPage({
   const t = getDict(locale);
   const appearances = getArtistAppearances(slug);
   const years = getArtistEditionYears(slug);
-  const appearanceYears = [...new Set(appearances.map((a) => a.editionYear))];
   const links = artist.links ? Object.entries(artist.links).filter(([, v]) => v) : [];
   const recurring = years.length > 1;
+
+  // Related artists — co-performers first, then same-edition colleagues.
+  const coPerformers = [
+    ...new Set(appearances.flatMap((a) => a.event.artists).filter((s) => s !== slug)),
+  ];
+  const sameEdition = getArtists()
+    .filter(
+      (a) =>
+        a.slug !== slug &&
+        !coPerformers.includes(a.slug) &&
+        getArtistEditionYears(a.slug).some((y) => years.includes(y)),
+    )
+    .map((a) => a.slug);
+  const related = [...coPerformers, ...sameEdition]
+    .slice(0, 8)
+    .map((s) => getArtist(s))
+    .filter((a): a is NonNullable<typeof a> => Boolean(a));
 
   return (
     <>
@@ -145,13 +161,16 @@ export default async function ArtistPage({
           {artist.bio?.[locale] ?? t.artists.bioPending}
         </p>
 
-        {/* Appearances across editions — where the archive pays off (§9) */}
-        {appearances.length > 0 && (
+        {/* Appearances across editions — where the archive pays off (§9).
+            Built from ALL connected years, so alsoProgrammed-only artists
+            get an honest timeline entry instead of an empty page. */}
+        {years.length > 0 && (
           <section className="mt-16">
             <h2 className="type-label mb-8 text-concrete">{t.artists.appearances}</h2>
             <div className="flex flex-col gap-12 border-l-2 border-prussian pl-6 md:pl-10">
-              {appearanceYears.map((year) => {
+              {years.map((year) => {
                 const edition = getEdition(year);
+                const yearEvents = appearances.filter((a) => a.editionYear === year);
                 return (
                   <div key={year} className="relative">
                     <span
@@ -167,17 +186,40 @@ export default async function ArtistPage({
                     {edition && (
                       <span className="type-label ml-4 text-concrete">{edition.title[locale]}</span>
                     )}
-                    <div className="mt-5 grid gap-5 md:grid-cols-3">
-                      {appearances
-                        .filter((a) => a.editionYear === year)
-                        .map((a) => (
+                    {yearEvents.length > 0 ? (
+                      <div className="mt-5 grid gap-5 md:grid-cols-3">
+                        {yearEvents.map((a) => (
                           <EventCard key={a.event.slug} event={a.event} locale={locale} />
                         ))}
-                    </div>
+                      </div>
+                    ) : (
+                      <p className="mt-4 max-w-xl text-sm text-concrete">
+                        {t.artists.alsoProgrammedNote}
+                      </p>
+                    )}
                   </div>
                 );
               })}
             </div>
+          </section>
+        )}
+
+        {/* Derived from shared events and editions — never curated by hand */}
+        {related.length > 0 && (
+          <section className="mt-16">
+            <h2 className="type-label mb-6 text-concrete">{t.artists.related}</h2>
+            <ul className="flex max-w-4xl flex-wrap gap-3">
+              {related.map((a) => (
+                <li key={a.slug}>
+                  <Link
+                    href={href(locale, "izveduvaci", a.slug)}
+                    className="card block px-4 py-2 text-sm font-semibold text-paper transition-colors hover:border-exposure hover:text-exposure"
+                  >
+                    {a.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
           </section>
         )}
       </div>
