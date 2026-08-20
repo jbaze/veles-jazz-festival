@@ -1,6 +1,6 @@
 import type { Locale } from "@/lib/i18n/config";
 import { href, siteUrl } from "@/lib/i18n/config";
-import type { Artist, Edition, FestivalEvent, Venue } from "@/lib/content";
+import type { Artist, Edition, FestivalEvent, NewsPost, Venue } from "@/lib/content";
 import { getVenue, getArtist } from "@/lib/content";
 
 /**
@@ -79,6 +79,20 @@ export function artistJsonLd(artist: Artist, locale: Locale) {
     ...(artist.nameLocal ? { alternateName: artist.nameLocal } : {}),
     url: `${siteUrl}${href(locale, "izveduvaci", artist.slug)}`,
     ...(artist.links?.web ? { sameAs: [artist.links.web] } : {}),
+  };
+}
+
+export function newsPostJsonLd(post: NewsPost, locale: Locale) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "NewsArticle",
+    headline: post.title[locale],
+    description: post.excerpt[locale],
+    datePublished: post.publishedAt,
+    inLanguage: locale,
+    url: `${siteUrl}${href(locale, "vesti", post.slug)}`,
+    author: ORGANIZER,
+    publisher: ORGANIZER,
   };
 }
 

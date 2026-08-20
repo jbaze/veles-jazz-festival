@@ -212,9 +212,13 @@ Artist/venue/edition/event schemas all carry the optional `image`. The
 ## Queued next work (agreed with the user, not yet built)
 
 The original queue (photo-readiness, newsletter band, programme strands,
-aftermovie slot) is fully shipped. Next, as agreed: iterate news/press/
-about pages to the same editorial level as venues/artists; gallery
-lightbox once photos clear; admission states once question #3 is answered.
+aftermovie slot) is fully shipped, and news/press are now at editorial
+level (featured-post index + dated wire list, article pages with lead
+paragraph + NewsArticle JSON-LD + related teasers via
+`components/NewsTeasers.tsx`, press page with derived stats band +
+copy-ready boilerplate + latest announcements). Next, as agreed: bring
+the about page to the same level; gallery lightbox once photos clear;
+admission states once question #3 is answered.
 
 Done-work notes:
 - Strands: `getStrands()` in the gateway derives the four named tracks

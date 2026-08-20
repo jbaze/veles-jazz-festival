@@ -228,6 +228,9 @@ const mk = {
     readMore: "Прочитај повеќе",
     published: "Објавено",
     backToNews: "Назад кон вестите",
+    countLabel: "објави",
+    featured: "Најново",
+    moreNews: "Повеќе вести",
   },
 
   press: {
@@ -245,6 +248,11 @@ const mk = {
       ["Застапени земји", "САД, Грција, Франција, Германија, Финска, Австралија, Северна Македонија"],
       ["Главни локации", "Театар „Ј.Х.К. Џинот“, Спомен-костурница, Europe House Велес, паркинг на театарот"],
     ],
+    boilerplateTitle: "Кратко за фестивалот",
+    boilerplateNote: "Текст за употреба во објави.",
+    boilerplate:
+      "Фестивалот на џез, ворлд и современа музика — Велес е основан во 2022 година од Општина Велес, а организацијата ѝ е доверена на Здружението за култура, уметност и млади „АРТ ГЕНЕРАТОР“ — Велес. Досега се одржани четири изданија, со изведувачи од САД, Грција, Франција, Германија, Финска, Австралија и Северна Македонија, на локации низ градот — од Театарот „Ј.Х.К. Џинот“ до Спомен-костурницата. Петтото издание се очекува во септември 2026.",
+    newsTitle: "Последни објави",
     downloadsTitle: "Преземања",
     downloadsPending:
       "Лого-пакет и фотографии во висока резолуција ќе бидат достапни овде по потврда на брендот и фото-кредитите.",
@@ -549,6 +557,9 @@ const en: Dict = {
     readMore: "Read more",
     published: "Published",
     backToNews: "Back to news",
+    countLabel: "posts",
+    featured: "Latest",
+    moreNews: "More news",
   },
 
   press: {
@@ -566,6 +577,11 @@ const en: Dict = {
       ["Countries represented", "USA, Greece, France, Germany, Finland, Australia, North Macedonia"],
       ["Main venues", "J.H.K. Dzhinot Theatre, the Memorial Ossuary, Europe House Veles, the theatre parking lot"],
     ],
+    boilerplateTitle: "About the festival, in short",
+    boilerplateNote: "Copy for use in coverage.",
+    boilerplate:
+      "The Festival of Jazz, World and Contemporary Music — Veles was founded in 2022 by the Municipality of Veles, with the organisation entrusted to the Association for Culture, Art and Youth “ART GENERATOR” — Veles. Four editions have been held so far, with artists from the USA, Greece, France, Germany, Finland, Australia and North Macedonia, at venues across the city — from the J.H.K. Dzhinot Theatre to the Memorial Ossuary. The fifth edition is expected in September 2026.",
+    newsTitle: "Latest announcements",
     downloadsTitle: "Downloads",
     downloadsPending:
       "Logo pack and high-resolution photography will be available here once the brand and photo credits are confirmed.",
