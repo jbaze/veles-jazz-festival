@@ -310,6 +310,10 @@ const mk = {
     artistBody:
       "Изведувач сте или агент? Пратете ни линкови до музика, техничка спецификација и кратка биографија. Пријавите се разгледуваат при составување на програмата.",
     artistSubject: "Пријава за настап",
+    artistCta: "Отвори ја формата со оваа тема",
+    formSuccess: "Пораката е испратена. Ќе одговориме наскоро.",
+    pressBody:
+      "Факти, точни имиња и материјали за новинари — сето тоа на страницата за медиуми.",
     socialTitle: "Следете нè",
     socialPending: "Официјалните профили се потврдуваат.",
   },
@@ -654,6 +658,9 @@ const en: Dict = {
     artistBody:
       "Are you an artist or an agent? Send links to your music, a technical rider and a short bio. Submissions are reviewed when the programme is being assembled.",
     artistSubject: "Artist submission",
+    artistCta: "Open the form with this subject",
+    formSuccess: "Message sent. We'll reply soon.",
+    pressBody: "Facts, correct names and materials for journalists — all on the press page.",
     socialTitle: "Follow us",
     socialPending: "Official profiles are being confirmed.",
   },
