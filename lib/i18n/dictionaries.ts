@@ -63,6 +63,7 @@ const mk = {
     filterDay: "Ден",
     filterVenue: "Локација",
     filterType: "Тип",
+    filterStrand: "Насока",
     filterAll: "Сите",
     filterReset: "Исчисти филтри",
     empty: {
@@ -398,6 +399,7 @@ const en: Dict = {
     filterDay: "Day",
     filterVenue: "Venue",
     filterType: "Type",
+    filterStrand: "Track",
     filterAll: "All",
     filterReset: "Clear filters",
     empty: {
