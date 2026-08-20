@@ -52,6 +52,7 @@ export default async function ProgrammePage({ params }: { params: Promise<{ loca
             days={matrix.days}
             venues={matrix.venues}
             types={matrix.types}
+            strands={matrix.strands}
             labels={matrix.labels}
           />
         </div>
