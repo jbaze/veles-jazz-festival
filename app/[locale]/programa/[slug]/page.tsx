@@ -4,7 +4,14 @@ import { notFound } from "next/navigation";
 import EventCard from "@/components/EventCard";
 import Photo from "@/components/Photo";
 import VideoEmbed from "@/components/VideoEmbed";
-import { JsonLd, Kicker, PendingNote, SectionHeading, TypeBadge } from "@/components/ui";
+import {
+  AdmissionBadge,
+  JsonLd,
+  Kicker,
+  PendingNote,
+  SectionHeading,
+  TypeBadge,
+} from "@/components/ui";
 import {
   getArtist,
   getEdition,
@@ -81,15 +88,17 @@ export default async function EventPage({
 
           <p className="mt-6 flex flex-wrap items-center gap-3">
             <TypeBadge type={event.type} locale={locale} />
-            <span
-              className={`type-label ${event.admission === "free" ? "text-exposure" : "text-concrete"}`}
-            >
-              {event.admission === "free"
-                ? t.event.admissionFree
-                : event.admission === "ticketed"
-                  ? t.event.admissionTicketed
-                  : t.event.admissionTbc}
-            </span>
+            <AdmissionBadge admission={event.admission} locale={locale} />
+            {event.admission === "ticketed" && event.ticketUrl && (
+              <a
+                href={event.ticketUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn"
+              >
+                {t.event.buyTickets} ↗
+              </a>
+            )}
           </p>
 
           {event.image && (
