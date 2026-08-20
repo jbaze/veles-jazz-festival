@@ -14,16 +14,19 @@ import VideoEmbed from "@/components/VideoEmbed";
 import { AllLink, JsonLd, Kicker, SectionHeading } from "@/components/ui";
 import {
   getArtist,
+  getArtistEditionYears,
   getCurrentEdition,
   getEvents,
   getEventsByEdition,
   getNews,
   getPastEditions,
+  getStrands,
   getVenues,
 } from "@/lib/content";
-import { href, type Locale } from "@/lib/i18n/config";
+import NewsTeasers from "@/components/NewsTeasers";
+import { href, type Locale, type SectionKey } from "@/lib/i18n/config";
 import { getDict } from "@/lib/i18n/dictionaries";
-import { formatDate, formatDateRange } from "@/lib/format";
+import { formatDateRange } from "@/lib/format";
 import { festivalJsonLd } from "@/lib/seo/jsonld";
 import { pageMeta } from "@/lib/seo/meta";
 
@@ -67,15 +70,18 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
   const pastEditions = getPastEditions();
   const editionWithVideo = pastEditions.find((e) => e.mediaEmbeds?.length);
 
-  // The record, in numbers — computed from content, not typed by hand.
+  // The record, in numbers — computed from content, not typed by hand;
+  // each cell links to the section that proves it.
   const allEvents = getEvents().filter((e) => e.editionYear !== edition.year);
   const countryCount = new Set(pastEditions.flatMap((e) => e.countries)).size;
-  const stats: [string, string][] = [
-    [String(pastEditions.length), locale === "mk" ? "изданија" : "editions"],
-    [String(countryCount), locale === "mk" ? "земји" : "countries"],
-    [String(getVenues().length), locale === "mk" ? "локации" : "venues"],
-    [`${allEvents.length}+`, locale === "mk" ? "настани" : "events"],
+  const stats: [string, string, SectionKey][] = [
+    [String(pastEditions.length), locale === "mk" ? "изданија" : "editions", "arhiva"],
+    [String(countryCount), locale === "mk" ? "земји" : "countries", "izveduvaci"],
+    [String(getVenues().length), locale === "mk" ? "локации" : "venues", "lokacii"],
+    [`${allEvents.length}+`, locale === "mk" ? "настани" : "events", "arhiva"],
   ];
+
+  const strands = getStrands();
 
   const marqueeItems =
     locale === "mk"
@@ -189,17 +195,23 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
 
       {/* 3 — The record, in numbers */}
       <section className="grain border-b-2 border-prussian bg-ink">
-        <dl className="mx-auto grid max-w-[1440px] grid-cols-2 md:grid-cols-4">
-          {stats.map(([value, label], i) => (
-            <div
+        <ul className="mx-auto grid max-w-[1440px] grid-cols-2 md:grid-cols-4">
+          {stats.map(([value, label, section], i) => (
+            <li
               key={label}
-              className={`px-6 py-10 md:py-14 ${i > 0 ? "border-l border-prussian/50" : ""} ${i >= 2 ? "border-t border-prussian/50 md:border-t-0" : ""}`}
+              className={`${i > 0 ? "border-l border-prussian/50" : ""} ${i >= 2 ? "border-t border-prussian/50 md:border-t-0" : ""}`}
             >
-              <dd className="type-display text-5xl text-exposure-bright md:text-7xl">{value}</dd>
-              <dt className="type-label mt-3 text-concrete">{label}</dt>
-            </div>
+              <Link href={href(locale, section)} className="group block px-6 py-10 md:py-14">
+                <span className="type-display block text-5xl text-exposure-bright transition-colors group-hover:text-paper md:text-7xl">
+                  {value}
+                </span>
+                <span className="type-label mt-3 block text-concrete transition-colors group-hover:text-exposure">
+                  {label} →
+                </span>
+              </Link>
+            </li>
           ))}
-        </dl>
+        </ul>
       </section>
 
       <div className="mx-auto max-w-[1440px] px-4 sm:px-6">
@@ -259,11 +271,12 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
                   <p className="font-bold leading-snug text-paper transition-colors group-hover:text-exposure-bright">
                     {artist.name}
                   </p>
-                  {artist.countries.length > 0 && (
-                    <p className="type-label-sm mt-1.5 text-concrete">
-                      {artist.countries.join(" / ")}
-                    </p>
-                  )}
+                  <p className="type-label-sm mt-1.5 flex flex-wrap gap-x-2 text-concrete">
+                    {artist.countries.length > 0 && <span>{artist.countries.join(" / ")}</span>}
+                    <span className="text-exposure">
+                      {getArtistEditionYears(artist.slug).join(" · ")}
+                    </span>
+                  </p>
                 </div>
               </Link>
             ))}
@@ -322,6 +335,41 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
         </div>
       </section>
 
+      {/* 6b — The named tracks, compact (the Bansko pattern surfacing on home) */}
+      {strands.length > 0 && (
+        <section className="border-b-2 border-prussian bg-ink-deep/40">
+          <div className="mx-auto max-w-[1440px] px-4 py-10 sm:px-6 md:py-12">
+            <div className="flex flex-wrap items-baseline justify-between gap-4">
+              <p className="type-label text-concrete">{t.strands.title}</p>
+              <AllLink href={href(locale, "programa")}>{t.nav.programa}</AllLink>
+            </div>
+            <ol className="mt-6 grid gap-x-10 gap-y-5 sm:grid-cols-2 xl:grid-cols-4">
+              {strands.map((s, i) => (
+                <li key={s.id}>
+                  <Link
+                    href={href(locale, "programa")}
+                    className="group flex items-baseline gap-3"
+                  >
+                    <span aria-hidden="true" className="type-display type-outline text-3xl">
+                      0{i + 1}
+                    </span>
+                    <span className="min-w-0">
+                      <span className="block font-bold leading-snug text-paper transition-colors group-hover:text-exposure-bright">
+                        {t.strands.items[s.id].name}
+                      </span>
+                      <span className="type-label-sm text-concrete">
+                        <span className="text-exposure-bright">{s.count}</span>{" "}
+                        {t.strands.eventsLabel} · {s.years.join(" · ")}
+                      </span>
+                    </span>
+                  </Link>
+                </li>
+              ))}
+            </ol>
+          </div>
+        </section>
+      )}
+
       {/* 7 — Archive band: the delivered years, oversized */}
       <section className="grain glow-exposure overflow-hidden border-b-2 border-prussian bg-ink">
         <div className="mx-auto max-w-[1440px] px-4 py-16 sm:px-6 md:py-20">
@@ -364,23 +412,8 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
             <SectionHeading>{t.home.latestNews}</SectionHeading>
             <AllLink href={href(locale, "vesti")}>{t.home.allNews}</AllLink>
           </div>
-          <div className="mt-10 grid gap-5 md:grid-cols-3">
-            {news.map((post) => (
-              <Link
-                key={post.slug}
-                href={href(locale, "vesti", post.slug)}
-                className="card card-hover group flex flex-col p-6"
-              >
-                <p className="type-label text-concrete">{formatDate(post.publishedAt, locale)}</p>
-                <h3 className="mt-3 text-lg font-bold leading-snug text-paper transition-colors group-hover:text-exposure-bright">
-                  {post.title[locale]}
-                </h3>
-                <p className="mt-3 text-sm leading-relaxed text-concrete">{post.excerpt[locale]}</p>
-                <p className="type-label mt-auto pt-5 text-exposure" aria-hidden="true">
-                  →
-                </p>
-              </Link>
-            ))}
+          <div className="mt-10">
+            <NewsTeasers posts={news} locale={locale} />
           </div>
         </section>
 
