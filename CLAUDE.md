@@ -138,6 +138,11 @@ Never set positioning in shared custom classes; let call sites do it.
   next-server` fails: the process name is truncated). Symptom: unstyled
   pages / 404 CSS chunks.
 - Event `order` is optional — sort with `(a.order ?? 0)`.
+- Mobile overflow traps (both bit on 375px): a `grid` with only
+  `md:grid-cols-*` leaves the implicit mobile track sized to min-content —
+  always add `grid-cols-1` when children hold inputs or Unbounded words;
+  and „деметрополизација“ (17 chars) overflows `type-display-1/-2` clamp
+  minimums — the two mission quotes use custom `text-[clamp(1.375rem,…)]`.
 - The dictionaries were once corrupted by mojibake in Cyrillic strings —
   if you bulk-edit them, grep for `�` afterwards.
 - Playwright: use the preinstalled browser

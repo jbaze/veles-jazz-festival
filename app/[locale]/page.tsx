@@ -170,7 +170,8 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
           </span>
           <div>
             <p className="type-label text-prussian">{t.home.thesisTitle}</p>
-            <blockquote className="type-display type-display-2 mt-6 max-w-4xl text-ink">
+            {/* Custom clamp floor: „деметрополизација“ must fit 320px screens */}
+            <blockquote className="type-display mt-6 max-w-4xl text-[clamp(1.375rem,5vw,3.75rem)] text-ink">
               {locale === "mk" ? `${t.home.thesisQuote}“` : `${t.home.thesisQuote}”`}
             </blockquote>
             <p className="mt-8 max-w-2xl text-lg text-ink/75">{t.home.thesisLead}</p>
@@ -218,7 +219,9 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
               ))}
             </Reveal>
           ) : (
-            <div className="mt-10 grid gap-6 md:grid-cols-2">
+            // grid-cols-1 matters: an implicit track sizes to min-content and
+            // the signup input + Unbounded words overflow 375px viewports
+            <div className="mt-10 grid grid-cols-1 gap-6 md:grid-cols-2">
               <div className="card grain flex flex-col justify-center p-10">
                 <p className="type-display text-2xl text-paper md:text-3xl">
                   {t.schedule.empty.title}
