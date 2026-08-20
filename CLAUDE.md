@@ -230,10 +230,16 @@ paragraph + NewsArticle JSON-LD + related teasers via
 `components/NewsTeasers.tsx`, press page with derived stats band +
 copy-ready boilerplate + latest announcements), the about page matches
 (mission-quote hero, stats band, editorial archive rows, Organization
-JSON-LD), and the gallery lightbox is built photo-ready (see
-Photo-readiness above). Remaining: admission states once question #3 is
-answered; everything else waits on client data (photos, videos, 2026
-programme).
+JSON-LD), the gallery lightbox is built photo-ready (see Photo-readiness
+above), and admission states are live with honest tbc placeholders:
+`admission` is now free / ticketed / sold-out / tbc, rendered everywhere
+via `AdmissionBadge` (ui.tsx); the event page adds a Buy-tickets link
+when `ticketUrl` is set, and event JSON-LD emits Offer
+InStock/SoldOut. Question #3 now only fills in data. NOTE: ticket CTAs
+use the standard bordered `btn`, NOT sodium — whether "Купи билет"
+should join the sodium list once ticketing is real is an open design
+decision for the user. Everything else waits on client data (photos,
+videos, 2026 programme).
 
 Done-work notes:
 - Strands: `getStrands()` in the gateway derives the four named tracks

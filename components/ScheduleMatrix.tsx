@@ -26,8 +26,8 @@ export type MatrixEvent = {
   venue?: string;
   venueLabel?: string;
   artistNames: string[];
+  admission: "free" | "ticketed" | "sold-out" | "tbc";
   admissionLabel: string;
-  isFree: boolean;
 };
 
 export type MatrixDay = {
@@ -289,7 +289,19 @@ function EventCell({
       )}
       <p className="type-label mt-3 flex flex-wrap items-center gap-x-3 gap-y-1 text-concrete">
         <span className="border border-prussian px-2 py-0.5">{event.typeLabel}</span>
-        <span className={event.isFree ? "text-exposure" : undefined}>{event.admissionLabel}</span>
+        <span
+          className={
+            event.admission === "free"
+              ? "text-exposure"
+              : event.admission === "sold-out"
+                ? "line-through decoration-concrete/60"
+                : event.admission === "ticketed"
+                  ? "text-paper"
+                  : undefined
+          }
+        >
+          {event.admissionLabel}
+        </span>
       </p>
     </Link>
   );
