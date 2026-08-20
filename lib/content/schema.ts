@@ -140,5 +140,6 @@ export const NewsPostSchema = z.object({
   publishedAt: isoDate,
   excerpt: LocalizedString,
   body: z.object({ mk: z.array(z.string()), en: z.array(z.string()) }), // paragraphs
+  relatedEdition: z.number().int().optional(), // edition year the post is about
 });
 export type NewsPost = z.infer<typeof NewsPostSchema>;

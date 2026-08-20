@@ -3,6 +3,7 @@ import type { NewsPost } from "../schema";
 export const news: NewsPost[] = [
   {
     slug: "petto-izdanie-septemvri-2026",
+    relatedEdition: 2026,
     title: {
       mk: "Петтото издание се очекува во септември 2026",
       en: "The fifth edition is expected in September 2026",
@@ -50,6 +51,7 @@ export const news: NewsPost[] = [
   // documented 2022–2025 programmes.
   {
     slug: "od-arhivata-2025",
+    relatedEdition: 2025,
     title: {
       mk: "Од архивата: Четврто издание (2025)",
       en: "From the archive: Fourth edition (2025)",
@@ -74,6 +76,7 @@ export const news: NewsPost[] = [
   },
   {
     slug: "od-arhivata-2024",
+    relatedEdition: 2024,
     title: {
       mk: "Од архивата: Трето издание (2024)",
       en: "From the archive: Third edition (2024)",
@@ -98,6 +101,7 @@ export const news: NewsPost[] = [
   },
   {
     slug: "od-arhivata-2023",
+    relatedEdition: 2023,
     title: {
       mk: "Од архивата: Второ издание (2023)",
       en: "From the archive: Second edition (2023)",
@@ -122,6 +126,7 @@ export const news: NewsPost[] = [
   },
   {
     slug: "od-arhivata-2022",
+    relatedEdition: 2022,
     title: {
       mk: "Од архивата: Прво издание (2022)",
       en: "From the archive: First edition (2022)",

@@ -246,6 +246,9 @@ const mk = {
     countLabel: "објави",
     featured: "Најново",
     moreNews: "Повеќе вести",
+    relatedEdition: "Поврзано издание",
+    olderPost: "Постара вест",
+    newerPost: "Понова вест",
   },
 
   press: {
@@ -596,6 +599,9 @@ const en: Dict = {
     countLabel: "posts",
     featured: "Latest",
     moreNews: "More news",
+    relatedEdition: "Related edition",
+    olderPost: "Older post",
+    newerPost: "Newer post",
   },
 
   press: {
