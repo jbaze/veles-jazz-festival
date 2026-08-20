@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import ArtTile from "@/components/ArtTile";
+import MediaTile from "@/components/MediaTile";
 import { Kicker, PendingNote, SectionHeading } from "@/components/ui";
 import { getPastEditions } from "@/lib/content";
 import { href, type Locale } from "@/lib/i18n/config";
@@ -44,7 +44,14 @@ export default async function GalleryPage({ params }: { params: Promise<{ locale
       <div className="mt-12 grid grid-cols-2 gap-4 md:grid-cols-4">
         {editions.map((e) => (
           <div key={e.year} className="relative">
-            <ArtTile seed={`gallery-${e.year}`} label={String(e.year).slice(2)} className="aspect-[4/3]" />
+            <MediaTile
+              image={e.image}
+              locale={locale}
+              seed={`gallery-${e.year}`}
+              label={String(e.year).slice(2)}
+              className="aspect-[4/3]"
+              sizes="(min-width: 768px) 25vw, 50vw"
+            />
             <p className="type-label mt-3 text-concrete">
               {e.year} · {e.title[locale]}
             </p>

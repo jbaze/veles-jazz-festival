@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import EventCard from "@/components/EventCard";
+import Photo from "@/components/Photo";
 import { JsonLd, Kicker, PendingNote, SectionHeading, TypeBadge } from "@/components/ui";
 import {
   getArtist,
@@ -89,6 +90,16 @@ export default async function EventPage({
                   : t.event.admissionTbc}
             </span>
           </p>
+
+          {event.image && (
+            <Photo
+              image={event.image}
+              locale={locale}
+              className="mt-8 aspect-[16/9] max-w-2xl"
+              sizes="(min-width: 1024px) 672px, 100vw"
+              priority
+            />
+          )}
 
           {event.description && (
             <p className="mt-8 max-w-2xl text-paper/90">{event.description[locale]}</p>

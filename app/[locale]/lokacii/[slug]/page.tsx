@@ -3,7 +3,8 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import EventCard from "@/components/EventCard";
 import MonumentSilhouette from "@/components/MonumentSilhouette";
-import ArtTile, { venueMotif } from "@/components/ArtTile";
+import { venueMotif } from "@/components/ArtTile";
+import MediaTile from "@/components/MediaTile";
 import { JsonLd, PendingNote, SectionHeading } from "@/components/ui";
 import {
   getCurrentEdition,
@@ -60,17 +61,22 @@ export default async function VenuePage({
 
       {/* Full-bleed hero with overlaid identity */}
       <section className="relative overflow-hidden border-b-2 border-prussian">
-        {venue.slug === "spomen-kosturnica" ? (
-          <div className="grain glow-deep relative aspect-[16/9] max-h-[62vh] min-h-80 w-full bg-ink md:aspect-[21/9]">
-            <MonumentSilhouette className="absolute inset-0 h-full w-full" />
-          </div>
-        ) : (
-          <ArtTile
-            seed={venue.slug}
-            motif={venueMotif(venue.slug)}
-            className="aspect-[16/9] max-h-[62vh] min-h-80 w-full border-0 md:aspect-[21/9]"
-          />
-        )}
+        <MediaTile
+          image={venue.image}
+          locale={locale}
+          seed={venue.slug}
+          motif={venueMotif(venue.slug)}
+          className="aspect-[16/9] max-h-[62vh] min-h-80 w-full border-0 md:aspect-[21/9]"
+          sizes="100vw"
+          priority
+          fallback={
+            venue.slug === "spomen-kosturnica" ? (
+              <div className="grain glow-deep relative aspect-[16/9] max-h-[62vh] min-h-80 w-full bg-ink md:aspect-[21/9]">
+                <MonumentSilhouette className="absolute inset-0 h-full w-full" />
+              </div>
+            ) : undefined
+          }
+        />
         <div
           aria-hidden="true"
           className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-ink via-ink/60 to-transparent"

@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import EventCard from "@/components/EventCard";
-import ArtTile from "@/components/ArtTile";
+import MediaTile from "@/components/MediaTile";
 import { JsonLd, SectionHeading } from "@/components/ui";
 import {
   getArtist,
@@ -60,10 +60,14 @@ export default async function ArtistPage({
       {/* Profile header */}
       <section className="grain glow-exposure border-b-2 border-prussian">
         <div className="mx-auto grid max-w-[1440px] gap-10 px-4 py-14 sm:px-6 md:grid-cols-[minmax(0,380px)_1fr] md:items-end md:py-20">
-          <ArtTile
+          <MediaTile
+            image={artist.image}
+            locale={locale}
             seed={artist.slug}
             label={artist.name.charAt(0)}
             className="aspect-square w-full max-w-sm"
+            sizes="(min-width: 768px) 380px, 100vw"
+            priority
           />
           <div className="min-w-0">
             <p className="type-label mb-4">

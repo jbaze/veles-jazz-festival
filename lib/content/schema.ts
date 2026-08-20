@@ -13,6 +13,20 @@ export type LocalizedString = z.infer<typeof LocalizedString>;
 
 const isoDate = z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "expected YYYY-MM-DD");
 
+/**
+ * A photograph for an entity, once rights are cleared (brief question #5).
+ * Files live under public/images/<kind>/ (e.g. /images/artists/<slug>.jpg);
+ * every render site falls back to the generative ArtTile while `image` is
+ * absent, so the photo archive drops in as pure data edits.
+ * `credit` is the photographer's name — omit until confirmed, never guess.
+ */
+export const ImageRefSchema = z.object({
+  src: z.string().regex(/^\/images\//, "expected a path under public/images/"),
+  alt: LocalizedString,
+  credit: z.string().optional(),
+});
+export type ImageRef = z.infer<typeof ImageRefSchema>;
+
 export const EditionSchema = z.object({
   year: z.number().int(),
   ordinal: z.number().int().min(1),
@@ -35,6 +49,7 @@ export const EditionSchema = z.object({
   programmeIncomplete: z.boolean().optional(),
   productionNotes: LocalizedString.optional(), // e.g. edition-wide video mapping
   alsoProgrammed: z.array(z.string()).optional(), // artist slugs without confirmed dates
+  image: ImageRefSchema.optional(),
 });
 export type Edition = z.infer<typeof EditionSchema>;
 
@@ -64,6 +79,7 @@ export const EventSchema = z.object({
   ticketUrl: z.string().url().optional(),
   mediaEmbeds: z.array(z.string().url()).optional(),
   order: z.number().int().optional(), // ordering within a day when times are unknown
+  image: ImageRefSchema.optional(),
 });
 export type FestivalEvent = z.infer<typeof EventSchema>;
 
@@ -82,6 +98,7 @@ export const ArtistSchema = z.object({
       youtube: z.string().url().optional(),
     })
     .optional(),
+  image: ImageRefSchema.optional(),
 });
 export type Artist = z.infer<typeof ArtistSchema>;
 
@@ -97,6 +114,7 @@ export const VenueSchema = z.object({
   accessibilityNotes: LocalizedString.optional(),
   capacity: z.number().int().optional(),
   role: LocalizedString, // e.g. "Main stage"
+  image: ImageRefSchema.optional(),
 });
 export type Venue = z.infer<typeof VenueSchema>;
 

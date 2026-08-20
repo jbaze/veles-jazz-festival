@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import MonumentSilhouette from "@/components/MonumentSilhouette";
 import ArtTile, { venueMotif } from "@/components/ArtTile";
+import MediaTile from "@/components/MediaTile";
 import Reveal from "@/components/Reveal";
 import { Kicker, SectionHeading } from "@/components/ui";
 import { getEventsByVenue, getVenues } from "@/lib/content";
@@ -55,19 +56,29 @@ export default async function VenuesPage({ params }: { params: Promise<{ locale:
                 {/* Visual side */}
                 <Reveal className={flip ? "md:order-2" : ""}>
                   <div className="card card-hover relative overflow-hidden">
-                    {venue.slug === "spomen-kosturnica" ? (
-                      <div className="grain relative aspect-[16/10] bg-ink">
-                        <MonumentSilhouette className="absolute inset-0 h-full w-full transition-transform duration-700 group-hover:scale-[1.03]" />
-                      </div>
-                    ) : (
-                      <div className="transition-transform duration-700 group-hover:scale-[1.03]">
-                        <ArtTile
-                          seed={venue.slug}
-                          motif={venueMotif(venue.slug)}
-                          className="aspect-[16/10] border-0"
-                        />
-                      </div>
-                    )}
+                    <MediaTile
+                      image={venue.image}
+                      locale={locale}
+                      seed={venue.slug}
+                      motif={venueMotif(venue.slug)}
+                      className="aspect-[16/10] border-0 transition-transform duration-700 group-hover:scale-[1.03]"
+                      sizes="(min-width: 768px) 50vw, 100vw"
+                      fallback={
+                        venue.slug === "spomen-kosturnica" ? (
+                          <div className="grain relative aspect-[16/10] bg-ink">
+                            <MonumentSilhouette className="absolute inset-0 h-full w-full transition-transform duration-700 group-hover:scale-[1.03]" />
+                          </div>
+                        ) : (
+                          <div className="transition-transform duration-700 group-hover:scale-[1.03]">
+                            <ArtTile
+                              seed={venue.slug}
+                              motif={venueMotif(venue.slug)}
+                              className="aspect-[16/10] border-0"
+                            />
+                          </div>
+                        )
+                      }
+                    />
                     <span className="type-label-sm absolute left-4 top-4 border border-exposure/60 bg-ink/70 px-2 py-1 text-exposure-bright backdrop-blur-sm">
                       0{i + 1}
                     </span>

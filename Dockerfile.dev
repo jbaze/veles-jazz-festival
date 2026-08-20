@@ -1,0 +1,12 @@
+# Dev container — all npm activity happens inside the container,
+# never on the host drive (see docker-compose.yml).
+FROM node:22-bookworm-slim
+
+WORKDIR /app
+
+EXPOSE 3000
+
+# Dependencies are installed at container start into a container volume,
+# so a changed lockfile on the host is picked up without rebuilding this
+# image. npm install (not ci) keeps restarts incremental.
+CMD ["sh", "-c", "npm install --no-audit --no-fund && npm run dev"]
