@@ -68,6 +68,9 @@ const countryNamesMk: Record<string, string> = {
   DE: "Германија",
   FI: "Финска",
   AU: "Австралија",
+  SI: "Словенија",
+  SE: "Шведска",
+  RS: "Србија",
 };
 
 /** Localised country name from an ISO 3166-1 alpha-2 code. */
