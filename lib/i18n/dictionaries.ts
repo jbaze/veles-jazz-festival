@@ -117,6 +117,9 @@ const mk = {
     editionsLabel: "изданија",
     noMatches: "Нема изведувачи за избраните филтри.",
     countTemplate: "изведувачи од 2022 досега",
+    alsoProgrammedNote:
+      "Дел од програмата на ова издание — поединечниот настан сè уште не е реконструиран во архивата.",
+    related: "Поврзани изведувачи",
   },
 
   venues: {
@@ -456,6 +459,9 @@ const en: Dict = {
     editionsLabel: "editions",
     noMatches: "No artists match the selected filters.",
     countTemplate: "artists since 2022",
+    alsoProgrammedNote:
+      "Part of this edition's programme — the individual event has not yet been reconstructed in the archive.",
+    related: "Related artists",
   },
 
   venues: {
