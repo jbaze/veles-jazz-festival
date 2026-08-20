@@ -8,7 +8,8 @@ import SignupForm from "@/components/SignupForm";
 import EventCard from "@/components/EventCard";
 import PartnerWall from "@/components/PartnerWall";
 import Marquee from "@/components/Marquee";
-import ArtTile, { venueMotif } from "@/components/ArtTile";
+import { venueMotif } from "@/components/ArtTile";
+import MediaTile from "@/components/MediaTile";
 import { AllLink, JsonLd, Kicker, SectionHeading } from "@/components/ui";
 import {
   getArtist,
@@ -242,7 +243,13 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
                 href={href(locale, "izveduvaci", artist.slug)}
                 className="card card-hover group block overflow-hidden"
               >
-                <ArtTile seed={artist.slug} className="aspect-square border-0 border-b-2" />
+                <MediaTile
+                  image={artist.image}
+                  locale={locale}
+                  seed={artist.slug}
+                  className="aspect-square border-0 border-b-2"
+                  sizes="(min-width: 1280px) 17vw, (min-width: 768px) 33vw, 50vw"
+                />
                 <div className="p-4">
                   <p className="font-bold leading-snug text-paper transition-colors group-hover:text-exposure-bright">
                     {artist.name}
@@ -279,17 +286,21 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
                 }`}
               >
                 <div className="relative">
-                  {venue.slug === "spomen-kosturnica" ? (
-                    <div className="grain relative aspect-[2/1] border-b-2 border-prussian bg-ink">
-                      <MonumentSilhouette className="absolute inset-0 h-full w-full" />
-                    </div>
-                  ) : (
-                    <ArtTile
-                      seed={venue.slug}
-                      motif={venueMotif(venue.slug)}
-                      className="aspect-[2/1] border-0 border-b-2"
-                    />
-                  )}
+                  <MediaTile
+                    image={venue.image}
+                    locale={locale}
+                    seed={venue.slug}
+                    motif={venueMotif(venue.slug)}
+                    className="aspect-[2/1] border-0 border-b-2"
+                    sizes="(min-width: 768px) 67vw, 100vw"
+                    fallback={
+                      venue.slug === "spomen-kosturnica" ? (
+                        <div className="grain relative aspect-[2/1] border-b-2 border-prussian bg-ink">
+                          <MonumentSilhouette className="absolute inset-0 h-full w-full" />
+                        </div>
+                      ) : undefined
+                    }
+                  />
                   <span className="type-label-sm absolute left-4 top-4 border border-exposure/60 bg-ink/70 px-2 py-1 text-exposure-bright backdrop-blur-sm">
                     0{i + 1}
                   </span>

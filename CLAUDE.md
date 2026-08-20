@@ -50,6 +50,23 @@ npm run build        # static build — ALSO validates all content via Zod
 npm run typecheck
 ```
 
+### ⚠️ On the owner's Windows machine: Docker only, never host npm
+
+The user reported an infected file on their machine that triggers on
+`npm install` (host npm also crashes silently mid-extract). NEVER run
+npm/pnpm or the dev server on the host there — use the committed dev
+container (`Dockerfile.dev` + `docker-compose.yml`):
+
+```bash
+docker compose up -d           # installs deps in a container volume, runs dev on :3000
+docker compose exec web npx tsc --noEmit
+docker compose stop web && docker compose run --rm web npm run build && docker compose up -d
+```
+
+Source is bind-mounted (edits hot-reload); `node_modules`/`.next` live in
+container volumes and never touch the host drive. Cloud/Linux sessions can
+keep using npm directly.
+
 ## Architecture rules (do not break)
 
 - **Single content gateway**: pages import ONLY from `lib/content/index.ts`.
@@ -144,39 +161,54 @@ Never set positioning in shared custom classes; let call sites do it.
   OG posters intact on every change. Target queries: „џез фестивал Велес“,
   „фестивал Велес 2026“, "jazz festival North Macedonia", artist names.
 
-## Design references (IMPORTANT — first task for a local session)
+## Design references (VERIFIED 2026-08-20 in a real browser)
 
 The user's preferred direction:
 
 - **https://torontojazz.com/** — “closest to their preferred design”.
 - **https://banskojazzfest.bg/en/home/** — “interesting features”.
 
-The cloud environment could NOT open these (egress allowlist blocked
-browser, curl, WebFetch, even web.archive.org). Analysis so far came from
-web search + prior knowledge: Toronto = photography-first warmth, big clean
-type, lineup photo-card grids, sticky ticket/lineup CTAs, free-vs-ticketed
-clarity, newsletter band, sponsor wall. Bansko = countdown, per-year
-programme pages, named city-wide strands (main stage / square / park /
-youth stage / “Jazz Points”), Jazz Academy workshops, midnight jam sessions.
+Both were opened and screenshotted locally; the blind analysis held up:
 
-**A local session has browser access — actually open both sites**, compare
-against ours (run `npm run dev`), and verify/adjust the direction. Keep the
-cyanotype identity (the user approved it after the redesign); the gap to
-Toronto is photography and warmth, not structure.
+- **Toronto**: photography-first artist cards (name + date/time + venue +
+  per-show **Buy Tickets / Free / Sold Out** state), “Discover Artists By
+  Day” date chips, “Search by Genre/Vibe” tags, festival countdown, a
+  curated named strand (“Sounds Like Toronto”), festival map, sponsor wall
+  grouped by tier. Gap to us = photography + per-event admission states.
+- **Bansko**: independently validates our system — dark ground, condensed
+  white display type, ONE yellow accent used only on the Tickets CTA
+  (their version of our sodium discipline). Strand-based nav (Programme /
+  Jazz in the City / Jazz Academy / Jazz Partners), per-day programme tabs,
+  simple day/all-days ticket products.
+
+**Verdict**: keep the cyanotype identity unchanged; close the gap via
+photo-readiness (done), admission-state clarity (waiting on client
+question #3), day chips + named strands on the programme.
+
+## Photo-readiness (DONE — how to drop photos in)
+
+Every visual render site goes through `components/MediaTile.tsx`
+(photo-or-ArtTile decision) / `components/Photo.tsx` (next/image `fill`,
+AVIF/WebP, cyanotype-toned blur placeholder, credit badge). To publish a
+cleared photo, edit DATA ONLY:
+
+1. Put the file under `public/images/<kind>/…` (artists/venues/editions/events).
+2. On the entity in `lib/content/data/*.ts` set
+   `image: { src: "/images/…", alt: { mk, en }, credit: "Име Презиме" }`.
+   `credit` is the photographer — omit until confirmed (question #5).
+   Zod rejects `src` outside `/images/`.
+
+Artist/venue/edition/event schemas all carry the optional `image`. The
+Костурница silhouette and all ArtTiles remain the automatic no-photo state.
 
 ## Queued next work (agreed with the user, not yet built)
 
-1. **Photo-readiness**: optional `image` fields on Artist/Venue/Edition/
-   Event schemas + `next/image` rendering (AVIF/WebP, blur placeholder)
-   with ArtTile as automatic fallback — so the client's 2022–2025 photo
-   archive drops in without component changes. Design for photographer
-   credits (rights are pending — brief question #5).
-2. **Site-wide newsletter band** above the footer (Toronto pattern) —
+1. **Site-wide newsletter band** above the footer (Toronto pattern) —
    `SignupForm` exists; make a slim band variant in the locale layout.
-3. **Named programme strands** (Bansko pattern): surface the late-night
+2. **Named programme strands** (Bansko pattern): surface the late-night
    parking track and workshops/exhibitions as labelled tracks on
    `/programa` — event `type` already distinguishes them.
-4. **Aftermovie/video slot** on home + archive editions — `mediaEmbeds`
+3. **Aftermovie/video slot** on home + archive editions — `mediaEmbeds`
    exists in the schema; render YouTube embeds when links are provided,
    honest placeholder until then.
 
