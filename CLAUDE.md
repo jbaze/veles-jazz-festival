@@ -20,6 +20,28 @@ The festival is NOT “World of Jazz Festival” (unrelated Canadian event).
 Short brand `ЏЕЗ ВЕЛЕС / JAZZ VELES` and the domain (`jazzveles.mk` default
 in `lib/i18n/config.ts`) are **working names pending client sign-off**.
 
+## ⚠️ DEMO SEED (added 2026-08-20 — strip before real launch)
+
+The user needs to present the site to the client, so it currently carries
+a **fictional demo seed** on top of the verified archive. The honesty rule
+below is deliberately suspended for exactly these items, at the user's
+instruction:
+
+- **2026 programme**: dates 24–27 Sep 2026, 13 demo events, 6 fictional
+  artists (Aria Kovač Quartet, North Light Trio, Lena Mars, Сино Море,
+  Џем Колектив, Midnight Arcade), mixed admission states, example.com
+  ticket links, and a demo announcement news post.
+- **Images**: Pexels free-licence stock (no attribution required) in
+  `public/images/demo/` — wired to artists, venues, editions, galleries
+  and 2026 events. Alt texts say "демо-фотографија".
+- **Socials**: demo handles in `SOCIAL_LINKS` (config.ts).
+
+Every data edit is marked `// DEMO-SEED` — find them with
+`grep -rn "DEMO-SEED" lib public scripts`. To strip: remove those blocks,
+delete `public/images/demo/` and `scripts/seed-artist-images.mjs`, and
+restore the 2026 edition to its dates-pending state. No aftermovie video
+was seeded (nothing to fabricate) — the honest pending note still shows.
+
 ## Current state (all merged to main)
 
 1. **PR #1 — Phase 1 site**: Next.js 15 App Router + TypeScript + Tailwind v4,

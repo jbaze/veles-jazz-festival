@@ -16,6 +16,18 @@ export const editions: Edition[] = [
     partners: ["opstina-veles", "teatar-dzinot-partner"],
     isCurrent: false,
     programmeIncomplete: true,
+    // DEMO-SEED media (Pexels, free licence) — replace with cleared photography
+    image: {
+      src: "/images/demo/ed-2022.jpg",
+      alt: { mk: "Атмосфера од фестивалот", en: "Festival atmosphere" },
+    },
+    gallery: [
+      { src: "/images/demo/g22-1.jpg", alt: { mk: "Настап на сцена", en: "On stage" } },
+      { src: "/images/demo/g22-2.jpg", alt: { mk: "Концертна вечер", en: "Concert evening" } },
+      { src: "/images/demo/g22-3.jpg", alt: { mk: "Публика", en: "The audience" } },
+      { src: "/images/demo/g22-4.jpg", alt: { mk: "Вечерна програма", en: "Evening programme" } },
+      { src: "/images/demo/g22-5.jpg", alt: { mk: "Атмосфера", en: "Atmosphere" } },
+    ],
   },
   {
     year: 2023,
@@ -31,6 +43,17 @@ export const editions: Edition[] = [
     partners: ["opstina-veles", "europe-house-partner"],
     isCurrent: false,
     programmeIncomplete: true,
+    // DEMO-SEED media (Pexels, free licence) — replace with cleared photography
+    image: {
+      src: "/images/demo/ed-2023.jpg",
+      alt: { mk: "Изложба во Europe House", en: "Exhibition at Europe House" },
+    },
+    gallery: [
+      { src: "/images/demo/g23-1.jpg", alt: { mk: "Отворање на изложбата", en: "Exhibition opening" } },
+      { src: "/images/demo/g23-2.jpg", alt: { mk: "Поставка", en: "The installation" } },
+      { src: "/images/demo/g23-3.jpg", alt: { mk: "Посетители", en: "Visitors" } },
+      { src: "/images/demo/g23-4.jpg", alt: { mk: "Галериски простор", en: "Gallery space" } },
+    ],
   },
   {
     year: 2024,
@@ -64,6 +87,18 @@ export const editions: Edition[] = [
       mk: "Графички дизајн: Филип Коруновски.",
       en: "Graphic design: Filip Korunovski.",
     },
+    // DEMO-SEED media (Pexels, free licence) — replace with cleared photography
+    image: {
+      src: "/images/demo/ed-2024.jpg",
+      alt: { mk: "Концертна вечер", en: "Concert evening" },
+    },
+    gallery: [
+      { src: "/images/demo/g24-1.jpg", alt: { mk: "Настап на сцена", en: "On stage" } },
+      { src: "/images/demo/g24-2.jpg", alt: { mk: "Светла на сцената", en: "Stage lights" } },
+      { src: "/images/demo/g24-3.jpg", alt: { mk: "Публика", en: "The audience" } },
+      { src: "/images/demo/g24-4.jpg", alt: { mk: "Вечерна атмосфера", en: "Evening atmosphere" } },
+      { src: "/images/demo/g24-5.jpg", alt: { mk: "Концерт", en: "Concert" } },
+    ],
   },
   {
     year: 2025,
@@ -83,19 +118,41 @@ export const editions: Edition[] = [
       mk: "Видео-мапирање низ сите вечери во театарот и на паркингот: Борче Конзулов. Графички дизајн: Филип Коруновски.",
       en: "Video mapping across all theatre and parking evenings: Borche Konzulov. Graphic design: Filip Korunovski.",
     },
+    // DEMO-SEED media (Pexels, free licence) — replace with cleared photography
+    image: {
+      src: "/images/demo/ed-2025.jpg",
+      alt: { mk: "Главната сцена", en: "The main stage" },
+    },
+    gallery: [
+      { src: "/images/demo/g25-1.jpg", alt: { mk: "Отворање на изданието", en: "Edition opening" } },
+      { src: "/images/demo/g25-2.jpg", alt: { mk: "Настап на главната сцена", en: "Main stage performance" } },
+      { src: "/images/demo/g25-3.jpg", alt: { mk: "Светла и мапирање", en: "Lights and mapping" } },
+      { src: "/images/demo/g25-4.jpg", alt: { mk: "Концертна вечер", en: "Concert evening" } },
+      { src: "/images/demo/g25-5.jpg", alt: { mk: "Публика во театарот", en: "Theatre audience" } },
+      { src: "/images/demo/g25-6.jpg", alt: { mk: "Доцна програма на паркингот", en: "Late programme on the parking lot" } },
+      { src: "/images/demo/g25-7.jpg", alt: { mk: "Настап", en: "Performance" } },
+      { src: "/images/demo/g25-8.jpg", alt: { mk: "Завршница", en: "The closing" } },
+    ],
   },
   {
     year: 2026,
     ordinal: 5,
     slug: "2026",
     title: { mk: "Петто издание", en: "Fifth edition" },
-    // Dates intentionally absent — expected September 2026, not yet announced.
+    // DEMO-SEED: dates + programme are DEMO content for the client
+    // presentation — remove/replace when the real 2026 data is confirmed.
+    dates: { start: "2026-09-24", end: "2026-09-27" },
+    festivalDays: 4,
     description: {
-      mk: "Петтото издание се очекува во септември 2026. Датумите и програмата ќе бидат објавени наскоро.",
-      en: "The fifth edition is expected in September 2026. Dates and programme will be announced soon.",
+      mk: "Четири дена џез, ворлд и современа музика: работилници и изложби преку ден, концерти во театарот и кај Спомен-костурницата навечер, и доцна програма на паркингот на театарот.",
+      en: "Four days of jazz, world and contemporary music: workshops and exhibitions by day, concerts at the theatre and the Memorial Ossuary by night, and a late strand on the theatre parking lot.",
     },
-    countries: [],
-    partners: ["opstina-veles", "ministerstvo-kultura"],
+    countries: ["SI", "SE", "DE", "RS", "GR", "MK"],
+    partners: ["opstina-veles", "ministerstvo-kultura", "teatar-dzinot-partner", "nebo"],
     isCurrent: true,
+    image: {
+      src: "/images/demo/ed-2026.jpg",
+      alt: { mk: "Петто издание", en: "Fifth edition" },
+    },
   },
 ];
