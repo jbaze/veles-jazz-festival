@@ -2,11 +2,13 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useEffect, useRef } from "react";
 import type { Locale, SectionKey } from "@/lib/i18n/config";
 import { href, sections } from "@/lib/i18n/config";
 import { getDict } from "@/lib/i18n/dictionaries";
 
 const NAV: SectionKey[] = ["programa", "izveduvaci", "lokacii", "arhiva", "za-festivalot"];
+const SECONDARY_NAV: SectionKey[] = ["galerija", "vesti", "za-mediumi", "partneri", "kontakt"];
 
 /** Map the current pathname to its counterpart in the other locale. */
 function switchLocalePath(pathname: string, from: Locale, to: Locale): string {
@@ -26,6 +28,13 @@ export default function Header({ locale }: { locale: Locale }) {
   const t = getDict(locale);
   const pathname = usePathname() ?? `/${locale}`;
   const other: Locale = locale === "mk" ? "en" : "mk";
+  const menuRef = useRef<HTMLDetailsElement>(null);
+
+  // Soft navigation keeps the layout (and this <details>) mounted, so the
+  // mobile menu would stay open after following a link — close it here.
+  useEffect(() => {
+    if (menuRef.current) menuRef.current.open = false;
+  }, [pathname]);
 
   const isActive = (key: SectionKey) => {
     const target = href(locale, key);
@@ -79,7 +88,13 @@ export default function Header({ locale }: { locale: Locale }) {
           </Link>
 
           {/* Mobile menu — <details>, works without JavaScript */}
-          <details className="relative min-[900px]:hidden">
+          <details
+            ref={menuRef}
+            onKeyDown={(e) => {
+              if (e.key === "Escape" && menuRef.current) menuRef.current.open = false;
+            }}
+            className="relative min-[900px]:hidden"
+          >
             <summary
               className="type-label flex cursor-pointer list-none items-center rounded-[2px] border-2 border-prussian px-3 py-2 text-paper transition-colors hover:border-exposure [&::-webkit-details-marker]:hidden"
               aria-label={t.a11y.openMenu}
@@ -95,8 +110,21 @@ export default function Header({ locale }: { locale: Locale }) {
                   key={key}
                   href={href(locale, key)}
                   aria-current={isActive(key) ? "page" : undefined}
-                  className={`type-label border-b border-prussian/60 px-5 py-4 transition-colors last:border-b-0 hover:bg-prussian/40 ${
+                  className={`type-label border-b border-prussian/60 px-5 py-4 transition-colors hover:bg-prussian/40 ${
                     isActive(key) ? "text-sodium" : "text-paper"
+                  }`}
+                >
+                  {t.nav[key]}
+                </Link>
+              ))}
+              {/* The rest of the site — footer-tier sections, reachable on mobile too */}
+              {SECONDARY_NAV.map((key) => (
+                <Link
+                  key={key}
+                  href={href(locale, key)}
+                  aria-current={isActive(key) ? "page" : undefined}
+                  className={`type-label-sm border-b border-prussian/40 bg-ink-deep/40 px-5 py-3 transition-colors last:border-b-0 hover:bg-prussian/40 ${
+                    isActive(key) ? "text-sodium" : "text-concrete hover:text-paper"
                   }`}
                 >
                   {t.nav[key]}
