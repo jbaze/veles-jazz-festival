@@ -36,13 +36,15 @@ export function buildMatrix(
         .filter((n): n is string => Boolean(n))
         // don't repeat a name the event title already carries
         .filter((n) => !e.title[locale].includes(n)),
+      admission: e.admission,
       admissionLabel:
         e.admission === "free"
           ? t.event.admissionFree
           : e.admission === "ticketed"
             ? t.event.admissionTicketed
-            : t.event.admissionTbc,
-      isFree: e.admission === "free",
+            : e.admission === "sold-out"
+              ? t.event.admissionSoldOut
+              : t.event.admissionTbc,
     };
   };
 

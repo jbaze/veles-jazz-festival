@@ -2,7 +2,7 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 import type { Locale } from "@/lib/i18n/config";
 import { getDict } from "@/lib/i18n/dictionaries";
-import type { EventType } from "@/lib/content";
+import type { EventType, FestivalEvent } from "@/lib/content";
 import { countryName } from "@/lib/format";
 
 export function JsonLd({ data }: { data: object | object[] }) {
@@ -47,6 +47,43 @@ export function TypeBadge({ type, locale }: { type: EventType; locale: Locale })
       {t.types[type]}
     </span>
   );
+}
+
+/**
+ * Per-event admission state (Toronto pattern: free / ticketed / sold out),
+ * honest about the pending model — every event is "tbc" until client
+ * question #3 is answered, and the state activates from data alone.
+ */
+export function AdmissionBadge({
+  admission,
+  locale,
+}: {
+  admission: FestivalEvent["admission"];
+  locale: Locale;
+}) {
+  const t = getDict(locale);
+  switch (admission) {
+    case "free":
+      return (
+        <span className="type-label inline-block border border-exposure/70 px-2 py-0.5 text-exposure-bright">
+          {t.event.admissionFree}
+        </span>
+      );
+    case "ticketed":
+      return (
+        <span className="type-label inline-block border border-prussian px-2 py-0.5 text-paper">
+          {t.event.admissionTicketed}
+        </span>
+      );
+    case "sold-out":
+      return (
+        <span className="type-label inline-block border border-prussian/60 px-2 py-0.5 text-concrete line-through decoration-concrete/60">
+          {t.event.admissionSoldOut}
+        </span>
+      );
+    default:
+      return <span className="type-label text-concrete">{t.event.admissionTbc}</span>;
+  }
 }
 
 /** Country tags — inline foreign-language runs get lang attributes (§8.3). */

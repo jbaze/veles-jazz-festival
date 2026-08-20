@@ -5,7 +5,7 @@ import { getDict } from "@/lib/i18n/dictionaries";
 import type { FestivalEvent } from "@/lib/content";
 import { getArtist, getVenue } from "@/lib/content";
 import { formatDate } from "@/lib/format";
-import { TypeBadge } from "./ui";
+import { AdmissionBadge, TypeBadge } from "./ui";
 
 /** Richer event card for previews and archive lists. */
 export default function EventCard({ event, locale }: { event: FestivalEvent; locale: Locale }) {
@@ -37,15 +37,7 @@ export default function EventCard({ event, locale }: { event: FestivalEvent; loc
         <span className="type-label text-concrete">
           {venue ? (venue.shortName ?? venue.name)[locale] : t.schedule.venueTba}
         </span>
-        <span
-          className={`type-label ${event.admission === "free" ? "text-exposure" : "text-concrete"}`}
-        >
-          {event.admission === "free"
-            ? t.event.admissionFree
-            : event.admission === "ticketed"
-              ? t.event.admissionTicketed
-              : t.event.admissionTbc}
-        </span>
+        <AdmissionBadge admission={event.admission} locale={locale} />
       </p>
     </Link>
   );

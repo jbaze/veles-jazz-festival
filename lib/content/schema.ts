@@ -77,7 +77,7 @@ export const EventSchema = z.object({
   venue: z.string().optional(), // Venue slug; omitted → venue TBA [VERIFY]
   artists: z.array(z.string()), // Artist slugs
   description: LocalizedString.optional(),
-  admission: z.enum(["free", "ticketed", "tbc"]), // [VERIFY] — brief §5
+  admission: z.enum(["free", "ticketed", "sold-out", "tbc"]), // [VERIFY] — brief §5
   ticketUrl: z.string().url().optional(),
   mediaEmbeds: z.array(z.string().url()).optional(),
   order: z.number().int().optional(), // ordering within a day when times are unknown
