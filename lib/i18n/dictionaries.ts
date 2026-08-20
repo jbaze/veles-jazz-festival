@@ -184,6 +184,10 @@ const mk = {
     pressNote: "Медиуми: висока резолуција има во прес-китот.",
   },
 
+  media: {
+    photoCredit: "Фото",
+  },
+
   news: {
     title: "Вести",
     readMore: "Прочитај повеќе",
@@ -464,6 +468,10 @@ const en: Dict = {
     pending:
       "The photographic archive from the 2022–2025 editions is being assembled. Publication is pending rights clearance and photographer credits.",
     pressNote: "Press: high-resolution images live in the press kit.",
+  },
+
+  media: {
+    photoCredit: "Photo",
   },
 
   news: {

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import ArtTile from "@/components/ArtTile";
+import MediaTile from "@/components/MediaTile";
 import FilterableArtistGrid, { type ArtistMeta } from "@/components/FilterableArtistGrid";
 import { Kicker, SectionHeading } from "@/components/ui";
 import { getArtistAppearances, getArtistEditionYears, getArtists, getPastEditions } from "@/lib/content";
@@ -80,10 +80,13 @@ export default async function ArtistsPage({ params }: { params: Promise<{ locale
                 className="card card-hover group block h-full overflow-hidden"
               >
                 <div className="relative">
-                  <ArtTile
+                  <MediaTile
+                    image={artist.image}
+                    locale={locale}
                     seed={artist.slug}
                     label={artist.name.charAt(0)}
                     className="aspect-square border-0 border-b-2"
+                    sizes="(min-width: 1280px) 25vw, (min-width: 768px) 33vw, 50vw"
                   />
                   {recurring && (
                     <span className="type-label-sm absolute left-3 top-3 border border-exposure/70 bg-ink/70 px-2 py-1 text-exposure-bright backdrop-blur-sm">
