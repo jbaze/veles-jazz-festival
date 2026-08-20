@@ -10,6 +10,7 @@ import PartnerWall from "@/components/PartnerWall";
 import Marquee from "@/components/Marquee";
 import { venueMotif } from "@/components/ArtTile";
 import MediaTile from "@/components/MediaTile";
+import VideoEmbed from "@/components/VideoEmbed";
 import { AllLink, JsonLd, Kicker, SectionHeading } from "@/components/ui";
 import {
   getArtist,
@@ -64,6 +65,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
     (a): a is NonNullable<typeof a> => Boolean(a),
   );
   const pastEditions = getPastEditions();
+  const editionWithVideo = pastEditions.find((e) => e.mediaEmbeds?.length);
 
   // The record, in numbers — computed from content, not typed by hand.
   const allEvents = getEvents().filter((e) => e.editionYear !== edition.year);
@@ -335,6 +337,20 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
               {t.home.archiveCta} →
             </Link>
           </div>
+
+          {/* Aftermovie slot — newest edition with video, honest note until links land */}
+          {editionWithVideo ? (
+            <div className="mt-12 max-w-3xl">
+              <VideoEmbed
+                url={editionWithVideo.mediaEmbeds![0]}
+                title={`${editionWithVideo.title[locale]} · ${editionWithVideo.year}`}
+                playLabel={t.video.play}
+                watchLabel={t.video.watchExternal}
+              />
+            </div>
+          ) : (
+            <p className="type-label-sm mt-10 text-concrete">{t.video.pending}</p>
+          )}
         </div>
       </section>
 

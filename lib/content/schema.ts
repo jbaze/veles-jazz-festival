@@ -50,6 +50,7 @@ export const EditionSchema = z.object({
   productionNotes: LocalizedString.optional(), // e.g. edition-wide video mapping
   alsoProgrammed: z.array(z.string()).optional(), // artist slugs without confirmed dates
   image: ImageRefSchema.optional(),
+  mediaEmbeds: z.array(z.string().url()).optional(), // aftermovie / video links
 });
 export type Edition = z.infer<typeof EditionSchema>;
 
