@@ -30,8 +30,9 @@ export default async function PartnersPage({ params }: { params: Promise<{ local
     <div className="mx-auto max-w-[1440px] px-4 py-12 sm:px-6 md:py-16">
       <Kicker>{t.siteName}</Kicker>
       <SectionHeading as="h1">{t.partners.title}</SectionHeading>
+      <p className="mt-4 max-w-2xl text-concrete">{t.partners.intro}</p>
       <div className="mt-10">
-        <PartnerWall locale={locale} />
+        <PartnerWall locale={locale} showYears />
       </div>
     </div>
   );
