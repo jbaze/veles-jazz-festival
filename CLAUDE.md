@@ -247,6 +247,11 @@ Done-work notes:
   ScheduleMatrix.tsx), sodium-marked on the current festival day, URL-
   persisted via the existing `?den=` param; chips appear wherever ≥2
   dated days exist (archive editions now, /programa when 2026 dates land).
+- Partners: Partner schema carries optional `logo` (ImageRef shape) —
+  when question #8 clears, set it in partners.ts and the tile renders
+  the mark on a paper chip (multiply) with the name as caption;
+  typographic tiles remain the no-logo state. The partners page passes
+  `showYears` to PartnerWall for the per-partner edition record.
 - Contact: sidebar shows the organiser identity (name, mandate, logo on
   paper chip); the artist-submission card links `?tema=nastap` which the
   form reads on mount (also `mediumi` / `partnerstvo`); journalists get

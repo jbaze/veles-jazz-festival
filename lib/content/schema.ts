@@ -128,6 +128,9 @@ export const PartnerSchema = z.object({
   // visual treatment (brief §11 note).
   tier: z.enum(["founder", "institutional", "partner", "sponsor", "media"]),
   editions: z.array(z.number().int()),
+  // Official logo — only once usage rules are confirmed (question #8);
+  // rendered on a paper chip with multiply, like the organiser's mark.
+  logo: ImageRefSchema.optional(),
 });
 export type Partner = z.infer<typeof PartnerSchema>;
 
