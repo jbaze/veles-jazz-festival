@@ -187,6 +187,9 @@ const mk = {
   media: {
     photoCredit: "Фото",
     orgLogoAlt: "Лого на Здружението „АРТ ГЕНЕРАТОР“ — Велес",
+    lightboxClose: "Затвори",
+    lightboxPrev: "Претходна фотографија",
+    lightboxNext: "Следна фотографија",
   },
 
   video: {
@@ -516,6 +519,9 @@ const en: Dict = {
   media: {
     photoCredit: "Photo",
     orgLogoAlt: "Logo of the ART GENERATOR association — Veles",
+    lightboxClose: "Close",
+    lightboxPrev: "Previous photo",
+    lightboxNext: "Next photo",
   },
 
   video: {
