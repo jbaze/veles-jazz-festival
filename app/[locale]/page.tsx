@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import Countdown from "@/components/Countdown";
 import ExposurePrint from "@/components/ExposurePrint";
@@ -21,12 +22,14 @@ import {
   getNews,
   getPastEditions,
   getStrands,
+  getVenue,
   getVenues,
 } from "@/lib/content";
 import NewsTeasers from "@/components/NewsTeasers";
+import { AdmissionBadge } from "@/components/ui";
 import { href, type Locale, type SectionKey } from "@/lib/i18n/config";
 import { getDict } from "@/lib/i18n/dictionaries";
-import { formatDateRange } from "@/lib/format";
+import { formatDate, formatDayChip, formatDateRange } from "@/lib/format";
 import { festivalJsonLd } from "@/lib/seo/jsonld";
 import { pageMeta } from "@/lib/seo/meta";
 
@@ -59,7 +62,24 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
   const { locale } = await params;
   const t = getDict(locale);
   const edition = getCurrentEdition();
-  const events = getEventsByEdition(edition.year).slice(0, 3);
+  const currentEvents = getEventsByEdition(edition.year);
+  const events = currentEvents.slice(0, 3);
+
+  // Discover-by-day chips + this year's lineup as show cards — both derived
+  // from the current programme, so they only exist once dates/events land.
+  const festDays = [...new Set(currentEvents.map((e) => e.date).filter(Boolean))].sort() as string[];
+  const lineupShows = [
+    ...new Map(
+      currentEvents
+        .filter((e) => e.artists.length > 0)
+        .map((e) => [e.artists[0], e] as const),
+    ).entries(),
+  ]
+    .map(([slug, event]) => ({ artist: getArtist(slug), event }))
+    .filter((s): s is { artist: NonNullable<ReturnType<typeof getArtist>>; event: (typeof currentEvents)[number] } =>
+      Boolean(s.artist),
+    )
+    .slice(0, 8);
   const venues = getVenues().filter((v) =>
     ["spomen-kosturnica", "teatar-dzinot", "parking-na-teatarot"].includes(v.slug),
   );
@@ -92,22 +112,48 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
     <>
       <JsonLd data={festivalJsonLd(edition, locale)} />
 
-      {/* 1 — Hero: the exposure reveal, full viewport */}
+      {/* 1 — Hero: photography-first once the edition has an image
+          (the Toronto pattern); the exposure print is the no-photo state */}
       <section className="grain glow-deep relative overflow-hidden border-b-2 border-prussian">
-        <ExposurePrint id="hero-print" className="absolute inset-0">
-          {/* hollow year watermark — the unexposed layer */}
-          <p
-            aria-hidden="true"
-            className="type-display type-outline pointer-events-none absolute -right-6 top-6 text-[clamp(6rem,22vw,19rem)] leading-none opacity-70 md:top-2"
-          >
-            {edition.year}
-          </p>
-          <MonumentSilhouette className="absolute bottom-0 left-1/2 h-[76%] w-full min-w-[900px] -translate-x-1/2 opacity-90" />
-          <div
-            aria-hidden="true"
-            className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-ink to-transparent"
-          />
-        </ExposurePrint>
+        {edition.image ? (
+          <div className="absolute inset-0">
+            <Image
+              src={edition.image.src}
+              alt=""
+              fill
+              priority
+              sizes="100vw"
+              className="object-cover"
+            />
+            {/* cyanotype wash keeps the photo in the brand's tonality */}
+            <div aria-hidden="true" className="absolute inset-0 bg-prussian/40 mix-blend-multiply" />
+            <div
+              aria-hidden="true"
+              className="absolute inset-0 bg-gradient-to-t from-ink via-ink/55 to-ink/15"
+            />
+            <p
+              aria-hidden="true"
+              className="type-display type-outline-bright pointer-events-none absolute -right-6 top-6 text-[clamp(6rem,22vw,19rem)] leading-none opacity-40 md:top-2"
+            >
+              {edition.year}
+            </p>
+          </div>
+        ) : (
+          <ExposurePrint id="hero-print" className="absolute inset-0">
+            {/* hollow year watermark — the unexposed layer */}
+            <p
+              aria-hidden="true"
+              className="type-display type-outline pointer-events-none absolute -right-6 top-6 text-[clamp(6rem,22vw,19rem)] leading-none opacity-70 md:top-2"
+            >
+              {edition.year}
+            </p>
+            <MonumentSilhouette className="absolute bottom-0 left-1/2 h-[76%] w-full min-w-[900px] -translate-x-1/2 opacity-90" />
+            <div
+              aria-hidden="true"
+              className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-ink to-transparent"
+            />
+          </ExposurePrint>
+        )}
 
         <div className="relative mx-auto flex min-h-[calc(100svh-73px)] max-w-[1440px] flex-col justify-end px-4 pb-24 pt-24 sm:px-6">
           <p className="type-label text-exposure-bright">{t.siteNameFull}</p>
@@ -167,6 +213,35 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
           </Marquee>
         </div>
       </section>
+
+      {/* 1b — Discover by day (the Toronto pattern), derived from the programme */}
+      {edition.dates && festDays.length > 1 && (
+        <section className="border-b-2 border-prussian bg-ink-deep/40">
+          <div className="mx-auto max-w-[1440px] px-4 py-10 sm:px-6 md:py-12">
+            <div className="flex flex-wrap items-baseline justify-between gap-4">
+              <p className="type-label text-concrete">{t.home.byDay}</p>
+              <AllLink href={href(locale, "programa")}>{t.home.programmeAll}</AllLink>
+            </div>
+            <div className="mt-6 flex flex-wrap gap-3">
+              {festDays.map((iso) => {
+                const chip = formatDayChip(iso, locale);
+                return (
+                  <Link
+                    key={iso}
+                    href={`${href(locale, "programa")}?den=${iso}`}
+                    className="group flex min-w-20 flex-col items-center rounded-[2px] border-2 border-prussian px-5 py-3 transition-colors hover:border-exposure"
+                  >
+                    <span className="type-label-sm text-concrete">{chip.weekday}</span>
+                    <span className="type-display text-4xl leading-none text-exposure-bright transition-colors group-hover:text-paper">
+                      {chip.day}
+                    </span>
+                  </Link>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* 2 — The thesis, on paper (the print flipping positive) */}
       <section className="section-paper grain">
@@ -247,40 +322,81 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
           )}
         </section>
 
-        {/* 5 — Featured artists */}
+        {/* 5 — This year's lineup as show cards (photo + date + venue +
+            admission — the Toronto pattern); simple artist cards until then */}
         <section className="py-8 md:py-12">
           <div className="flex flex-wrap items-end justify-between gap-4">
             <SectionHeading>{t.home.featuredArtists}</SectionHeading>
             <AllLink href={href(locale, "izveduvaci")}>{t.home.allArtists}</AllLink>
           </div>
-          <Reveal className="mt-10 grid grid-cols-2 gap-5 md:grid-cols-3 xl:grid-cols-6">
-            {featured.map((artist) => (
-              <Link
-                key={artist.slug}
-                href={href(locale, "izveduvaci", artist.slug)}
-                className="card card-hover group block overflow-hidden"
-              >
-                <MediaTile
-                  image={artist.image}
-                  locale={locale}
-                  seed={artist.slug}
-                  className="aspect-square border-0 border-b-2"
-                  sizes="(min-width: 1280px) 17vw, (min-width: 768px) 33vw, 50vw"
-                />
-                <div className="p-4">
-                  <p className="font-bold leading-snug text-paper transition-colors group-hover:text-exposure-bright">
-                    {artist.name}
-                  </p>
-                  <p className="type-label-sm mt-1.5 flex flex-wrap gap-x-2 text-concrete">
-                    {artist.countries.length > 0 && <span>{artist.countries.join(" / ")}</span>}
-                    <span className="text-exposure">
-                      {getArtistEditionYears(artist.slug).join(" · ")}
-                    </span>
-                  </p>
-                </div>
-              </Link>
-            ))}
-          </Reveal>
+          {lineupShows.length > 0 ? (
+            <Reveal className="mt-10 grid grid-cols-2 gap-5 md:grid-cols-3 xl:grid-cols-4">
+              {lineupShows.map(({ artist, event }) => {
+                const venue = event.venue ? getVenue(event.venue) : undefined;
+                return (
+                  <Link
+                    key={artist.slug}
+                    href={href(locale, "programa", event.slug)}
+                    className="card card-hover group flex h-full flex-col overflow-hidden"
+                  >
+                    <MediaTile
+                      image={artist.image}
+                      locale={locale}
+                      seed={artist.slug}
+                      className="aspect-[4/5] border-0 border-b-2"
+                      sizes="(min-width: 1280px) 25vw, (min-width: 768px) 33vw, 50vw"
+                    />
+                    <div className="flex flex-1 flex-col p-4">
+                      <p className="text-lg font-bold leading-snug text-paper transition-colors group-hover:text-exposure-bright">
+                        {artist.name}
+                      </p>
+                      <p className="type-label mt-2 text-exposure">
+                        {event.date && formatDate(event.date, locale)}
+                        {event.time && ` · ${event.time}`}
+                      </p>
+                      {venue && (
+                        <p className="type-label-sm mt-1 text-concrete">
+                          {(venue.shortName ?? venue.name)[locale]}
+                        </p>
+                      )}
+                      <p className="mt-auto pt-4">
+                        <AdmissionBadge admission={event.admission} locale={locale} />
+                      </p>
+                    </div>
+                  </Link>
+                );
+              })}
+            </Reveal>
+          ) : (
+            <Reveal className="mt-10 grid grid-cols-2 gap-5 md:grid-cols-3 xl:grid-cols-6">
+              {featured.map((artist) => (
+                <Link
+                  key={artist.slug}
+                  href={href(locale, "izveduvaci", artist.slug)}
+                  className="card card-hover group block overflow-hidden"
+                >
+                  <MediaTile
+                    image={artist.image}
+                    locale={locale}
+                    seed={artist.slug}
+                    className="aspect-square border-0 border-b-2"
+                    sizes="(min-width: 1280px) 17vw, (min-width: 768px) 33vw, 50vw"
+                  />
+                  <div className="p-4">
+                    <p className="font-bold leading-snug text-paper transition-colors group-hover:text-exposure-bright">
+                      {artist.name}
+                    </p>
+                    <p className="type-label-sm mt-1.5 flex flex-wrap gap-x-2 text-concrete">
+                      {artist.countries.length > 0 && <span>{artist.countries.join(" / ")}</span>}
+                      <span className="text-exposure">
+                        {getArtistEditionYears(artist.slug).join(" · ")}
+                      </span>
+                    </p>
+                  </div>
+                </Link>
+              ))}
+            </Reveal>
+          )}
         </section>
       </div>
 
